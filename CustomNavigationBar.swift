@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct CustomNavigationBar: View {
+    var username: String
+    var icon: String
+    var size: Double
+    var addItem: () -> Void
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            UserView(username: username, icon: icon, size: size)
+            Spacer()
+            HStack {
+                Button(action: addItem) {
+                    Image(systemName: "plus.circle")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 25, height: 25)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        //.overlay(Divider(), alignment: .bottom)
     }
 }
 
+func addItem() {
+    
+}
+
 #Preview {
-    CustomNavigationBar()
+    CustomNavigationBar(username: "Voltline", icon: "icon", size: 55, addItem: addItem)
 }

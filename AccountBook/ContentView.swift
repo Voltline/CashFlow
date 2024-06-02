@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import AudioToolbox
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -18,32 +19,29 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                    } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+            VStack {
+                CustomNavigationBar(username: "Voltline", icon: "icon", size: 60, addItem: addItem)
+                List {
+                    ForEach(items) { item in
+                        NavigationLink {
+                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                        } label: {
+                            Text(item.timestamp!, formatter: itemFormatter)
+                        }
                     }
+                    .onDelete(perform: deleteItems)
                 }
-                .onDelete(perform: deleteItems)
+                //.background(Color(.secondarySystemBackground))
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-            Text("Select an item")
         }
+        //.background(Color(.secondarySystemBackground))
     }
+   
+        
 
     private func addItem() {
         withAnimation {
+            AudioServicesPlaySystemSound(1519)
             let newItem = Item(context: viewContext)
             newItem.timestamp = Date()
 

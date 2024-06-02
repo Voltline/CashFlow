@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct UserView: View {
+    var username: String
+    var icon: String
+    var size: Double
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            CircularImageView(imageName: icon, size: size)
+            VStack {
+                Text(username)
+                    .font(.title2)
+                    .bold()
+            }
+        }
+        .padding(.trailing, 10)
     }
 }
 
 #Preview {
-    UserView()
+    UserView(username: "Voltline", icon: "icon", size: 50)
 }
