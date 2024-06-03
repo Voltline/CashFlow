@@ -16,29 +16,32 @@ struct ContentView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
+    @State private var showAddRecordView: Bool = false
+    @StateObject private var categories = Categories()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
-                CustomNavigationBar(username: "Voltline", icon: "icon", size: 60, addItem: addItem)
-                List {
-                    ForEach(items) { item in
-                        NavigationLink {
-                            Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                        } label: {
-                            Text(item.timestamp!, formatter: itemFormatter)
+                CustomNavigationBar(username: "Voltline", icon: "icon", size: 60, showAddRecordView: $showAddRecordView)
+                    List {
+                        ForEach(items) { item in
+                            NavigationLink {
+                                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                            } label: {
+                                Text(item.timestamp!, formatter: itemFormatter)
+                            }
                         }
+                        .onDelete(perform: deleteItems)
                     }
-                    .onDelete(perform: deleteItems)
-                }
+                NavigationLink(destination: AddRecordView().environmentObject(categories), isActive: $showAddRecordView) {
+                    EmptyView()
+                }.hidden()
                 //.background(Color(.secondarySystemBackground))
             }
         }
         //.background(Color(.secondarySystemBackground))
     }
    
-        
-
     private func addItem() {
         withAnimation {
             AudioServicesPlaySystemSound(1519)
