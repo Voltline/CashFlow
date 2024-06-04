@@ -50,7 +50,7 @@ struct AddRecordView: View {
                     }
                     .frame(height: geometry.size.height * 0.16)
                     .padding(.horizontal, geometry.size.width * 0.05)
-                    .background(colorScheme != .dark ? Color(hex: "#B0B0B0", opacity: 1) : Color(hex: "#505050", opacity: 1))
+                    .background(colorScheme != .dark ? Color(hex: "#E0E0E0", opacity: 1) : Color(hex: "#505050", opacity: 1))
                     HStack(alignment: .center) {
                         //Spacer(minLength: geometry.size.width * 0.05)
                         Text("类别")

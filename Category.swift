@@ -96,7 +96,7 @@ struct CategoryView: View {
                 .foregroundColor(colorScheme == .dark ? .white : .black)
         }
         .padding()
-        .background(isSelected ?  Color(hex: "#90A0A0", opacity: 0.8) : Color.clear)
+        .background(isSelected ?  Color(hex: "#C0C0C0", opacity: 0.8) : Color.clear)
         .cornerRadius(10)
     }
 }
