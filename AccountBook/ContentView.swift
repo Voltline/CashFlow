@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  AccountBook
 //
-//  Created by 张艺怀 on 2024/6/1.
+//  Created by Voltline on 2024/6/1.
 //
 
 import SwiftUI
@@ -33,13 +33,12 @@ struct ContentView: View {
                         }
                         .onDelete(perform: deleteItems)
                     }
-                NavigationLink(destination: AddRecordView().environmentObject(categories), isActive: $showAddRecordView) {
+                NavigationLink(destination: AddRecordView().environmentObject(categories), 
+                               isActive: $showAddRecordView) {
                     EmptyView()
                 }.hidden()
-                //.background(Color(.secondarySystemBackground))
             }
         }
-        //.background(Color(.secondarySystemBackground))
     }
    
     private func addItem() {

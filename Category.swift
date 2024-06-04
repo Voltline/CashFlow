@@ -83,10 +83,11 @@ struct CategoryView: View {
     var name: String
     var icon: String
     var isSelected: Bool = false
+    var size: Double
     @EnvironmentObject var cate: Categories
     var body: some View {
         VStack(spacing: 10) {
-            CircularImageView(imageName: icon, size: 55)
+            CircularImageView(imageName: icon, size: size)
             Text(name)
         }
         .padding()
@@ -96,5 +97,5 @@ struct CategoryView: View {
 }
 
 #Preview {
-    CategoryView(name: "商务", icon: "icon_business")
+    CategoryView(name: "商务", icon: "icon_business", size: 100)
 }

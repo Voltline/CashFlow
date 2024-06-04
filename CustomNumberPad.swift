@@ -2,7 +2,7 @@
 //  CustomNumberPad.swift
 //  AccountBook
 //
-//  Created by 张艺怀 on 2024/6/3.
+//  Created by Voltline on 2024/6/3.
 //
 
 import SwiftUI
@@ -10,6 +10,8 @@ import AudioToolbox
 
 struct CustomNumberPad: View {
     @Binding var value: String
+    var width: Double
+    var height: Double
     //@State var value: String
     
     let buttons: [[String]] = [
@@ -29,8 +31,8 @@ struct CustomNumberPad: View {
                             AudioServicesPlaySystemSound(1519)
                         }) {
                             Text(button)
-                                .font(.title)
-                                .frame(width: 110, height: 50)
+                                .font(.system(size: height * 0.72))
+                                .frame(width: width, height: height)
                                 .background(Color.gray.opacity(0.1))
                                 .cornerRadius(10)
                         }
