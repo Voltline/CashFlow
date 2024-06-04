@@ -6,6 +6,7 @@ import AudioToolbox
 
 struct AddRecordView: View {
     @EnvironmentObject var cates: Categories
+    @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var isTextFieldFocused: Bool
     @State private var selectedCategory: String = ""
@@ -30,7 +31,9 @@ struct AddRecordView: View {
                             Image(systemName: "dollarsign.circle")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .foregroundColor(colorScheme != .dark ? .black : .white)
                             Text("现金")
+                                .foregroundColor(colorScheme != .dark ? .black : .white)
                         }
                         .frame(height: geometry.size.height * 0.08)
                         Spacer()
@@ -38,14 +41,16 @@ struct AddRecordView: View {
                             Image(systemName:"yensign")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .foregroundColor(colorScheme != .dark ? .black : .white)
                             Text(String(accountBalance))
                                 .font(.system(size: geometry.size.height * 0.08))
+                                .foregroundColor(colorScheme != .dark ? .black : .white)
                         }
                         .frame(height: geometry.size.height * 0.05)
                     }
                     .frame(height: geometry.size.height * 0.16)
                     .padding(.horizontal, geometry.size.width * 0.05)
-                    .background(Color(hex: "#E0E0E0", opacity: 1))
+                    .background(colorScheme != .dark ? Color(hex: "#B0B0B0", opacity: 1) : Color(hex: "#505050", opacity: 1))
                     HStack(alignment: .center) {
                         //Spacer(minLength: geometry.size.width * 0.05)
                         Text("类别")
@@ -100,7 +105,8 @@ struct AddRecordView: View {
                                 .padding()
                         }
                         
-                        .background(Color(hex: "#B0B0B0", opacity: 0.2))
+                        .background(colorScheme != .dark ? Color(hex: "#B0B0B0", opacity: 0.2) : Color(hex: "#505050", opacity: 0.5))
+                        .foregroundColor(.green)
                         .controlSize(.large)
                         .cornerRadius(30)
                     }

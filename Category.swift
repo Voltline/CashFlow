@@ -88,13 +88,15 @@ struct CategoryView: View {
     var isSelected: Bool = false
     var size: Double
     @EnvironmentObject var cate: Categories
+    @Environment(\.colorScheme) var colorScheme
     var body: some View {
         VStack(spacing: 10) {
             CircularImageView(imageName: icon, size: size)
             Text(name)
+                .foregroundColor(colorScheme == .dark ? .white : .black)
         }
         .padding()
-        .background(isSelected ?  Color(hex: "#E0E0E2", opacity: 1) : Color.clear)
+        .background(isSelected ?  Color(hex: "#90A0A0", opacity: 0.8) : Color.clear)
         .cornerRadius(10)
     }
 }

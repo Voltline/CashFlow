@@ -33,7 +33,7 @@ struct CustomNumberPad: View {
                             Text(button)
                                 .font(.system(size: height * 0.72))
                                 .frame(width: width, height: height)
-                                .background(Color.gray.opacity(0.1))
+                                .background(Color.gray.opacity(0.2))
                                 .cornerRadius(10)
                         }
                     }
