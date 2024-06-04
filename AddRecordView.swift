@@ -79,7 +79,6 @@ struct AddRecordView: View {
                             highlightCategory = firstCategory.name
                         }
                     }
-                    Spacer(minLength: geometry.size.height * 0.01)
                     HStack(spacing: 10) {
                         Image(systemName: "wallet.pass")
                         TextField("例如:公交", text: $accountName)
@@ -105,7 +104,6 @@ struct AddRecordView: View {
                         .cornerRadius(30)
                     }
                     .padding(.horizontal, geometry.size.width * 0.03)
-                    Spacer(minLength: geometry.size.height * 0.01)
                     if !isTextFieldFocused {
                         CustomNumberPad(value: $accountBalance, width: geometry.size.width * 0.28, height: geometry.size.height * 0.075)
                             .transition(.opacity)

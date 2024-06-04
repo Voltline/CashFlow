@@ -22,7 +22,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                CustomNavigationBar(username: "Voltline", icon: "icon", size: 60, showAddRecordView: $showAddRecordView)
+                CustomNavigationBar(username: "用户", icon: "icon_default", size: 65, showAddRecordView: $showAddRecordView)
                     List {
                         ForEach(items) { item in
                             NavigationLink {
