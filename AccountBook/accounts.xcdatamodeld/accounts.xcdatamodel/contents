@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Record" representedClassName="Record" syncable="YES" codeGenerationType="class">
+        <attribute name="number" attributeType="Double" minValueString="0" defaultValueString="0.0" allowsCloudEncryption="YES" usesScalarValueType="YES"/>
+        <attribute name="positive" attributeType="Boolean" allowsCloudEncryption="YES" usesScalarValueType="YES"/>
+        <attribute name="record_date" attributeType="Date" allowsCloudEncryption="YES" usesScalarValueType="NO"/>
+        <attribute name="record_name" attributeType="String" allowsCloudEncryption="YES"/>
+        <attribute name="record_type" optional="YES" attributeType="String"/>
+    </entity>
+</model>

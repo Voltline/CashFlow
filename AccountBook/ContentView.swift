@@ -13,9 +13,9 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_name, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
+    private var records: FetchedResults<Record>
     @State private var showAddRecordView: Bool = false
     @StateObject private var categories = Categories()
 
@@ -24,43 +24,37 @@ struct ContentView: View {
             VStack {
                 CustomNavigationBar(username: "用户", icon: "icon_default", size: 65, showAddRecordView: $showAddRecordView)
                     List {
-                        ForEach(items) { item in
+                        ForEach(records) { record in
                             NavigationLink {
-                                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                                // Text("Item at \(record.record_name!)")
+                                Text("\(record.record_name!)")
+                                Text("\(record.record_type!)")
+                                if record.positive {
+                                    Text("+" + String(format: "%.2f", record.number))
+                                }
+                                else {
+                                    Text("-" + String(format: "%.2f", record.number))
+                                }
+                                Text("\(record.record_date!)")
                             } label: {
-                                Text(item.timestamp!, formatter: itemFormatter)
+                                ItemView(item_name: record.record_name!, item_date: record.record_date!, item_type: record.record_type!, item_num: record.number)
                             }
                         }
                         .onDelete(perform: deleteItems)
                     }
-                NavigationLink(destination: AddRecordView().environmentObject(categories), 
+                NavigationLink(destination: AddRecordView()
+                    .environment(\.managedObjectContext, viewContext)
+                    .environmentObject(categories),
                                isActive: $showAddRecordView) {
                     EmptyView()
                 }.hidden()
             }
         }
     }
-   
-    private func addItem() {
-        withAnimation {
-            AudioServicesPlaySystemSound(1519)
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+            offsets.map { records[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()

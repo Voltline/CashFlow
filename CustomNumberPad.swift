@@ -59,7 +59,7 @@ struct CustomNumberPad: View {
                 value += button
             }
         default:
-            if value.count <= 8 {
+            if value.count <= Int(width / (height * 0.3)) {
                 if value.contains(".") {
                     let va = value.split(separator: ".")
                     if va.count < 2 || (va.count == 2 && va[1].count < 2) {

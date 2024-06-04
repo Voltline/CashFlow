@@ -10,6 +10,8 @@
 		B28074D72C0DF6BA0008FF6C /* AddRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */; };
 		B28074D92C0E04020008FF6C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074D82C0E04020008FF6C /* Category.swift */; };
 		B28074DB2C0E0FF50008FF6C /* CustomNumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */; };
+		B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */; };
+		B2AC52172C0F34E500D7B746 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52162C0F34E500D7B746 /* ItemView.swift */; };
 		B2B9CFBC2C0B565600EC4F84 /* AccountBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */; };
 		B2B9CFBE2C0B565600EC4F84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFBD2C0B565600EC4F84 /* ContentView.swift */; };
 		B2B9CFC02C0B565700EC4F84 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2B9CFBF2C0B565700EC4F84 /* Assets.xcassets */; };
@@ -46,6 +48,8 @@
 		B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordView.swift; sourceTree = "<group>"; };
 		B28074D82C0E04020008FF6C /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPad.swift; sourceTree = "<group>"; };
+		B2AC52122C0F1FDD00D7B746 /* accounts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = accounts.xcdatamodel; sourceTree = "<group>"; };
+		B2AC52162C0F34E500D7B746 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		B2B9CFB82C0B565600EC4F84 /* AccountBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccountBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBookApp.swift; sourceTree = "<group>"; };
 		B2B9CFBD2C0B565600EC4F84 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -92,6 +96,8 @@
 		B2B9CFAF2C0B565600EC4F84 = {
 			isa = PBXGroup;
 			children = (
+				B2AC52162C0F34E500D7B746 /* ItemView.swift */,
+				B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */,
 				B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */,
 				B28074D82C0E04020008FF6C /* Category.swift */,
 				B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */,
@@ -285,12 +291,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */,
 				B2E663BE2C0CAFAE00D26099 /* CircularImageView.swift in Sources */,
 				B28074D72C0DF6BA0008FF6C /* AddRecordView.swift in Sources */,
 				B2E663C02C0CB13500D26099 /* UserView.swift in Sources */,
 				B2B9CFC82C0B565700EC4F84 /* AccountBook.xcdatamodeld in Sources */,
 				B2B9CFC52C0B565700EC4F84 /* Persistence.swift in Sources */,
 				B28074D92C0E04020008FF6C /* Category.swift in Sources */,
+				B2AC52172C0F34E500D7B746 /* ItemView.swift in Sources */,
 				B2B9CFBE2C0B565600EC4F84 /* ContentView.swift in Sources */,
 				B28074DB2C0E0FF50008FF6C /* CustomNumberPad.swift in Sources */,
 				B2B9CFBC2C0B565600EC4F84 /* AccountBookApp.swift in Sources */,
@@ -632,6 +640,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B2AC52122C0F1FDD00D7B746 /* accounts.xcdatamodel */,
+			);
+			currentVersion = B2AC52122C0F1FDD00D7B746 /* accounts.xcdatamodel */;
+			name = accounts.xcdatamodeld;
+			path = /Users/voltline/Documents/Sources/AccountBook/AccountBook/accounts.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		B2B9CFC62C0B565700EC4F84 /* AccountBook.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

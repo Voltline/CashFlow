@@ -5,6 +5,7 @@ import SwiftUI
 import AudioToolbox
 
 struct AddRecordView: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var cates: Categories
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
@@ -13,6 +14,7 @@ struct AddRecordView: View {
     @State private var highlightCategory: String = ""
     @State private var accountName: String = ""
     @State private var accountBalance: String = "0"
+    @State private var positive: Bool = false
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -69,7 +71,8 @@ struct AddRecordView: View {
                                         withAnimation(.spring(duration: 0.15)) {
                                             selectedCategory = cate.name
                                             highlightCategory = cate.name
-                                            print("Selected category: \(selectedCategory)")
+                                            positive = cate.positive
+                                            // print("Selected category: \(selectedCategory)")
                                         }
                                     }
                                 //.hoverEffect(.automatic)
@@ -95,6 +98,7 @@ struct AddRecordView: View {
                             .keyboardType(.default)
                             .textFieldStyle(.roundedBorder)
                         Button() {
+                            confirmButton()
                             presentationMode.wrappedValue.dismiss()
                             AudioServicesPlaySystemSound(1519)
                         } label: {
@@ -120,10 +124,28 @@ struct AddRecordView: View {
                 }
             }
         }
+        
     }
     
     private func confirmButton() {
-        
+        withAnimation {
+            AudioServicesPlaySystemSound(1519)
+            let newItem = Record(context: viewContext)
+            newItem.record_type = selectedCategory
+            newItem.positive = positive
+            newItem.record_date = Date()
+            newItem.record_name = accountName
+            newItem.number = Double(accountBalance) ?? 0.0
+            
+            do {
+                try viewContext.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
     }
 }
 
