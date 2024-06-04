@@ -56,7 +56,7 @@ struct AddRecordView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(alignment: .center) {
                             Spacer()
-                            ForEach(Array(cates.cate_dict.values.sorted(by: { $0.name < $1.name } ))) { cate in
+                            ForEach(Array(cates.cate_dict.values.sorted(by: { $0.prio < $1.prio } ))) { cate in
                                 CategoryView(name: cate.name, icon: cate.icon, isSelected: cate.name == highlightCategory, size: geometry.size.height * 0.08)
                                     .environmentObject(cates)
                                     .onTapGesture {
@@ -74,11 +74,12 @@ struct AddRecordView: View {
                         }
                     }
                     .onAppear {
-                        if let firstCategory = cates.cate_dict.values.sorted(by: { $0.name < $1.name }).first {
+                        if let firstCategory = cates.cate_dict.values.sorted(by: { $0.prio < $1.prio }).first {
                             selectedCategory = firstCategory.name
                             highlightCategory = firstCategory.name
                         }
                     }
+                    Spacer()
                     HStack(spacing: 10) {
                         Image(systemName: "wallet.pass")
                         TextField("例如:公交", text: $accountName)
@@ -104,6 +105,7 @@ struct AddRecordView: View {
                         .cornerRadius(30)
                     }
                     .padding(.horizontal, geometry.size.width * 0.03)
+                    Spacer()
                     if !isTextFieldFocused {
                         CustomNumberPad(value: $accountBalance, width: geometry.size.width * 0.28, height: geometry.size.height * 0.075)
                             .transition(.opacity)

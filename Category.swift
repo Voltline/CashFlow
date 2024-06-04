@@ -26,15 +26,17 @@ class Category: Identifiable, Codable {
     var name: String
     var icon: String
     var positive: Bool
+    var prio: Int
     
     private enum CodingKeys: String, CodingKey {
-        case name, icon, positive
+        case name, icon, positive, prio
     }
     
-    init(name: String, icon: String, positive: Bool = false) {
+    init(name: String, icon: String, prio: Int, positive: Bool = false) {
         self.name = name
         self.icon = icon
         self.positive = positive
+        self.prio = prio
     }
     
     required init(from decoder: Decoder) throws {
@@ -42,21 +44,22 @@ class Category: Identifiable, Codable {
         self.name = try container.decode(String.self, forKey: .name)
         self.icon = try container.decode(String.self, forKey: .icon)
         self.positive = try container.decode(Bool.self, forKey: .positive)
+        self.prio = try container.decode(Int.self, forKey: .prio)
     }
 }
 
 let builtInCategories = [
-    Category(name: "收入", icon: "icon_bonus", positive: true),
-    Category(name: "商务", icon: "icon_business"),
-    Category(name: "服装", icon: "icon_clothes"),
-    Category(name: "日常", icon: "icon_daily"),
-    Category(name: "娱乐", icon: "icon_entertainment"),
-    Category(name: "食物", icon: "icon_food"),
-    Category(name: "医药", icon: "icon_medicine"),
-    Category(name: "话费", icon: "icon_phone"),
-    Category(name: "购物", icon: "icon_shopping"),
-    Category(name: "学习", icon: "icon_study"),
-    Category(name: "交通", icon: "icon_traffic")
+    Category(name: "收入", icon: "icon_bonus", prio: 5, positive: true),
+    Category(name: "商务", icon: "icon_business", prio: 9),
+    Category(name: "服装", icon: "icon_clothes", prio: 4),
+    Category(name: "日常", icon: "icon_daily", prio: 4),
+    Category(name: "娱乐", icon: "icon_entertainment", prio: 3),
+    Category(name: "食物", icon: "icon_food", prio: 1),
+    Category(name: "医药", icon: "icon_medicine", prio: 10),
+    Category(name: "话费", icon: "icon_phone", prio: 8),
+    Category(name: "购物", icon: "icon_shopping", prio: 3),
+    Category(name: "学习", icon: "icon_study", prio: 7),
+    Category(name: "交通", icon: "icon_traffic", prio: 6)
 ]
 
 class Categories: Codable, ObservableObject, Identifiable {
