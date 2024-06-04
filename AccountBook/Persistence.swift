@@ -13,7 +13,7 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for i in 0..<6 {
+        for i in 0..<5 {
             let newItem = Record(context: viewContext)
             newItem.positive = i % 3 == 0 ? false : true
             newItem.record_type = "食物"

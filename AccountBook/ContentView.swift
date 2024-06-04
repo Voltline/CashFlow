@@ -13,7 +13,7 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_name, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
     @State private var showAddRecordView: Bool = false
@@ -33,7 +33,7 @@ struct ContentView: View {
                                     Text("+" + String(format: "%.2f", record.number))
                                 }
                                 else {
-                                    Text("-" + String(format: "%.2f", record.number))
+                                    Text((record.number == 0 ? "" : "-") + String(format: "%.2f", record.number))
                                 }
                                 Text("\(record.record_date!)")
                             } label: {

@@ -15,6 +15,7 @@ struct AddRecordView: View {
     @State private var accountName: String = ""
     @State private var accountBalance: String = "0"
     @State private var positive: Bool = false
+    @State private var isShowingNoZeroDialog = false;
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -98,9 +99,15 @@ struct AddRecordView: View {
                             .keyboardType(.default)
                             .textFieldStyle(.roundedBorder)
                         Button() {
-                            confirmButton()
-                            presentationMode.wrappedValue.dismiss()
                             AudioServicesPlaySystemSound(1519)
+                            if Double(accountBalance) == 0 {
+                                isShowingNoZeroDialog.toggle()
+                            }
+                            else {
+                                //print(Double(accountBalance)!)
+                                confirmButton()
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         } label: {
                             Image(systemName:"checkmark")
                                 .bold()
@@ -108,7 +115,11 @@ struct AddRecordView: View {
                                 .frame(width: geometry.size.width * 0.03, height: geometry.size.width * 0.015)
                                 .padding()
                         }
-                        
+                        .alert("提示", isPresented: $isShowingNoZeroDialog) {
+                            Button("好", role: .cancel) {}
+                        } message: {
+                            Text("金额不能为0")
+                        }
                         .background(colorScheme != .dark ? Color(hex: "#B0B0B0", opacity: 0.2) : Color(hex: "#505050", opacity: 0.5))
                         .foregroundColor(.green)
                         .controlSize(.large)
@@ -134,7 +145,7 @@ struct AddRecordView: View {
             newItem.record_type = selectedCategory
             newItem.positive = positive
             newItem.record_date = Date()
-            newItem.record_name = accountName
+            newItem.record_name = accountName == "" ? selectedCategory : accountName
             newItem.number = Double(accountBalance) ?? 0.0
             
             do {

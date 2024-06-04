@@ -18,20 +18,22 @@ struct ItemView: View {
                     HStack(spacing: 2) {
                         Text(item_name)
                             .bold()
-                            .font(.title)
+                            .font(.title2)
                         Spacer()
                         Image(systemName: "yensign")
                             .font(.title3)
                         Text(String(format: "%.2f", item_num))
-                            .font(.title2)
+                            .font(.title3)
                     }
                     HStack {
                         Text(item_type)
+                            .font(.caption)
                             .foregroundColor(.gray)
                         Spacer()
                     }
                     HStack {
                         Text(dateformat(date: item_date))
+                            .font(.caption)
                             .foregroundColor(.gray)
                         Spacer()
                     }
