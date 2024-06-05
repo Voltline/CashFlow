@@ -14,6 +14,9 @@ struct AccountBookApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear() {
+                    sleep(1)
+                }
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
