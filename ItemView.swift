@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct ItemView: View {
+    @ObservedObject var record: Record
     @State var item_name: String
     @State var item_date: Date
     @State var item_type: String
     @State var item_num: Double
+    init(record: Record) {
+        self.record = record
+        item_name = record.record_name!
+        item_date = record.record_date!
+        item_type = record.record_type!
+        item_num = record.number
+    }
+    
     var body: some View {
             HStack {
                 VStack {
@@ -51,6 +60,8 @@ struct ItemView: View {
     }
 }
 
+/*
 #Preview {
     ItemView(item_name: "打车", item_date: Date(), item_type: "交通", item_num: 67.23)
 }
+*/

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B27C7D092C11A7B500073E22 /* ModifyRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27C7D082C11A7B500073E22 /* ModifyRecordView.swift */; };
 		B28074D72C0DF6BA0008FF6C /* AddRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */; };
 		B28074D92C0E04020008FF6C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074D82C0E04020008FF6C /* Category.swift */; };
 		B28074DB2C0E0FF50008FF6C /* CustomNumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B27C7D082C11A7B500073E22 /* ModifyRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyRecordView.swift; sourceTree = "<group>"; };
 		B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordView.swift; sourceTree = "<group>"; };
 		B28074D82C0E04020008FF6C /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPad.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		B2B9CFAF2C0B565600EC4F84 = {
 			isa = PBXGroup;
 			children = (
+				B27C7D082C11A7B500073E22 /* ModifyRecordView.swift */,
 				B2AC52162C0F34E500D7B746 /* ItemView.swift */,
 				B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */,
 				B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */,
@@ -295,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B27C7D092C11A7B500073E22 /* ModifyRecordView.swift in Sources */,
 				B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */,
 				B2E663BE2C0CAFAE00D26099 /* CircularImageView.swift in Sources */,
 				B28074D72C0DF6BA0008FF6C /* AddRecordView.swift in Sources */,
@@ -487,7 +491,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -521,7 +525,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

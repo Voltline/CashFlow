@@ -26,18 +26,11 @@ struct ContentView: View {
                     List {
                         ForEach(records) { record in
                             NavigationLink {
-                                // Text("Item at \(record.record_name!)")
-                                Text("\(record.record_name!)")
-                                Text("\(record.record_type!)")
-                                if record.positive {
-                                    Text("+" + String(format: "%.2f", record.number))
-                                }
-                                else {
-                                    Text((record.number == 0 ? "" : "-") + String(format: "%.2f", record.number))
-                                }
-                                Text("\(record.record_date!)")
+                                ModifyRecordView(record: record)
+                                    .environment(\.managedObjectContext, viewContext)
+                                    .environmentObject(categories);
                             } label: {
-                                ItemView(item_name: record.record_name!, item_date: record.record_date!, item_type: record.record_type!, item_num: record.number)
+                                ItemView(record: record)
                             }
                         }
                         .onDelete(perform: deleteItems)
@@ -48,6 +41,7 @@ struct ContentView: View {
                                isActive: $showAddRecordView) {
                     EmptyView()
                 }.hidden()
+                
             }
         }
     }
