@@ -27,6 +27,9 @@
 		B2E663BE2C0CAFAE00D26099 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E663BD2C0CAFAE00D26099 /* CircularImageView.swift */; };
 		B2E663C02C0CB13500D26099 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E663BF2C0CB13500D26099 /* UserView.swift */; };
 		B2E663C22C0CB58200D26099 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E663C12C0CB58200D26099 /* CustomNavigationBar.swift */; };
+		B2E920C52C11EF840037BF87 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E920C42C11EF840037BF87 /* EditProfileView.swift */; };
+		B2E920C72C11F50C0037BF87 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E920C62C11F50C0037BF87 /* ImagePicker.swift */; };
+		B2E920C92C1202030037BF87 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E920C82C1202030037BF87 /* UserProfile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +73,9 @@
 		B2E663BD2C0CAFAE00D26099 /* CircularImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		B2E663BF2C0CB13500D26099 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		B2E663C12C0CB58200D26099 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		B2E920C42C11EF840037BF87 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		B2E920C62C11F50C0037BF87 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		B2E920C82C1202030037BF87 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +106,9 @@
 		B2B9CFAF2C0B565600EC4F84 = {
 			isa = PBXGroup;
 			children = (
+				B2E920C82C1202030037BF87 /* UserProfile.swift */,
+				B2E920C62C11F50C0037BF87 /* ImagePicker.swift */,
+				B2E920C42C11EF840037BF87 /* EditProfileView.swift */,
 				B27C7D082C11A7B500073E22 /* ModifyRecordView.swift */,
 				B2AC52162C0F34E500D7B746 /* ItemView.swift */,
 				B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */,
@@ -127,6 +136,7 @@
 		B2B9CFBA2C0B565600EC4F84 /* AccountBook */ = {
 			isa = PBXGroup;
 			children = (
+				B2E663BD2C0CAFAE00D26099 /* CircularImageView.swift */,
 				B2E663BB2C0CAF5400D26099 /* icon.jpg */,
 				B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */,
 				B2B9CFBD2C0B565600EC4F84 /* ContentView.swift */,
@@ -135,7 +145,6 @@
 				B2B9CFC42C0B565700EC4F84 /* Persistence.swift */,
 				B2B9CFC62C0B565700EC4F84 /* AccountBook.xcdatamodeld */,
 				B2B9CFC12C0B565700EC4F84 /* Preview Content */,
-				B2E663BD2C0CAFAE00D26099 /* CircularImageView.swift */,
 				B2E663BF2C0CB13500D26099 /* UserView.swift */,
 			);
 			path = AccountBook;
@@ -298,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2E920C52C11EF840037BF87 /* EditProfileView.swift in Sources */,
 				B27C7D092C11A7B500073E22 /* ModifyRecordView.swift in Sources */,
 				B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */,
 				B2E663BE2C0CAFAE00D26099 /* CircularImageView.swift in Sources */,
@@ -309,6 +319,8 @@
 				B2AC52172C0F34E500D7B746 /* ItemView.swift in Sources */,
 				B2B9CFBE2C0B565600EC4F84 /* ContentView.swift in Sources */,
 				B28074DB2C0E0FF50008FF6C /* CustomNumberPad.swift in Sources */,
+				B2E920C92C1202030037BF87 /* UserProfile.swift in Sources */,
+				B2E920C72C11F50C0037BF87 /* ImagePicker.swift in Sources */,
 				B2B9CFBC2C0B565600EC4F84 /* AccountBookApp.swift in Sources */,
 				B2E663C22C0CB58200D26099 /* CustomNavigationBar.swift in Sources */,
 			);

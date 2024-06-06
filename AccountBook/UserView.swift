@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct UserView: View {
-    var username: String
-    var icon: String
-    var size: Double
+    @State var username: String
+    @State var icon: String
+    @State var size: Double
     var body: some View {
         HStack {
             CircularImageView(imageName: icon, size: size)

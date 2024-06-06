@@ -9,13 +9,18 @@ import SwiftUI
 import AudioToolbox
 
 struct CustomNavigationBar: View {
-    var username: String
-    var icon: String
     var size: Double
     @Binding var showAddRecordView: Bool
+    @ObservedObject var userProfile: UserProfile
+    @Binding var refreshTrigger: Bool
+    @State private var profileImage: UIImage?
+    @State private var showEditProfileView = false
     var body: some View {
         HStack {
-            UserView(username: username, icon: icon, size: size)
+            UserView(username: userProfile.username, icon: userProfile.icon, size: size)
+                .onTapGesture {
+                    showEditProfileView.toggle()
+                }
             Spacer()
             HStack {
                 Button(action: {
@@ -32,11 +37,13 @@ struct CustomNavigationBar: View {
         .padding()
         .background(Color(.systemBackground))
         //.overlay(Divider(), alignment: .bottom)
+        .sheet(isPresented: $showEditProfileView) {
+            EditProfileView(userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                .onDisappear() {
+                    refreshTrigger.toggle()
+                }
+        }
     }
-}
-
-func addItem() {
-    
 }
 /*
 #Preview {

@@ -17,12 +17,18 @@ struct ContentView: View {
         animation: .default)
     private var records: FetchedResults<Record>
     @State private var showAddRecordView: Bool = false
+    @State private var refreshTrigger: Bool = false
     @StateObject private var categories = Categories()
-
+    @StateObject private var userProfile = UserProfile()
     var body: some View {
         NavigationStack {
             VStack {
-                CustomNavigationBar(username: "用户", icon: "icon_default", size: 65, showAddRecordView: $showAddRecordView)
+                if refreshTrigger {
+                    CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                }
+                else {
+                    CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                }
                     List {
                         ForEach(records) { record in
                             NavigationLink {
@@ -41,7 +47,6 @@ struct ContentView: View {
                                isActive: $showAddRecordView) {
                     EmptyView()
                 }.hidden()
-                
             }
         }
     }
