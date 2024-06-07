@@ -15,9 +15,13 @@ struct AccountBookApp: App {
         WindowGroup {
             ContentView()
                 .onAppear() {
+                    init_use_faceid()
                     sleep(1)
                 }
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+    }
+    private func init_use_faceid() {
+        UserDefaults.standard.setValue(false, forKey: "UseFaceID")
     }
 }

@@ -22,9 +22,10 @@ struct ContentView: View {
     @StateObject private var categories = Categories()
     @StateObject private var userProfile = UserProfile()
     @State private var isLocked = true
+    @State private var useLocked = false
     var body: some View {
         NavigationStack {
-            if !isLocked {
+            if !UserDefaults.standard.bool(forKey: "UseFaceID") || !isLocked {
                 withAnimation(.spring) {
                     VStack {
                         if refreshTrigger {
@@ -95,7 +96,9 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear(perform: authenticate)
+        .onAppear {
+            authenticate()
+        }
     }
 
     private func deleteItems(offsets: IndexSet) {
@@ -117,6 +120,7 @@ struct ContentView: View {
         let context = LAContext()
         var error: NSError?
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            UserDefaults.standard.setValue(true, forKey: "UseFaceID")
             let reason = "CashFlow需要解锁才能使用"
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                 DispatchQueue.main.async {
@@ -130,6 +134,7 @@ struct ContentView: View {
             }
         }
         else {
+            UserDefaults.standard.setValue(false, forKey: "UseFaceID")
             // 无生物识别
         }
     }
