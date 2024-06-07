@@ -9,27 +9,27 @@ import Foundation
 import SwiftUI
 import Combine
 
-class UserProfile: ObservableObject {
+class UserProfile: ObservableObject, Equatable {
+    static func == (lhs: UserProfile, rhs: UserProfile) -> Bool {
+        return lhs.username == rhs.username && lhs.icon == rhs.icon
+    }
+    
     @Published var username: String
     @Published var icon: String
-    @Published var uuid: UUID
 
     init() {
         self.username = UserDefaults.standard.string(forKey: "username") ?? "用户"
         self.icon = UserDefaults.standard.string(forKey: "icon") ?? "icon_default"
-        self.uuid = UUID()
     }
 
     func updateUsername(_ newUsername: String) {
         self.username = newUsername
         UserDefaults.standard.set(newUsername, forKey: "username")
-        self.uuid = UUID()
     }
 
     func updateIcon(_ newIcon: String) {
         self.icon = newIcon
         UserDefaults.standard.set(newIcon, forKey: "icon")
-        self.uuid = UUID()
     }
 
     func loadProfileImage() -> UIImage? {
