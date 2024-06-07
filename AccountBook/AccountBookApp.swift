@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import LocalAuthentication
 
 @main
 struct AccountBookApp: App {
@@ -22,6 +23,13 @@ struct AccountBookApp: App {
         }
     }
     private func init_use_faceid() {
-        UserDefaults.standard.setValue(false, forKey: "UseFaceID")
+        let context = LAContext()
+        var error: NSError?
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            UserDefaults.standard.setValue(true, forKey: "UseFaceID")
+        }
+        else {
+            UserDefaults.standard.setValue(true, forKey: "UseFaceID")
+        }
     }
 }
