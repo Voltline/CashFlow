@@ -155,7 +155,19 @@ struct ModifyRecordView: View {
                 }
             }
         }
-        
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack(spacing: 3) {
+                        Image(systemName: "chevron.left")
+                        Text("返回")
+                    }
+                }
+            }
+        }
     }
     
     private func confirmButton() {

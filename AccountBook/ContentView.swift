@@ -22,31 +22,41 @@ struct ContentView: View {
     @StateObject private var userProfile = UserProfile()
     var body: some View {
         NavigationStack {
-            VStack {
-                if refreshTrigger {
-                    CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
-                }
-                else {
-                    CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
-                }
-                    List {
-                        ForEach(records) { record in
-                            NavigationLink {
-                                ModifyRecordView(record: record)
-                                    .environment(\.managedObjectContext, viewContext)
-                                    .environmentObject(categories);
-                            } label: {
-                                ItemView(record: record)
-                            }
-                        }
-                        .onDelete(perform: deleteItems)
+            withAnimation(.spring) {
+                VStack {
+                    if refreshTrigger {
+                        CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
                     }
-                NavigationLink(destination: AddRecordView()
-                    .environment(\.managedObjectContext, viewContext)
-                    .environmentObject(categories),
-                               isActive: $showAddRecordView) {
-                    EmptyView()
-                }.hidden()
+                    else {
+                        CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                    }
+                        List {
+                            ForEach(records) { record in
+                                NavigationLink {
+                                    ModifyRecordView(record: record)
+                                        .environment(\.managedObjectContext, viewContext)
+                                        .environmentObject(categories);
+                                } label: {
+                                    ItemView(record: record)
+                                }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                    Button(role: .destructive) {
+                                        deleteItems(offsets: IndexSet(integer: records.firstIndex(of: record)!))
+                                    } label: {
+                                        Label("Delete", systemImage: "trash.fill")
+                                    }
+                                }
+                            }
+                            //.onDelete(perform: deleteItems)
+                        }
+
+                    NavigationLink(destination: AddRecordView()
+                        .environment(\.managedObjectContext, viewContext)
+                        .environmentObject(categories),
+                                   isActive: $showAddRecordView) {
+                        EmptyView()
+                    }.hidden()
+                }
             }
         }
     }

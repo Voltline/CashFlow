@@ -25,8 +25,10 @@ struct EditProfileView: View {
                         Button() {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
-                            Image(systemName:"arrow.backward")
-                            Text("返回")
+                            HStack(spacing: 3) {
+                                Image(systemName:"chevron.left")
+                                Text("返回")
+                            }
                         }
                         .foregroundStyle(Color.blue)
                         Spacer()
