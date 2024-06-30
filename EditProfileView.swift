@@ -17,7 +17,7 @@ struct EditProfileView: View {
     @State private var selectedImage: UIImage?
     @Binding var refreshTrigger: Bool
     @State var isShowInfo: Bool = false
-    @State private var useNotification: Bool = false
+    @State private var useNotification: Bool = UserDefaults.standard.bool(forKey: "UseNotification")
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         NavigationStack {
