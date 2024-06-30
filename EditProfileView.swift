@@ -131,25 +131,16 @@ struct EditProfileView: View {
         UserDefaults.standard.setValue(newValue, forKey: "UseNotification")
         // print("点击Toggle按钮")
         if !newValue {
-            let identifier = UserDefaults.standard.string(forKey: "NotificationUUID") ?? ""
-            if identifier != "" {
-                let center = UNUserNotificationCenter.current()
-                center.removePendingNotificationRequests(withIdentifiers: [identifier])
-                UserDefaults.standard.setValue("", forKey: "NotificationUUID")
-                return
-            }
-            else {
-                return
-            }
+            let notify = NotificationHandler()
+            notify.cancelAllRepeatingNotifications()
         }
         let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
         let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
         if useNotification && hasNotification {
             NotificationForAllow()
             let notify = NotificationHandler()
-            let notificationUUID = UUID().uuidString
-            notify.sendNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", uuid: notificationUUID, timeInterval: 2 * 60 * 60, isRepeat: true)
-            UserDefaults.standard.setValue(notificationUUID, forKey: "NotificationUUID")
+            notify.sendNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", uuid: UUID().uuidString, timeInterval: 2 * 60 * 60, isRepeat: true)
+            notify.sendNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", uuid: UUID().uuidString, timeInterval: 60, isRepeat: true)
         }
     }
 }

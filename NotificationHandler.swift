@@ -19,4 +19,9 @@ class NotificationHandler
         let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
     }
+    
+    func cancelAllRepeatingNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+    }
 }
