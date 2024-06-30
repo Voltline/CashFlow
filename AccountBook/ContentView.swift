@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 import AudioToolbox
 import LocalAuthentication
+import UserNotifications
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -23,6 +24,7 @@ struct ContentView: View {
     @StateObject private var userProfile = UserProfile()
     @State private var isLocked = true
     @State private var useLocked = UserDefaults.standard.bool(forKey: "UseFaceID")
+    @State private var hasNotification = UserDefaults.standard.bool(forKey: "hasNotification")
     var body: some View {
         NavigationStack {
             if (useLocked && !isLocked) || !useLocked {

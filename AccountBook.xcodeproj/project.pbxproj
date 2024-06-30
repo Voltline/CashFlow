@@ -11,6 +11,7 @@
 		B28074D72C0DF6BA0008FF6C /* AddRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */; };
 		B28074D92C0E04020008FF6C /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074D82C0E04020008FF6C /* Category.swift */; };
 		B28074DB2C0E0FF50008FF6C /* CustomNumberPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */; };
+		B2A869232C310C1700349ECF /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2A869222C310C1100349ECF /* NotificationHandler.swift */; };
 		B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */; };
 		B2AC52172C0F34E500D7B746 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52162C0F34E500D7B746 /* ItemView.swift */; };
 		B2B9CFBC2C0B565600EC4F84 /* AccountBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */; };
@@ -53,6 +54,7 @@
 		B28074D62C0DF6BA0008FF6C /* AddRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecordView.swift; sourceTree = "<group>"; };
 		B28074D82C0E04020008FF6C /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		B28074DA2C0E0FF50008FF6C /* CustomNumberPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNumberPad.swift; sourceTree = "<group>"; };
+		B2A869222C310C1100349ECF /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		B2AC52122C0F1FDD00D7B746 /* accounts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = accounts.xcdatamodel; sourceTree = "<group>"; };
 		B2AC52162C0F34E500D7B746 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		B2B9CFB82C0B565600EC4F84 /* AccountBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccountBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +106,7 @@
 		B2B9CFAF2C0B565600EC4F84 = {
 			isa = PBXGroup;
 			children = (
+				B2A869222C310C1100349ECF /* NotificationHandler.swift */,
 				B2E920C82C1202030037BF87 /* UserProfile.swift */,
 				B2E920C62C11F50C0037BF87 /* ImagePicker.swift */,
 				B2E920C42C11EF840037BF87 /* EditProfileView.swift */,
@@ -306,6 +309,7 @@
 				B2E920C52C11EF840037BF87 /* EditProfileView.swift in Sources */,
 				B27C7D092C11A7B500073E22 /* ModifyRecordView.swift in Sources */,
 				B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */,
+				B2A869232C310C1700349ECF /* NotificationHandler.swift in Sources */,
 				B2E663BE2C0CAFAE00D26099 /* CircularImageView.swift in Sources */,
 				B28074D72C0DF6BA0008FF6C /* AddRecordView.swift in Sources */,
 				B2E663C02C0CB13500D26099 /* UserView.swift in Sources */,

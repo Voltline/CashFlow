@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AudioToolbox
+import UserNotifications
 
 struct EditProfileView: View {
     @ObservedObject var userProfile: UserProfile
@@ -16,6 +17,7 @@ struct EditProfileView: View {
     @State private var selectedImage: UIImage?
     @Binding var refreshTrigger: Bool
     @State var isShowInfo: Bool = false
+    @State private var useNotification: Bool = false
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         NavigationStack {
@@ -79,6 +81,20 @@ struct EditProfileView: View {
                         .cornerRadius(30)
                     }
                     .padding(.horizontal, geometry.size.width * 0.03)
+                    HStack {
+                        Text("定时通知")
+                            .font(.title2)
+                        Spacer()
+                        Toggle("", isOn: $useNotification)
+                            .onChange(of: useNotification) { newValue in
+                                ToggleUseNotification(to: newValue)
+                            }
+                    }
+                    .padding(.horizontal, geometry.size.width * 0.05)
+                    /*Button(action: NotificationForAllow) {
+                        Text("Test")
+                    }
+                     */
                     Spacer(minLength: geometry.size.height * 0.4)
                 }
             }
@@ -104,6 +120,37 @@ struct EditProfileView: View {
     private func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
+    }
+    
+    private func NotificationForAllow() {
+        let notify = NotificationHandler()
+        notify.sendNotification(title: "记账提醒开启", body: "CashFlow会每两个小时提醒您一次哦", uuid: UUID().uuidString, timeInterval: 5)
+    }
+    
+    private func ToggleUseNotification(to newValue: Bool) {
+        UserDefaults.standard.setValue(newValue, forKey: "UseNotification")
+        // print("点击Toggle按钮")
+        if !newValue {
+            let identifier = UserDefaults.standard.string(forKey: "NotificationUUID") ?? ""
+            if identifier != "" {
+                let center = UNUserNotificationCenter.current()
+                center.removePendingNotificationRequests(withIdentifiers: [identifier])
+                UserDefaults.standard.setValue("", forKey: "NotificationUUID")
+                return
+            }
+            else {
+                return
+            }
+        }
+        let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
+        let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
+        if useNotification && hasNotification {
+            NotificationForAllow()
+            let notify = NotificationHandler()
+            let notificationUUID = UUID().uuidString
+            notify.sendNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", uuid: notificationUUID, timeInterval: 2 * 60 * 60, isRepeat: true)
+            UserDefaults.standard.setValue(notificationUUID, forKey: "NotificationUUID")
+        }
     }
 }
 
