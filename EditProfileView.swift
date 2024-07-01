@@ -91,10 +91,10 @@ struct EditProfileView: View {
                             }
                     }
                     .padding(.horizontal, geometry.size.width * 0.05)
-                    /*Button(action: NotificationForAllow) {
-                        Text("Test")
+                    Button(action: RemoveAllNotifications) {
+                        Text("移除所有提醒")
+                            .bold()
                     }
-                     */
                     Spacer(minLength: geometry.size.height * 0.4)
                 }
             }
@@ -127,12 +127,18 @@ struct EditProfileView: View {
         notify.sendNotification(title: "记账提醒开启", body: "CashFlow会每两个小时提醒您一次哦", uuid: UUID().uuidString, timeInterval: 5)
     }
     
+    private func RemoveAllNotifications() {
+        let notify = NotificationHandler()
+        notify.cancelAllRepeatingNotifications()
+        UserDefaults.standard.setValue(false, forKey: "UseNotification")
+        useNotification = false
+    }
+    
     private func ToggleUseNotification(to newValue: Bool) {
         UserDefaults.standard.setValue(newValue, forKey: "UseNotification")
         // print("点击Toggle按钮")
         if !newValue {
-            let notify = NotificationHandler()
-            notify.cancelAllRepeatingNotifications()
+            self.RemoveAllNotifications()
         }
         let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
         let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
@@ -140,7 +146,6 @@ struct EditProfileView: View {
             NotificationForAllow()
             let notify = NotificationHandler()
             notify.sendNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", uuid: UUID().uuidString, timeInterval: 2 * 60 * 60, isRepeat: true)
-            notify.sendNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", uuid: UUID().uuidString, timeInterval: 60, isRepeat: true)
         }
     }
 }
