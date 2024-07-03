@@ -14,6 +14,7 @@ import UserNotifications
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
+    @State private var previousScenePhase: ScenePhase?
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: true)],
         animation: .default)
@@ -99,6 +100,9 @@ struct ContentView: View {
                             Spacer()
                         }
                         .onTapGesture {
+                            authenticate()
+                        }
+                        .onAppear() {
                             authenticate()
                         }
                     }
