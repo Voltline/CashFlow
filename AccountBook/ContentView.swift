@@ -14,9 +14,8 @@ import UserNotifications
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
-    @State private var previousScenePhase: ScenePhase?
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: false)],
         animation: .default)
     private var records: FetchedResults<Record>
     @State private var showAddRecordView: Bool = false
