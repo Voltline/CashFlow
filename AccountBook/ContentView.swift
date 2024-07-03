@@ -101,9 +101,6 @@ struct ContentView: View {
                         .onTapGesture {
                             authenticate()
                         }
-                        .onAppear() {
-                            authenticate()
-                        }
                     }
                 }
             }
