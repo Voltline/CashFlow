@@ -50,13 +50,11 @@ struct SettingsView: View {
                     }
                     Divider()
                     Spacer()
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
-                            VStack {
-                                Text("CashFlow基于MIT协议开源")
-                            }
-                            .font(.footnote)
+                    Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
+                        VStack {
+                            Text("CashFlow基于MIT协议开源")
                         }
+                        .font(.footnote)
                     }
                 }
                 .padding(.vertical, geometry.size.height * 0.04)

@@ -26,7 +26,7 @@ struct ContentView: View {
     @State private var useLocked = UserDefaults.standard.bool(forKey: "UseFaceID")
     @State private var selectionTab = 0
     var body: some View {
-        withAnimation(.easeInOut) {
+        withAnimation(.spring) {
             NavigationStack {
                 if (useLocked && !isLocked) || !useLocked {
                     VStack {
@@ -39,14 +39,7 @@ struct ContentView: View {
                             }
                         }
                         else {
-                            HStack {
-                                Text("设置")
-                                    .font(.largeTitle)
-                                    .bold()
-                                    .padding(.top, 20)
-                                Spacer()
-                            }
-                            .padding(.horizontal, 20)
+                            SettingBar()
                         }
                         Divider()
                         NavigationLink(destination: AddRecordView()
@@ -149,14 +142,6 @@ private let itemFormatter: DateFormatter = {
     formatter.timeStyle = .medium
     return formatter
 }()
-
-struct HomeView: View {
-    var body: some View {
-        Text("Home View")
-            .font(.largeTitle)
-            .padding()
-    }
-}
 
 #Preview {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

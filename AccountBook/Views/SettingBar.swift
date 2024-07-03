@@ -2,14 +2,29 @@
 //  SettingBar.swift
 //  AccountBook
 //
-//  Created by 张艺怀 on 2024/7/3.
+//  Created by Voltline on 2024/7/3.
 //
 
 import SwiftUI
 
 struct SettingBar: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            HStack {
+                VStack {
+                    Text("设置")
+                        .font(.largeTitle)
+                        .bold()
+                }
+                .padding(.horizontal, 10)
+                CircularImageView(imageName: "", size: 65, hasShadow: false)
+            }
+            .padding(.trailing, 10)
+            Spacer()
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        //.overlay(Divider(), alignment: .bottom)
     }
 }
 

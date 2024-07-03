@@ -35,6 +35,7 @@ struct CustomNavigationBar: View {
             }
         }
         .padding()
+        //.background(AngularGradient(gradient: Gradient(colors: [Color.purple, Color.orange]), center: .center, startAngle: .degrees(0), endAngle: .degrees(360)))
         .background(Color(.systemBackground))
         //.overlay(Divider(), alignment: .bottom)
         .sheet(isPresented: $showEditProfileView) {
@@ -43,6 +44,7 @@ struct CustomNavigationBar: View {
                     refreshTrigger.toggle()
                 }
         }
+        
     }
 }
 /*
