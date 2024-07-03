@@ -87,47 +87,8 @@ struct EditProfileView: View {
                         }
                         .padding(.horizontal, geometry.size.width * 0.03)
                     }
-                    Divider()
-                    VStack {
-                        HStack {
-                            Text("定时通知")
-                                .font(.title2)
-                            Spacer()
-                            Toggle("", isOn: $useNotification)
-                                .onChange(of: useNotification) { newValue in
-                                    ToggleUseNotification(to: newValue)
-                                }
-                        }
-                        .padding(.horizontal, geometry.size.width * 0.05)
-                        DatePicker(
-                            "选择推送时间",
-                            selection: $notificationTime,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                        .padding(.horizontal, geometry.size.width * 0.05)
-                        .onChange(of: notificationTime) { new in
-                            let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
-                            let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
-                            if useNotification && hasNotification {
-                                setNotificationTime()
-                            }
-                        }
-                        .onAppear() {
-                            notificationTime = createDateFromString(dateString: "\(notifyHour):\(notifyMins)")
-                        }
-                        Button(action: RemoveAllNotifications) {
-                            Text("移除所有提醒")
-                                .bold()
-                                .foregroundColor(Color.red)
-                        }
-                    }
-                    .padding(.vertical, geometry.size.height * 0.01)
-                    /*.padding(.horizontal, geometry.size.width * 0.025)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(Color.gray, lineWidth: 1)
-                            .padding(.horizontal, geometry.size.width * 0.02)
-                    )*/
+                    //Divider()
+                    
                     Spacer(minLength: geometry.size.height * 0.4)
                 }
             }
@@ -144,40 +105,6 @@ struct EditProfileView: View {
         }
     }
     
-    private func createDateFormatter() -> DateFormatter {
-        var dateformatter = DateFormatter()
-        dateformatter.dateFormat = "HH:mm"
-        return dateformatter
-    }
-    
-    private func getHoursAndMinsFromDate(from: Date) -> (Int, Int) {
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH"
-        var hour = Int(dateFormatter.string(from: from))
-        dateFormatter.dateFormat = "mm"
-        var mins = Int(dateFormatter.string(from: from))
-        return (hour ?? 16, mins ?? 0)
-    }
-    
-    private func createDateFromString(dateString: String) -> Date {
-        let dateFormatter = createDateFormatter()
-        return dateFormatter.date(from: dateString) ?? Date()
-    }
-    
-    private func createStringFromDate(date: Date) -> String {
-        let dateFormatter = createDateFormatter()
-        return dateFormatter.string(from: date)
-    }
-    
-    private func setNotificationTime() {
-        let notify = NotificationHandler()
-        notify.cancelAllNotifications()
-        var time = getHoursAndMinsFromDate(from: notificationTime)
-        UserDefaults.standard.setValue(time.0, forKey: "NotificationHour")
-        UserDefaults.standard.setValue(time.1, forKey: "NotificationMins")
-        notify.scheduleDailyNotification(title: "该记账咯", body: "快来记录一下今天的开销吧", hour: time.0, minute: time.1)
-    }
-    
     private func saveImage(image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1) else { return }
         let filename = getDocumentsDirectory().appendingPathComponent("profile.png")
@@ -187,33 +114,6 @@ struct EditProfileView: View {
     private func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
-    }
-    
-    private func NotificationForAllow() {
-        let time = createStringFromDate(date: notificationTime)
-        let notify = NotificationHandler()
-        notify.sendNotification(title: "记账提醒开启", body: "CashFlow会每天\(time)提醒您哦", uuid: UUID().uuidString, timeInterval: 5)
-    }
-    
-    private func RemoveAllNotifications() {
-        let notify = NotificationHandler()
-        notify.cancelAllNotifications()
-        UserDefaults.standard.setValue(false, forKey: "UseNotification")
-        useNotification = false
-    }
-    
-    private func ToggleUseNotification(to newValue: Bool) {
-        UserDefaults.standard.setValue(newValue, forKey: "UseNotification")
-        // print("点击Toggle按钮")
-        if !newValue {
-            self.RemoveAllNotifications()
-        }
-        let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
-        let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
-        if useNotification && hasNotification {
-            NotificationForAllow()
-            setNotificationTime()
-        }
     }
 }
 

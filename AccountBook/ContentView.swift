@@ -24,38 +24,31 @@ struct ContentView: View {
     @StateObject private var userProfile = UserProfile()
     @State private var isLocked = true
     @State private var useLocked = UserDefaults.standard.bool(forKey: "UseFaceID")
-    @State private var hasNotification = UserDefaults.standard.bool(forKey: "hasNotification")
+    @State private var selectionTab = 0
     var body: some View {
-        NavigationStack {
-            if (useLocked && !isLocked) || !useLocked {
-                withAnimation(.spring) {
+        withAnimation(.easeInOut) {
+            NavigationStack {
+                if (useLocked && !isLocked) || !useLocked {
                     VStack {
-                        if refreshTrigger {
-                            CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                        if selectionTab != 2 {
+                            if refreshTrigger {
+                                CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                            }
+                            else {
+                                CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                            }
                         }
                         else {
-                            CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
-                        }
-                        List {
-                            ForEach(records) { record in
-                                NavigationLink {
-                                    ModifyRecordView(record: record)
-                                        .environment(\.managedObjectContext, viewContext)
-                                        .environmentObject(categories);
-                                } label: {
-                                    ItemView(record: record)
-                                }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                    Button(role: .destructive) {
-                                        deleteItems(offsets: IndexSet(integer: records.firstIndex(of: record)!))
-                                    } label: {
-                                        Label("Delete", systemImage: "trash.fill")
-                                    }
-                                }
+                            HStack {
+                                Text("设置")
+                                    .font(.largeTitle)
+                                    .bold()
+                                    .padding(.top, 20)
+                                Spacer()
                             }
-                            //.onDelete(perform: deleteItems)
+                            .padding(.horizontal, 20)
                         }
-                        
+                        Divider()
                         NavigationLink(destination: AddRecordView()
                             .environment(\.managedObjectContext, viewContext)
                             .environmentObject(categories),
@@ -68,52 +61,58 @@ struct ContentView: View {
                             isLocked = true
                         }
                     }
+                    
+                    TabView(selection: $selectionTab) {
+                        HomeView()
+                            .tabItem {
+                                Image(systemName: "house.fill")
+                                Text("主页")
+                            }
+                            .tag(0)
+                        RecordListView()
+                            .tabItem {
+                                Image(systemName: "books.vertical")
+                                Text("记录")
+                            }
+                            .tag(1)
+                        SettingsView()
+                            .tabItem {
+                                Image(systemName: "gear")
+                                Text("设置")
+                            }
+                            .tag(2)
+                    }
                 }
-            }
-            else {
-                GeometryReader { geometry in
-                    VStack {
-                        CircularImageView(imageName: userProfile.icon, size: geometry.size.width * 0.32)
-                            .padding(.top, geometry.size.height * 0.15)
-                        Text(userProfile.username)
-                            .font(.title)
-                            .padding(.top, geometry.size.height * 0.03)
-                        Spacer(minLength: geometry.size.height * 0.3)
-                        HStack {
-                            Spacer()
-                            Image(systemName: "faceid")
-                                .resizable()
-                                .frame(width: geometry.size.height * 0.07, height: geometry.size.height * 0.07)
-                                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                else {
+                    GeometryReader { geometry in
+                        VStack {
+                            CircularImageView(imageName: userProfile.icon, size: geometry.size.width * 0.32)
+                                .padding(.top, geometry.size.height * 0.15)
+                            Text(userProfile.username)
+                                .font(.title)
+                                .padding(.top, geometry.size.height * 0.03)
+                            Spacer(minLength: geometry.size.height * 0.3)
+                            HStack {
+                                Spacer()
+                                Image(systemName: "faceid")
+                                    .resizable()
+                                    .frame(width: geometry.size.height * 0.07, height: geometry.size.height * 0.07)
+                                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                                Spacer()
+                            }
+                            Text("使用 FaceID 验证")
+                                .font(.system(size: geometry.size.width * 0.045))
+                                .padding(.top, geometry.size.height * 0.02)
                             Spacer()
                         }
-                        Text("使用 FaceID 验证")
-                            .font(.system(size: geometry.size.width * 0.045))
-                            .padding(.top, geometry.size.height * 0.02)
-                        Spacer()
-                    }
-                    .onTapGesture {
-                        authenticate()
+                        .onTapGesture {
+                            authenticate()
+                        }
                     }
                 }
             }
-        }
-        .onAppear {
-            authenticate()
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { records[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            .onAppear {
+                authenticate()
             }
         }
     }
@@ -151,6 +150,15 @@ private let itemFormatter: DateFormatter = {
     return formatter
 }()
 
+struct HomeView: View {
+    var body: some View {
+        Text("Home View")
+            .font(.largeTitle)
+            .padding()
+    }
+}
+
 #Preview {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
+
