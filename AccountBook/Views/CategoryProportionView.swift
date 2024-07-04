@@ -49,7 +49,6 @@ struct CategoryProportionView: View {
         var ret = Array(result.values).sorted(by: {
             $0.amount > $1.amount
         })
-        print(ret)
         if ret.isEmpty {
             return [Expense(category: "无", amount: 1, color: Color.gray, ratio: 1)]
         }
@@ -73,6 +72,7 @@ struct CategoryProportionView: View {
                     Spacer()
                 }
                 .foregroundColor(Color.blue)
+                .padding(.top, 6)
                 Divider()
                 HStack {
                     Chart(mergedExpenses) { expense in
@@ -107,7 +107,7 @@ struct CategoryProportionView: View {
                             }
                         }
                         .padding()
-                        .background(Color.black.opacity(0.1))
+                        .background(Color.secondary.opacity(0.2))
                         .cornerRadius(10)
                     }
                 }
@@ -120,12 +120,21 @@ struct CategoryProportionView: View {
                     }
                     .foregroundColor(Color.green)
                     .padding(.vertical, height * 0.009)
-                    if mergedExpenses[0].category == "无" {
-                        Text("无记录")
+                    
+                    VStack {
+                        if mergedExpenses[0].category == "无" {
+                            Text("无记录")
+                                .font(.title2)
+                        }
+                        else {
+                            Text(mergedExpenses[0].category)
+                                .font(.title2)
+                        }
                     }
-                    else {
-                        Text("\(mergedExpenses[0].category)" + String(format: "%.2f", mergedExpenses[0].ratio * 100) +  "%")
-                    }
+                        .frame(width: 63, height: 10)
+                        .padding()
+                        .background(mergedExpenses[0].color.opacity(0.5))
+                        .cornerRadius(20)
                 }
 
             }

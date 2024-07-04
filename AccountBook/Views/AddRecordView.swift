@@ -14,6 +14,12 @@ struct AddRecordView: View {
     @State private var highlightCategory: String = ""
     @State private var accountName: String = ""
     @State private var accountBalance: String = "0"
+    private var accountBalanceCount: Int {
+        return accountBalance.count
+    }
+    private var fontSizeScale: CGFloat {
+        return CGFloat(accountBalanceCount < 7 ? 1.0 : pow(0.93, CGFloat(accountBalanceCount) - 6))
+    }
     @State private var positive: Bool = false
     @State private var isShowingNoZeroDialog = false;
     var body: some View {
@@ -45,8 +51,10 @@ struct AddRecordView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundColor(colorScheme != .dark ? .black : .white)
-                            Text(String(accountBalance))
-                                .font(.system(size: geometry.size.height * 0.08))
+                                .frame(height: geometry.size.height * 0.055 * fontSizeScale)
+                                
+                            Text(accountBalance)
+                                .font(.system(size: geometry.size.height * 0.08 * fontSizeScale))
                                 .foregroundColor(colorScheme != .dark ? .black : .white)
                         }
                         .frame(height: geometry.size.height * 0.05)

@@ -19,6 +19,12 @@ struct ModifyRecordView: View {
     @State private var highlightCategory: String
     @State private var accountName: String
     @State private var accountBalance: String
+    private var accountBalanceCount: Int {
+        return accountBalance.count
+    }
+    private var fontSizeScale: CGFloat {
+        return CGFloat(accountBalanceCount < 7 ? 1.0 : pow(0.93, CGFloat(accountBalanceCount) - 6))
+    }
     @State private var positive: Bool
     @State private var isShowingNoZeroDialog = false;
     
@@ -27,9 +33,9 @@ struct ModifyRecordView: View {
         selectedCategory = record.record_type!
         highlightCategory = record.record_type!
         accountName = record.record_name!
-        var tmp_num = String(record.number)
+        let tmp_num = String(record.number)
         if tmp_num.contains(".") {
-            var str_arr = tmp_num.split(separator: ".")
+            let str_arr = tmp_num.split(separator: ".")
             if Int(str_arr[1]) == 0 {
                 accountBalance = String(str_arr[0])
             }
@@ -71,8 +77,10 @@ struct ModifyRecordView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .foregroundColor(colorScheme != .dark ? .black : .white)
-                            Text(String(accountBalance))
-                                .font(.system(size: geometry.size.height * 0.08))
+                                .frame(height: geometry.size.height * 0.055 * fontSizeScale)
+                                
+                            Text(accountBalance)
+                                .font(.system(size: geometry.size.height * 0.08 * fontSizeScale))
                                 .foregroundColor(colorScheme != .dark ? .black : .white)
                         }
                         .frame(height: geometry.size.height * 0.05)
