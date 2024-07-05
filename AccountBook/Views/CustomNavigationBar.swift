@@ -24,7 +24,9 @@ struct CustomNavigationBar: View {
             Spacer()
             HStack {
                 Button(action: {
-                    showAddRecordView = true
+                    withAnimation {
+                        showAddRecordView = true
+                    }
                     AudioServicesPlaySystemSound(1519)
                 }) {
                     Image(systemName: "plus.circle")
@@ -41,7 +43,9 @@ struct CustomNavigationBar: View {
         .sheet(isPresented: $showEditProfileView) {
             EditProfileView(userProfile: userProfile, refreshTrigger: $refreshTrigger)
                 .onDisappear() {
-                    refreshTrigger.toggle()
+                    withAnimation {
+                        refreshTrigger.toggle()
+                    }
                 }
         }
         

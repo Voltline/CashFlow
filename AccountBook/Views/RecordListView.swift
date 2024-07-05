@@ -7,21 +7,6 @@
 
 import SwiftUI
 
-class mRecords {
-    public var dates: [String] = []
-    public var result: [String: [Record]] = [:]
-    init(_ ds: [String], _ res: [String: [Record]]) {
-        dates = ds
-        result = res
-    }
-    
-    subscript(_ date: String) -> [Record] {
-        get {
-            return result[date]!
-        }
-    }
-}
-
 struct RecordListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
@@ -52,69 +37,70 @@ struct RecordListView: View {
         return result
     }
     @State private var sectionHeaders: Set<String> = []
+    @State private var rotationAngles: [String: Double] = [:]
     
     var body: some View {
-        withAnimation(.easeInOut) {
-            List {
-                ForEach(mergedRecords.keys.sorted(by: { $0 > $1 }), id: \.self) { key in
-                    Section(header: 
-                    VStack {
-                        HStack {
-                            Text(key)
-                                .font(.subheadline)
-                                .bold()
-                            Spacer()
-                            Button() {
+        List {
+            ForEach(mergedRecords.keys.sorted(by: { $0 > $1 }), id: \.self) { key in
+                Section(header:
+                VStack {
+                    HStack {
+                        Text(key)
+                            .font(.subheadline)
+                            .bold()
+                        Spacer()
+                        Button() {
+                            withAnimation(.easeInOut(duration: 0.15)) {
                                 toggleKey(key)
-                            } label: {
-                                if sectionHeaders.contains(key) {
-                                    Image(systemName: "chevron.up")
-                                }
-                                else {
-                                    Image(systemName: "chevron.down")
-                                }
                             }
+                        } label: {
+                            Image(systemName: "chevron.up")
+                                .rotationEffect(.degrees(rotationAngles[key] ?? 0))
                         }
-                    }.padding(.bottom, 6)
-                    ) {
-                        if sectionHeaders.contains(key) {
-                            ForEach(mergedRecords[key]!, id: \.self) { record in
-                                NavigationLink {
-                                    ModifyRecordView(record: record)
-                                        .environment(\.managedObjectContext, viewContext)
-                                        .environmentObject(categories);
+                    }
+                }.padding(.bottom, 6)
+                ) {
+                    if sectionHeaders.contains(key) {
+                        ForEach(mergedRecords[key]!, id: \.self) { record in
+                            NavigationLink {
+                                ModifyRecordView(record: record)
+                                    .environment(\.managedObjectContext, viewContext)
+                                    .environmentObject(categories);
+                            } label: {
+                                ItemView(record: record)
+                            }
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button(role: .destructive) {
+                                    deleteItems(offsets: IndexSet(integer: records.firstIndex(of: record)!))
                                 } label: {
-                                    ItemView(record: record)
-                                }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                    Button(role: .destructive) {
-                                        deleteItems(offsets: IndexSet(integer: records.firstIndex(of: record)!))
-                                    } label: {
-                                        Label("Delete", systemImage: "trash.fill")
-                                    }
+                                    Label("Delete", systemImage: "trash.fill")
                                 }
                             }
                         }
                     }
                 }
             }
-            .onAppear {
-                sectionHeaders = Set(mergedRecords.keys)
-            }
+        }
+        
+        .onAppear {
+            sectionHeaders = Set(mergedRecords.keys)
+            rotationAngles = sectionHeaders.reduce(into: [:]) { $0[$1] = 0 }
         }
     }
     private func toggleKey(_ key: String) {
         if sectionHeaders.contains(key) {
             sectionHeaders.remove(key)
-        }
-        else {
+            rotationAngles[key] = (rotationAngles[key] ?? 0) + 180
+        } else {
             sectionHeaders.insert(key)
+            rotationAngles[key] = (rotationAngles[key] ?? 0) - 180
         }
     }
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { records[$0] }.forEach(viewContext.delete)
-
             do {
                 try viewContext.save()
             } catch {
