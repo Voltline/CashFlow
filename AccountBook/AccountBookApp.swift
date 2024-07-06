@@ -17,22 +17,10 @@ struct AccountBookApp: App {
         WindowGroup {
             ContentView()
                 .onAppear() {
-                    init_use_faceid()
                     init_has_notification()
                     sleep(1)
                 }
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-        }
-    }
-    
-    private func init_use_faceid() {
-        let context = LAContext()
-        var error: NSError?
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            UserDefaults.standard.setValue(false, forKey: "UseFaceID")
-        }
-        else {
-            UserDefaults.standard.setValue(true, forKey: "UseFaceID")
         }
     }
     

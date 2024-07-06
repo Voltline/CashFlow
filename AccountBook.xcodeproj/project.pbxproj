@@ -78,11 +78,13 @@
 				CircularImageView.swift,
 				CustomNavigationBar.swift,
 				CustomNumberPad.swift,
+				DateRecordListView.swift,
 				EditProfileView.swift,
 				HomeView.swift,
 				ImagePicker.swift,
 				ItemView.swift,
 				ModifyRecordView.swift,
+				MultiSelectSlider.swift,
 				RecordListView.swift,
 				SettingBar.swift,
 				SettingsView.swift,
@@ -96,6 +98,7 @@
 				NotificationHandler.swift,
 				Persistence.swift,
 				UserProfile.swift,
+				WeekUtils.swift,
 			);
 			target = B2B9CFB72C0B565600EC4F84 /* AccountBook */;
 		};

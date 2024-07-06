@@ -11,6 +11,7 @@ struct SettingsView: View {
     @State private var useNotification: Bool = UserDefaults.standard.bool(forKey: "UseNotification")
     @State private var notifyHour = UserDefaults.standard.integer(forKey: "NotificationHour")
     @State private var notifyMins = UserDefaults.standard.integer(forKey: "NotificationMins")
+    @State private var useFaceID: Bool = UserDefaults.standard.bool(forKey: "UseFaceID")
     @State private var notificationTime = Date()
     var body: some View {
         NavigationStack {
@@ -49,6 +50,17 @@ struct SettingsView: View {
                             .foregroundColor(Color.red)
                     }
                     Divider()
+                    HStack {
+                        Text("启用生物识别")
+                            .font(.title2)
+                        Spacer()
+                        Toggle("", isOn: $useFaceID)
+                            .onChange(of: useFaceID) { newValue in
+                                useFaceID = newValue
+                                UserDefaults.standard.setValue(newValue, forKey: "UseFaceID")
+                            }
+                    }
+                    .padding(.horizontal, geometry.size.width * 0.05)
                     Spacer()
                     Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
                         VStack {

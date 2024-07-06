@@ -23,12 +23,11 @@ struct ContentView: View {
     @StateObject private var categories = Categories()
     @StateObject private var userProfile = UserProfile()
     @State private var isLocked = true
-    @State private var useLocked = UserDefaults.standard.bool(forKey: "UseFaceID")
     @State private var selectionTab = 0
     var body: some View {
         withAnimation(.spring) {
             NavigationStack {
-                if (useLocked && !isLocked) || !useLocked {
+                if (UserDefaults.standard.bool(forKey: "UseFaceID") && !isLocked) || !UserDefaults.standard.bool(forKey: "UseFaceID") {
                     VStack {
                         if selectionTab != 2 {
                             if refreshTrigger {
@@ -55,26 +54,7 @@ struct ContentView: View {
                         }
                     }
                     
-                    TabView(selection: $selectionTab) {
-                        HomeView()
-                            .tabItem {
-                                Image(systemName: "house.fill")
-                                Text("主页")
-                            }
-                            .tag(0)
-                        RecordListView()
-                            .tabItem {
-                                Image(systemName: "books.vertical")
-                                Text("记录")
-                            }
-                            .tag(1)
-                        SettingsView()
-                            .tabItem {
-                                Image(systemName: "gear")
-                                Text("设置")
-                            }
-                            .tag(2)
-                    }
+                    CustomTabView(selectedTab: $selectionTab)
                 }
                 else {
                     GeometryReader { geometry in
@@ -105,7 +85,9 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                authenticate()
+                if UserDefaults.standard.bool(forKey: "UseFaceID") {
+                    authenticate()
+                }
             }
         }
     }
@@ -114,8 +96,6 @@ struct ContentView: View {
         let context = LAContext()
         var error: NSError?
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            UserDefaults.standard.setValue(true, forKey: "UseFaceID")
-            useLocked = true
             let reason = "CashFlow需要解锁才能使用"
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                 DispatchQueue.main.async {
@@ -128,11 +108,6 @@ struct ContentView: View {
                 }
             }
         }
-        else {
-            UserDefaults.standard.setValue(false, forKey: "UseFaceID")
-            useLocked = false
-            // 无生物识别
-        }
     }
 }
 
@@ -142,6 +117,61 @@ private let itemFormatter: DateFormatter = {
     formatter.timeStyle = .medium
     return formatter
 }()
+
+struct CustomTabView: View {
+    @Binding private var selectedTab: Int
+    init(selectedTab: Binding<Int>) {
+        self._selectedTab = selectedTab
+        
+        // Customize the TabBar appearance
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = UIColor.secondarySystemBackground
+        
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        
+        // Customize the position of the tab bar items
+        let itemAppearance = UITabBarItemAppearance()
+        itemAppearance.normal.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 3)
+        itemAppearance.selected.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 3)
+
+        tabBarAppearance.stackedLayoutAppearance = itemAppearance
+        tabBarAppearance.inlineLayoutAppearance = itemAppearance
+        tabBarAppearance.compactInlineLayoutAppearance = itemAppearance
+    }
+
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            HomeView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "house")
+                        Text("主页")
+                    }
+                }
+                .tag(0)
+            
+            RecordListView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "book")
+                        Text("记录")
+                    }
+                }
+                .tag(1)
+            
+            SettingsView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "gearshape")
+                        Text("设置")
+                    }
+                }
+                .tag(2)
+        }
+    }
+}
 
 #Preview {
     ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

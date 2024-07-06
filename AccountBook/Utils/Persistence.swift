@@ -14,22 +14,16 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-DD HH:mm:SS"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         for i in 0..<5 {
             let newItem = Record(context: viewContext)
             newItem.positive = i % 3 == 0 ? false : true
             newItem.record_type = "食物"
-            newItem.record_date = dateFormatter.date(from: "2023-07-\(10 + i) 16:00:00")
+            newItem.record_date = dateFormatter.date(from: "2024-0\(1 + (i % 2) * i)-\(10 + i) 16:00:00")
             newItem.record_name = "记录" + String(i)
             newItem.number = 123.45
         }
-        let newItem = Record(context: viewContext)
-        newItem.positive = false
-        newItem.record_type = "日常"
-        newItem.record_date = Date()
-        newItem.record_name = "记录5"
-        newItem.number = 123.45
         do {
             try viewContext.save()
         } catch {
