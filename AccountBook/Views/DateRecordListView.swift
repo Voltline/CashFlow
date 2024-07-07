@@ -79,9 +79,9 @@ struct DateRecordListView: View {
                             }
                             Spacer()
                             VStack(alignment: .leading) {
-                                Text("支出: " + String(format: "%.2f", getRecordSum(key).0))
+                                Text("支出: " + String(format: "%.2f", getRecordSum(key).1))
                                     .foregroundColor(Color.red.opacity(0.6))
-                                Text("收入: " + String(format: "%.2f", getRecordSum(key).1))
+                                Text("收入: " + String(format: "%.2f", getRecordSum(key).0))
                                     .foregroundColor(Color.green.opacity(0.8))
                             }
                             .bold()
@@ -150,9 +150,9 @@ struct DateRecordListView: View {
                             .bold()
                             Spacer()
                             VStack(alignment: .leading) {
-                                Text("支出: " + String(format: "%.2f", getRecordSum(key).0))
+                                Text("支出: " + String(format: "%.2f", getRecordSum(key).1))
                                     .foregroundColor(Color.red.opacity(0.6))
-                                Text("收入: " + String(format: "%.2f", getRecordSum(key).1))
+                                Text("收入: " + String(format: "%.2f", getRecordSum(key).0))
                                     .foregroundColor(Color.green.opacity(0.8))
                             }
                             .bold()
