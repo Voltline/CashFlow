@@ -25,6 +25,7 @@ struct CapsuleButton: View {
 
 struct MultiSelectSlider: View {
     @Binding var selectedIndex: Int
+    @Environment(\.colorScheme) var colorScheme
     let options: [String]
 
     var body: some View {
@@ -39,7 +40,7 @@ struct MultiSelectSlider: View {
                     .fill(Color.blue)
                     .frame(width: capsuleWidth, height: capsuleHeight)
                     .offset(x: CGFloat(selectedIndex) * (capsuleWidth + 8))
-                    .animation(.spring(duration: 0.35), value: selectedIndex)
+                    .animation(.spring, value: selectedIndex)
                 
                 HStack(spacing: 8) {
                     ForEach(options.indices, id: \.self) { index in
@@ -50,13 +51,12 @@ struct MultiSelectSlider: View {
                             }
                         }
                         .frame(width: capsuleWidth, height: capsuleHeight)
-                        .background(selectedIndex == index ? Color.clear : Color.primary.opacity(0.1))
+                        .background(selectedIndex == index ? Color.clear : Color.primary.opacity(0.2))
                         .cornerRadius(20)
                     }
                 }
             }
             .padding(padding)
-            //.background(Color(UIColor.secondarySystemBackground))
             .cornerRadius(30)
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
@@ -64,12 +64,11 @@ struct MultiSelectSlider: View {
             )
         }
         .frame(height: 50)
+        .background(colorScheme == .dark ? Color(UIColor.systemBackground) : Color(UIColor.secondarySystemBackground))
     }
 }
 
 #Preview {
     @State var selectedIndex = 0
     MultiSelectSlider(selectedIndex: $selectedIndex, options: ["日", "周", "月", "年"])
-        //.padding()
-        //.previewLayout(.sizeThatFits)
 }

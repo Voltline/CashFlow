@@ -63,11 +63,29 @@ struct DateRecordListView: View {
                 ForEach(mergedRecords.keys.sorted(by: { $0 > $1 }), id: \.self) { key in
                     Section(header:
                     VStack {
-                        HStack {
-                            Text(key)
-                                .font(.subheadline)
+                        HStack(spacing: 8) {
+                            if choice == 0 {
+                                VStack(alignment: .leading) {
+                                    Text(key)
+                                    Text(dayOfWeek(from: key))
+                                }
                                 .bold()
+                                .font(.subheadline)
+                            }
+                            else {
+                                Text(key)
+                                    .bold()
+                                    .font(.subheadline)
+                            }
                             Spacer()
+                            VStack(alignment: .leading) {
+                                Text("支出: " + String(format: "%.2f", getRecordSum(key).0))
+                                    .foregroundColor(Color.red.opacity(0.6))
+                                Text("收入: " + String(format: "%.2f", getRecordSum(key).1))
+                                    .foregroundColor(Color.green.opacity(0.8))
+                            }
+                            .bold()
+                            .font(.subheadline)
                             Button() {
                                 withAnimation(.easeInOut(duration: 0.15)) {
                                     toggleKey(key)
@@ -123,7 +141,7 @@ struct DateRecordListView: View {
                 ForEach(mergedRecordsWeek.keys.sorted(by: { $0 > $1 }), id: \.self) { key in
                     Section(header:
                     VStack {
-                        HStack {
+                        HStack(spacing: 10) {
                             VStack(alignment: .leading) {
                                 Text(String(key.year) + "第\(key.week)周")
                                 Text(datesForWeekOfYear(key) ?? "01.01-01.07")
@@ -131,6 +149,14 @@ struct DateRecordListView: View {
                             .font(.subheadline)
                             .bold()
                             Spacer()
+                            VStack(alignment: .leading) {
+                                Text("支出: " + String(format: "%.2f", getRecordSum(key).0))
+                                    .foregroundColor(Color.red.opacity(0.6))
+                                Text("收入: " + String(format: "%.2f", getRecordSum(key).1))
+                                    .foregroundColor(Color.green.opacity(0.8))
+                            }
+                            .bold()
+                            .font(.subheadline)
                             Button() {
                                 withAnimation(.easeInOut(duration: 0.15)) {
                                     toggleKey(key)
@@ -182,6 +208,35 @@ struct DateRecordListView: View {
             }
         }
     }
+    
+    private func getRecordSum(_ key: String) -> (income: Double, outcome: Double) {
+        var income: Double = 0, outcome: Double = 0
+        let records = mergedRecords[key] ?? []
+        for i in records {
+            if i.positive {
+                income += i.number
+            }
+            else {
+                outcome += i.number
+            }
+        }
+        return (income, outcome)
+    }
+    
+    private func getRecordSum(_ key: weekYear) -> (income: Double, outcome: Double) {
+        var income: Double = 0, outcome: Double = 0
+        let records = mergedRecordsWeek[key] ?? []
+        for i in records {
+            if i.positive {
+                income += i.number
+            }
+            else {
+                outcome += i.number
+            }
+        }
+        return (income, outcome)
+    }
+    
     private func toggleKey(_ key: String) {
         if sectionHeaders.contains(key) {
             sectionHeaders.remove(key)
@@ -220,13 +275,13 @@ struct DateRecordListView: View {
         let df = DateFormatter()
         switch choice {
         case 0:
-            df.dateFormat = "yyyy-MM-dd"
+            df.dateFormat = "yyyy.MM.dd"
         case 2:
-            df.dateFormat = "yyyy-MM"
+            df.dateFormat = "yyyy.MM"
         case 3:
             df.dateFormat = "yyyy"
         default:
-            df.dateFormat = "yyyy-MM-dd"
+            df.dateFormat = "yyyy.MM.dd"
         }
         return df.string(from: date)
    }

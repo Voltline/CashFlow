@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RecordListView: View {
+    @Environment(\.colorScheme) var colorScheme
     @State private var choice: Int = UserDefaults.standard.integer(forKey: "RecordListViewMode")
     var body: some View {
         VStack(spacing: 0) {
@@ -16,6 +17,6 @@ struct RecordListView: View {
                 .padding(.vertical, 12)
             DateRecordListView(choice: $choice)
         }
-        .background(Color(UIColor.secondarySystemBackground))
+        .background(colorScheme == .dark ? Color(UIColor.systemBackground) : Color(UIColor.secondarySystemBackground))
     }
 }

@@ -53,7 +53,6 @@ struct ContentView: View {
                             isLocked = true
                         }
                     }
-                    
                     CustomTabView(selectedTab: $selectionTab)
                 }
                 else {

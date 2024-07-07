@@ -59,6 +59,19 @@ struct CategoryProportionView: View {
         }
         return ret
     }
+    var total: Double {
+        var total: Double = 0
+        for expense in records {
+            let category = expense.record_type ?? "其他"
+            if category == "收入" {
+                continue
+            }
+            let amount = expense.number
+            total += amount
+        }
+        return Double(Int(total))
+    }
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 30)
             .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
@@ -68,8 +81,20 @@ struct CategoryProportionView: View {
             VStack {
                 HStack {
                     Image(systemName:"chart.pie")
-                    Text("账目分类占比")
+                    Text("支出统计")
                     Spacer()
+                    Text("")
+                    HStack(spacing: 1) {
+                        Image(systemName: "yensign")
+                            .font(.subheadline)
+                            //.resizable()
+                            //.scaledToFit()
+                        Text(String(format:"%.2f", total))
+                    }
+                    .frame(width: 55 + (total == 0 ? 0 : log10(total) * 10), height: 6)
+                        .padding()
+                        .background(Color.secondary.opacity(0.2))
+                        .cornerRadius(18)
                 }
                 .foregroundColor(Color.blue)
                 .padding(.top, 6)
@@ -108,7 +133,7 @@ struct CategoryProportionView: View {
                         }
                         .padding()
                         .background(Color.secondary.opacity(0.2))
-                        .cornerRadius(10)
+                        .cornerRadius(15)
                     }
                 }
                 Divider()
@@ -133,8 +158,8 @@ struct CategoryProportionView: View {
                     }
                         .frame(width: 63, height: 10)
                         .padding()
-                        .background(mergedExpenses[0].color.opacity(0.5))
-                        .cornerRadius(20)
+                        .background(mergedExpenses[0].color.opacity(0.2))
+                        .cornerRadius(15)
                 }
 
             }
