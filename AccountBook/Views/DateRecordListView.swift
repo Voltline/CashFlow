@@ -161,6 +161,7 @@ struct DateRecordListView: View {
                             .font(.subheadline)
                             Button() {
                                 withAnimation(.easeInOut(duration: 0.15)) {
+                                    AudioServicesPlaySystemSound(1519)
                                     toggleKey(key)
                                 }
                             } label: {
