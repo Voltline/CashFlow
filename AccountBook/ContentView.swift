@@ -57,26 +57,26 @@ struct ContentView: View {
                 }
                 else {
                     GeometryReader { geometry in
-                        VStack {
-                            CircularImageView(imageName: userProfile.icon, size: geometry.size.width * 0.32)
-                                .padding(.top, geometry.size.height * 0.15)
-                            Text(userProfile.username)
-                                .font(.title)
-                                .padding(.top, geometry.size.height * 0.03)
-                            Spacer(minLength: geometry.size.height * 0.3)
+                        VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
                             HStack {
                                 Spacer()
-                                Image(systemName: "faceid")
-                                    .resizable()
-                                    .frame(width: geometry.size.height * 0.07, height: geometry.size.height * 0.07)
-                                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                                VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
+                                    CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.28)
+                                    Text(userProfile.username)
+                                        .font(.title)
+                                }
                                 Spacer()
                             }
-                            Text("使用 FaceID 验证")
-                                .font(.system(size: geometry.size.width * 0.045))
-                                .padding(.top, geometry.size.height * 0.02)
-                            Spacer()
+                            VStack(alignment: .center, spacing: geometry.size.height * 0.02) {
+                                Image(systemName: "faceid")
+                                    .resizable()
+                                    .frame(width: min(geometry.size.width, geometry.size.height) * 0.098, height: min(geometry.size.width, geometry.size.height) * 0.098)
+                                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                                Text("点击验证")
+                                    .font(.title3)
+                            }
                         }
+                        .padding(.vertical, geometry.size.height * 0.15)
                         .onTapGesture {
                             authenticate()
                         }

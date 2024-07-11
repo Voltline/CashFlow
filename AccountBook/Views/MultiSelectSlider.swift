@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 
 struct CapsuleButton: View {
     let text: String
@@ -46,6 +47,7 @@ struct MultiSelectSlider: View {
                     ForEach(options.indices, id: \.self) { index in
                         CapsuleButton(text: options[index], isSelected: selectedIndex == index) {
                             withAnimation(.spring) {
+                                AudioServicesPlaySystemSound(1519)
                                 selectedIndex = index
                                 UserDefaults.standard.setValue(index, forKey: "RecordListViewMode")
                             }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 
 struct DateRecordListView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -89,6 +90,7 @@ struct DateRecordListView: View {
                             Button() {
                                 withAnimation(.easeInOut(duration: 0.15)) {
                                     toggleKey(key)
+                                    AudioServicesPlaySystemSound(1519)
                                 }
                             } label: {
                                 Image(systemName: "chevron.up")
