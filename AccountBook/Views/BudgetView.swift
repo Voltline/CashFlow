@@ -113,15 +113,6 @@ struct BudgetView: View {
                 .padding(.horizontal, width * 0.04)
                 .padding(.vertical, height * 0.015)
             )
-            .onAppear() {
-                if UserDefaults.standard.double(forKey: "MonthBudget") == 0 {
-                    UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
-                }
-            
-                if UserDefaults.standard.double(forKey: "YearBudget") == 0 {
-                    UserDefaults.standard.setValue(100000, forKey: "YearBudget")
-                }
-            }
     }
     
     func fetchRecords(context: NSManagedObjectContext) -> Double {
