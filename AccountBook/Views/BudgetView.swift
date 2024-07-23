@@ -26,8 +26,6 @@ struct BudgetView: View {
     var width: Double
     var height: Double
     var month: Bool = true
-    @State private var monthbudget = UserDefaults.standard.double(forKey: "MonthBudget")
-    @State private var yearbudget = UserDefaults.standard.double(forKey: "YearBudget")
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
@@ -38,12 +36,12 @@ struct BudgetView: View {
         let total: Double
         if month {
             total = fetchRecords(context: viewContext)
-            let rest = monthbudget - total
-            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)), BudgetTotal(amount: rest > 0 ? rest : monthbudget, origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
+            let rest = Double(UserDefaults.standard.integer(forKey: "MonthBudget")) - total
+            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)), BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "MonthBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
         } else {
             total = fetchRecords(context: viewContext)
-            let rest = yearbudget - total
-            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)), BudgetTotal(amount: rest > 0 ? rest : yearbudget, origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
+            let rest = Double(UserDefaults.standard.integer(forKey: "YearBudget")) - total
+            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)), BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "YearBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
         }
     }
     

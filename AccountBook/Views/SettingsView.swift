@@ -12,8 +12,8 @@ struct SettingsView: View {
     @State private var notifyHour = UserDefaults.standard.integer(forKey: "NotificationHour")
     @State private var notifyMins = UserDefaults.standard.integer(forKey: "NotificationMins")
     @State private var useFaceID: Bool = UserDefaults.standard.bool(forKey: "UseFaceID")
-    @State private var monthBudgetString: String = String(format: "%.0f", UserDefaults.standard.double(forKey: "MonthBudget"))
-    @State private var yearBudgetString: String = String(format: "%.0f", UserDefaults.standard.double(forKey: "YearBudget"))
+    @State private var monthBudgetString: String = String(UserDefaults.standard.integer(forKey: "MonthBudget"))
+    @State private var yearBudgetString: String = String(UserDefaults.standard.integer(forKey: "YearBudget"))
     @State private var notificationTime = Date()
     @Binding var refreshTrigger: Bool
     var body: some View {
@@ -96,10 +96,10 @@ struct SettingsView: View {
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .onChange(of: monthBudgetString) { newValue in
                                     withAnimation {
-                                        if let budget = Double(newValue) {
+                                        if let budget = Int(newValue) {
                                             if budget > 0 {
                                                 UserDefaults.standard.set(budget, forKey: "MonthBudget")
-                                                monthBudgetString = String(format: "%.0f", budget)
+                                                monthBudgetString = String(budget)
                                             }
                                             else {
                                                 UserDefaults.standard.set(3000, forKey: "MonthBudget")
@@ -124,10 +124,10 @@ struct SettingsView: View {
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .onChange(of: yearBudgetString) { newValue in
                                     withAnimation {
-                                        if let budget = Double(newValue) {
+                                        if let budget = Int(newValue) {
                                             if budget > 0 {
                                                 UserDefaults.standard.set(budget, forKey: "YearBudget")
-                                                yearBudgetString = String(format: "%.0f", budget)
+                                                yearBudgetString = String(budget)
                                             }
                                             else {
                                                 UserDefaults.standard.set(100000, forKey: "YearBudget")
