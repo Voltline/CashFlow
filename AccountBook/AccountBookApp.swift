@@ -17,6 +17,12 @@ struct AccountBookApp: App {
         WindowGroup {
             ContentView()
                 .onAppear() {
+                    if UserDefaults.standard.double(forKey: "MonthBudget") == 0 {
+                        UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
+                    }
+                    if UserDefaults.standard.double(forKey: "YearBudget") == 0 {
+                        UserDefaults.standard.setValue(100000, forKey: "YearBudget")
+                    }
                     init_has_notification()
                     sleep(1)
                 }

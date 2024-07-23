@@ -12,64 +12,148 @@ struct SettingsView: View {
     @State private var notifyHour = UserDefaults.standard.integer(forKey: "NotificationHour")
     @State private var notifyMins = UserDefaults.standard.integer(forKey: "NotificationMins")
     @State private var useFaceID: Bool = UserDefaults.standard.bool(forKey: "UseFaceID")
+    @State private var monthBudgetString: String = String(format: "%.0f", UserDefaults.standard.double(forKey: "MonthBudget"))
+    @State private var yearBudgetString: String = String(format: "%.0f", UserDefaults.standard.double(forKey: "YearBudget"))
     @State private var notificationTime = Date()
+    @Binding var refreshTrigger: Bool
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
-                Divider()
-                VStack(spacing: 15) {
-                    HStack {
-                        Text("定时通知")
-                            .font(.title2)
-                        Spacer()
-                        Toggle("", isOn: $useNotification)
-                            .onChange(of: useNotification) { newValue in
-                                ToggleUseNotification(to: newValue)
-                            }
-                    }
-                    .padding(.horizontal, geometry.size.width * 0.05)
-                    DatePicker(
-                        "选择推送时间",
-                        selection: $notificationTime,
-                        displayedComponents: [.hourAndMinute]
-                    )
-                    .padding(.horizontal, geometry.size.width * 0.05)
-                    .onChange(of: notificationTime) { new in
-                        let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
-                        let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
-                        if useNotification && hasNotification {
-                            setNotificationTime()
-                        }
-                    }
-                    .onAppear() {
-                        notificationTime = createDateFromString(dateString: "\(notifyHour):\(notifyMins)")
-                    }
-                    Button(action: RemoveAllNotifications) {
-                        Text("移除所有提醒")
-                            .bold()
-                            .foregroundColor(Color.red)
-                    }
+                ScrollView {
                     Divider()
-                    HStack {
-                        Text("启用生物识别")
-                            .font(.title2)
-                        Spacer()
-                        Toggle("", isOn: $useFaceID)
-                            .onChange(of: useFaceID) { newValue in
-                                useFaceID = newValue
-                                UserDefaults.standard.setValue(newValue, forKey: "UseFaceID")
-                            }
-                    }
-                    .padding(.horizontal, geometry.size.width * 0.05)
-                    Spacer()
-                    Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
-                        VStack {
-                            Text("CashFlow基于MIT协议开源")
+                    VStack(spacing: 18) {
+                        HStack {
+                            Text("定时提醒设置")
+                                .font(.title)
+                                .foregroundStyle(Color.blue)
+                            Spacer()
                         }
-                        .font(.footnote)
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        HStack {
+                            Text("定时通知")
+                                .font(.title2)
+                            Spacer()
+                            Toggle("", isOn: $useNotification)
+                                .onChange(of: useNotification) { newValue in
+                                    ToggleUseNotification(to: newValue)
+                                }
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        DatePicker(
+                            "选择推送时间",
+                            selection: $notificationTime,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        .onChange(of: notificationTime) { new in
+                            let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
+                            let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
+                            if useNotification && hasNotification {
+                                setNotificationTime()
+                            }
+                        }
+                        .onAppear() {
+                            notificationTime = createDateFromString(dateString: "\(notifyHour):\(notifyMins)")
+                        }
+                        Button(action: RemoveAllNotifications) {
+                            Text("移除所有提醒")
+                                .bold()
+                                .foregroundColor(Color.red)
+                        }
+                        Divider()
+                        HStack {
+                            Text("生物识别设置")
+                                .font(.title)
+                                .foregroundStyle(Color.blue)
+                            Spacer()
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        HStack {
+                            Text("启用生物识别")
+                                .font(.title2)
+                            Spacer()
+                            Toggle("", isOn: $useFaceID)
+                                .onChange(of: useFaceID) { newValue in
+                                    useFaceID = newValue
+                                    UserDefaults.standard.setValue(newValue, forKey: "UseFaceID")
+                                }
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        Divider()
+                        HStack {
+                            Text("预算设置")
+                                .font(.title)
+                                .foregroundStyle(Color.blue)
+                            Spacer()
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        HStack {
+                            Text("月度预算")
+                                .font(.title2)
+                            Spacer()
+                            TextField("", text: $monthBudgetString)
+                                .frame(width: geometry.size.width * 0.3)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .onChange(of: monthBudgetString) { newValue in
+                                    withAnimation {
+                                        if let budget = Double(newValue) {
+                                            if budget > 0 {
+                                                UserDefaults.standard.set(budget, forKey: "MonthBudget")
+                                                monthBudgetString = String(format: "%.0f", budget)
+                                            }
+                                            else {
+                                                UserDefaults.standard.set(3000, forKey: "MonthBudget")
+                                                monthBudgetString = String(3000)
+                                            }
+                                        }
+                                        else {
+                                            UserDefaults.standard.set(3000, forKey: "MonthBudget")
+                                            monthBudgetString = String(3000)
+                                        }
+                                        refreshTrigger.toggle()
+                                    }
+                                }
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        HStack {
+                            Text("年度预算")
+                                .font(.title2)
+                            Spacer()
+                            TextField("", text: $yearBudgetString)
+                                .frame(width: geometry.size.width * 0.3)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .onChange(of: yearBudgetString) { newValue in
+                                    withAnimation {
+                                        if let budget = Double(newValue) {
+                                            if budget > 0 {
+                                                UserDefaults.standard.set(budget, forKey: "YearBudget")
+                                                yearBudgetString = String(format: "%.0f", budget)
+                                            }
+                                            else {
+                                                UserDefaults.standard.set(100000, forKey: "YearBudget")
+                                                yearBudgetString = String(100000)
+                                            }
+                                        }
+                                        else {
+                                            UserDefaults.standard.set(100000, forKey: "YearBudget")
+                                            yearBudgetString = String(100000)
+                                        }
+                                        refreshTrigger.toggle()
+                                    }
+                                }
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.05)
+                        Divider()
+                        Spacer()
+                        Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
+                            VStack {
+                                Text("CashFlow基于MIT协议开源")
+                            }
+                            .font(.footnote)
+                        }
                     }
+                    .padding(.vertical, geometry.size.height * 0.04)
                 }
-                .padding(.vertical, geometry.size.height * 0.04)
             }
         }
     }
@@ -137,5 +221,6 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
+    @State var refreshTrigger = false
+    SettingsView(refreshTrigger: $refreshTrigger)
 }

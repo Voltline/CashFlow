@@ -74,6 +74,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AddRecordView.swift,
+				BudgetView.swift,
 				CategoryProportionView.swift,
 				CircularImageView.swift,
 				CustomNavigationBar.swift,

@@ -53,7 +53,7 @@ struct ContentView: View {
                             isLocked = true
                         }
                     }
-                    CustomTabView(selectedTab: $selectionTab)
+                    CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger)
                 }
                 else {
                     GeometryReader { geometry in
@@ -119,8 +119,10 @@ private let itemFormatter: DateFormatter = {
 
 struct CustomTabView: View {
     @Binding private var selectedTab: Int
-    init(selectedTab: Binding<Int>) {
+    @Binding private var refreshTrigger: Bool
+    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>) {
         self._selectedTab = selectedTab
+        self._refreshTrigger = refreshTrigger
         
         // Customize the TabBar appearance
         let tabBarAppearance = UITabBarAppearance()
@@ -142,7 +144,7 @@ struct CustomTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView()
+            HomeView(refreshTrigger: $refreshTrigger)
                 .tabItem {
                     VStack {
                         Image(systemName: "house")
@@ -160,7 +162,7 @@ struct CustomTabView: View {
                 }
                 .tag(1)
             
-            SettingsView()
+            SettingsView(refreshTrigger: $refreshTrigger)
                 .tabItem {
                     VStack {
                         Image(systemName: "gearshape")

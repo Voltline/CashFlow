@@ -91,7 +91,7 @@ struct CategoryProportionView: View {
                             //.scaledToFit()
                         Text(String(format:"%.2f", total))
                     }
-                    .frame(width: 55 + (total == 0 ? 0 : log10(total) * 10), height: 6)
+                    .frame(width: 55 + (total == 0 ? 0 : log10(total) * 8.96), height: 6)
                         .padding()
                         .background(Color.secondary.opacity(0.2))
                         .cornerRadius(18)
@@ -164,7 +164,7 @@ struct CategoryProportionView: View {
 
             }
                 .padding(.horizontal, width * 0.06)
-                .padding(.vertical, height * 0.02)
+                .padding(.vertical, height * 0.01)
             )
     }
 }
