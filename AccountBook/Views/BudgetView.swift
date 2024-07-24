@@ -37,11 +37,13 @@ struct BudgetView: View {
         if month {
             total = fetchRecords(context: viewContext)
             let rest = Double(UserDefaults.standard.integer(forKey: "MonthBudget")) - total
-            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)), BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "MonthBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
+            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)),
+                    BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "MonthBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
         } else {
             total = fetchRecords(context: viewContext)
             let rest = Double(UserDefaults.standard.integer(forKey: "YearBudget")) - total
-            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)), BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "YearBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
+            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)),
+                    BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "YearBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
         }
     }
     
@@ -49,7 +51,7 @@ struct BudgetView: View {
         RoundedRectangle(cornerRadius: 30)
             .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
             .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
-            .frame(width: min(width, height) * 0.46, height: min(width, height) * 0.75) // 设置框的大小
+            .frame(width: width * 0.46, height: min(width, height) * 0.75) // 设置框的大小
             .overlay(
                 VStack {
                     HStack {
@@ -60,12 +62,22 @@ struct BudgetView: View {
                     .foregroundColor(Color.blue)
                     .padding(.top, 6)
                     
-                    HStack {
-                        Text("剩余: " + String(format: "%.2f", total[1].amount))
-                        Spacer()
+                    if total[1].origin_amount >= 0 {
+                        HStack {
+                            Text("剩余: " + String(format: "%.2f", total[1].origin_amount))
+                            Spacer()
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(Color.green.opacity(0.9))
                     }
-                    .font(.subheadline)
-                    .foregroundColor(total[1].amount > 0 ? Color.green.opacity(0.9) : Color.red.opacity(0.9))
+                    else {
+                        HStack {
+                            Text("超支: " + String(format: "%.2f", -total[1].origin_amount))
+                            Spacer()
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(Color.red.opacity(0.9))
+                    }
                     Divider()
                     ZStack {
                         Chart(total) { expense in
@@ -108,8 +120,8 @@ struct BudgetView: View {
                     }
                     .font(.subheadline)
                 }
-                .padding(.horizontal, width * 0.04)
-                .padding(.vertical, height * 0.015)
+                .padding(.horizontal, width * 0.05)
+                .padding(.vertical, height * 0.016)
             )
     }
     

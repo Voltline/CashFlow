@@ -72,6 +72,19 @@ struct CategoryProportionView: View {
         return Double(Int(total))
     }
     
+    var real_total: Double {
+        var total: Double = 0
+        for expense in records {
+            let category = expense.record_type ?? "其他"
+            if category == "收入" {
+                continue
+            }
+            let amount = expense.number
+            total += amount
+        }
+        return total
+    }
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 30)
             .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
@@ -87,9 +100,7 @@ struct CategoryProportionView: View {
                     HStack(spacing: 1) {
                         Image(systemName: "yensign")
                             .font(.subheadline)
-                            //.resizable()
-                            //.scaledToFit()
-                        Text(String(format:"%.2f", total))
+                        Text(String(format:"%.2f", real_total))
                     }
                     .frame(width: 55 + (total == 0 ? 0 : log10(total) * 8.96), height: 6)
                         .padding()
