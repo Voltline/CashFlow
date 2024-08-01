@@ -12,8 +12,6 @@ struct SettingsView: View {
     @State private var notifyHour = UserDefaults.standard.integer(forKey: "NotificationHour")
     @State private var notifyMins = UserDefaults.standard.integer(forKey: "NotificationMins")
     @State private var useFaceID: Bool = UserDefaults.standard.bool(forKey: "UseFaceID")
-    @State private var monthBudgetString: String = String(UserDefaults.standard.integer(forKey: "MonthBudget"))
-    @State private var yearBudgetString: String = String(UserDefaults.standard.integer(forKey: "YearBudget"))
     @State private var notificationTime = Date()
     @Binding var refreshTrigger: Bool
     var body: some View {
@@ -76,70 +74,6 @@ struct SettingsView: View {
                                 .onChange(of: useFaceID) { newValue in
                                     useFaceID = newValue
                                     UserDefaults.standard.setValue(newValue, forKey: "UseFaceID")
-                                }
-                        }
-                        .padding(.horizontal, geometry.size.width * 0.05)
-                        Divider()
-                        HStack {
-                            Text("预算设置")
-                                .font(.title)
-                                .foregroundStyle(Color.blue)
-                            Spacer()
-                        }
-                        .padding(.horizontal, geometry.size.width * 0.05)
-                        HStack {
-                            Text("月度预算")
-                                .font(.title2)
-                            Spacer()
-                            TextField("", text: $monthBudgetString)
-                                .frame(width: geometry.size.width * 0.3)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .onChange(of: monthBudgetString) { newValue in
-                                    withAnimation {
-                                        if let budget = Int(newValue) {
-                                            if budget > 0 {
-                                                UserDefaults.standard.set(budget, forKey: "MonthBudget")
-                                                monthBudgetString = String(budget)
-                                            }
-                                            else {
-                                                UserDefaults.standard.set(3000, forKey: "MonthBudget")
-                                                monthBudgetString = String(3000)
-                                            }
-                                        }
-                                        else {
-                                            UserDefaults.standard.set(3000, forKey: "MonthBudget")
-                                            monthBudgetString = String(3000)
-                                        }
-                                        refreshTrigger.toggle()
-                                    }
-                                }
-                        }
-                        .padding(.horizontal, geometry.size.width * 0.05)
-                        HStack {
-                            Text("年度预算")
-                                .font(.title2)
-                            Spacer()
-                            TextField("", text: $yearBudgetString)
-                                .frame(width: geometry.size.width * 0.3)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .onChange(of: yearBudgetString) { newValue in
-                                    withAnimation {
-                                        if let budget = Int(newValue) {
-                                            if budget > 0 {
-                                                UserDefaults.standard.set(budget, forKey: "YearBudget")
-                                                yearBudgetString = String(budget)
-                                            }
-                                            else {
-                                                UserDefaults.standard.set(100000, forKey: "YearBudget")
-                                                yearBudgetString = String(100000)
-                                            }
-                                        }
-                                        else {
-                                            UserDefaults.standard.set(100000, forKey: "YearBudget")
-                                            yearBudgetString = String(100000)
-                                        }
-                                        refreshTrigger.toggle()
-                                    }
                                 }
                         }
                         .padding(.horizontal, geometry.size.width * 0.05)

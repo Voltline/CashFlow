@@ -26,11 +26,22 @@ struct BudgetView: View {
     var width: Double
     var height: Double
     var month: Bool = true
+    @State private var budget_text: String = ""
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
+    @State private var showAlert: Bool = false
+    
+    var description: String {
+        if month {
+            return "月度预算"
+        }
+        else {
+            return "年度预算"
+        }
+    }
     
     var total: [BudgetTotal] {
         let total: Double
@@ -99,7 +110,7 @@ struct BudgetView: View {
                             Text(String(format: "%.0f", total[1].origin_amount * 100 / (month ? UserDefaults.standard.double(forKey: "MonthBudget") : UserDefaults.standard.double(forKey: "YearBudget"))) + "%")
                                 .font(.subheadline)
                         }
-
+                        
                     }
                     Divider()
                     VStack(alignment: .leading) {
@@ -120,9 +131,42 @@ struct BudgetView: View {
                     }
                     .font(.subheadline)
                 }
-                .padding(.horizontal, width * 0.05)
-                .padding(.vertical, height * 0.016)
+                    .padding(.horizontal, width * 0.05)
+                    .padding(.vertical, height * 0.016)
             )
+            .onTapGesture {
+                budget_text = ""
+                showAlert.toggle()
+            }
+            .alert(description, isPresented: $showAlert) {
+                TextField("输入您的预算(如3000)", text: $budget_text)
+                Button(role: .cancel) {
+                    showAlert.toggle()
+                } label: {
+                    Text("取消")
+                }
+                Button() {
+                    if let new_budget = Double(budget_text) {
+                        if month {
+                            UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
+                        }
+                        else {
+                            UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
+                        }
+                    }
+                    else {
+                        if month {
+                            UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
+                        }
+                        else {
+                            UserDefaults.standard.setValue(100000, forKey: "YearBudget")
+                        }
+                    }
+                    showAlert.toggle()
+                } label: {
+                    Text("确认")
+                }
+            }
     }
     
     func fetchRecords(context: NSManagedObjectContext) -> Double {
