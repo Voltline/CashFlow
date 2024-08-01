@@ -32,7 +32,7 @@ struct BudgetView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
-    @State private var showAlert: Bool = false
+    @Binding var showAlert: Bool
     
     var description: String {
         if month {
@@ -135,8 +135,10 @@ struct BudgetView: View {
                     .padding(.vertical, height * 0.016)
             )
             .onTapGesture {
-                budget_text = ""
-                showAlert.toggle()
+                withAnimation {
+                    budget_text = ""
+                    showAlert.toggle()
+                }
             }
             .alert(description, isPresented: $showAlert) {
                 TextField("输入您的预算(如3000)", text: $budget_text)
@@ -146,23 +148,25 @@ struct BudgetView: View {
                     Text("取消")
                 }
                 Button() {
-                    if let new_budget = Double(budget_text) {
-                        if month {
-                            UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
+                    withAnimation {
+                        if let new_budget = Double(budget_text) {
+                            if month {
+                                UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
+                            }
+                            else {
+                                UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
+                            }
                         }
                         else {
-                            UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
+                            if month {
+                                UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
+                            }
+                            else {
+                                UserDefaults.standard.setValue(100000, forKey: "YearBudget")
+                            }
                         }
+                        showAlert.toggle()
                     }
-                    else {
-                        if month {
-                            UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
-                        }
-                        else {
-                            UserDefaults.standard.setValue(100000, forKey: "YearBudget")
-                        }
-                    }
-                    showAlert.toggle()
                 } label: {
                     Text("确认")
                 }
@@ -199,10 +203,11 @@ struct BudgetView: View {
 }
 
 #Preview {
+    @Previewable @State var showAlert = false
     GeometryReader { geometry in
         HStack(spacing: geometry.size.width * 0.015) {
-            BudgetView(width: geometry.size.width, height: geometry.size.height, month: false)
-            BudgetView(width: geometry.size.width, height: geometry.size.height)
+            BudgetView(width: geometry.size.width, height: geometry.size.height, month: false, showAlert: $showAlert)
+            BudgetView(width: geometry.size.width, height: geometry.size.height, showAlert: $showAlert)
         }
         .padding(.horizontal, geometry.size.width * 0.0125)
     }
