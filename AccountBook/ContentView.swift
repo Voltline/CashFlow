@@ -36,17 +36,14 @@ struct ContentView: View {
                             else {
                                 CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
                             }
+                            Divider()
+                            NavigationLink(destination: AddRecordView()
+                                .environment(\.managedObjectContext, viewContext)
+                                .environmentObject(categories),
+                                           isActive: $showAddRecordView) {
+                                EmptyView()
+                            }.hidden()
                         }
-                        else {
-                            SettingBar()
-                        }
-                        Divider()
-                        NavigationLink(destination: AddRecordView()
-                            .environment(\.managedObjectContext, viewContext)
-                            .environmentObject(categories),
-                                       isActive: $showAddRecordView) {
-                            EmptyView()
-                        }.hidden()
                     }
                     .onChange(of: scenePhase) { newPhase in
                         if newPhase == .background {
