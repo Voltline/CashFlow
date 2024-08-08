@@ -11,6 +11,8 @@ import AudioToolbox
 import LocalAuthentication
 import UserNotifications
 
+let version = "1.2.38.0809"
+
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
@@ -28,8 +30,8 @@ struct ContentView: View {
         withAnimation(.spring) {
             NavigationStack {
                 if (UserDefaults.standard.bool(forKey: "UseFaceID") && !isLocked) || !UserDefaults.standard.bool(forKey: "UseFaceID") {
-                    VStack {
-                        if selectionTab != 2 {
+                    if selectionTab != 2 {
+                        VStack {
                             if refreshTrigger {
                                 CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
                             }
@@ -44,13 +46,16 @@ struct ContentView: View {
                                 EmptyView()
                             }.hidden()
                         }
-                    }
-                    .onChange(of: scenePhase) { newPhase in
-                        if newPhase == .background {
-                            isLocked = true
+                        .onChange(of: scenePhase) { newPhase in
+                            if newPhase == .background {
+                                isLocked = true
+                            }
                         }
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger)
                     }
-                    CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger)
+                    else {
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger)
+                    }
                 }
                 else {
                     GeometryReader { geometry in
@@ -114,6 +119,7 @@ private let itemFormatter: DateFormatter = {
     return formatter
 }()
 
+
 struct CustomTabView: View {
     @Binding private var selectedTab: Int
     @Binding private var refreshTrigger: Bool
@@ -140,33 +146,35 @@ struct CustomTabView: View {
     }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            HomeView(refreshTrigger: $refreshTrigger)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "house")
-                        Text("主页")
+        withAnimation(.spring) {
+            TabView(selection: $selectedTab) {
+                HomeView(refreshTrigger: $refreshTrigger)
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "house")
+                            Text("主页")
+                        }
                     }
-                }
-                .tag(0)
-            
-            RecordListView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "book")
-                        Text("记录")
+                    .tag(0)
+                
+                RecordListView()
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "book")
+                            Text("记录")
+                        }
                     }
-                }
-                .tag(1)
-            
-            SettingsView(refreshTrigger: $refreshTrigger)
-                .tabItem {
-                    VStack {
-                        Image(systemName: "gearshape")
-                        Text("设置")
+                    .tag(1)
+                
+                SettingsView(refreshTrigger: $refreshTrigger)
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "gearshape")
+                            Text("设置")
+                        }
                     }
-                }
-                .tag(2)
+                    .tag(2)
+            }
         }
     }
 }
