@@ -11,7 +11,7 @@ import AudioToolbox
 import LocalAuthentication
 import UserNotifications
 
-let version = "1.2.38.0809"
+let version = "1.2.39.0809"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
