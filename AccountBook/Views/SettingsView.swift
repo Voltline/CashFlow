@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State private var notificationTime = Date()
     @State private var showLicense = false
     @Binding var refreshTrigger: Bool
+    @State private var ui = UserDefaults.standard.integer(forKey: "DefaultView") == 1 ? "记录" : "主页"
     private let license = ""
     var body: some View {
         NavigationStack {
@@ -68,6 +69,27 @@ struct SettingsView: View {
                         } header: {
                         } footer: {
                             Text("设置是否启用生物识别解锁")
+                        }
+                        
+                        Section {
+                            HStack {
+                                Text("启动时默认转到")
+                                Spacer()
+                                Menu(ui) {
+                                    Button("主页", action: {
+                                        UserDefaults.standard.set(0, forKey: "DefaultView")
+                                        ui = "主页"
+                                    })
+                                    Button("记录", action: {
+                                        UserDefaults.standard.set(1, forKey: "DefaultView")
+                                        ui = "记录"
+                                    })
+
+                                }
+                            }
+                        } header: {
+                        } footer: {
+                            Text("设置您启动时的默认界面")
                         }
                         
                         Section {

@@ -25,7 +25,7 @@ struct ContentView: View {
     @StateObject private var categories = Categories()
     @StateObject private var userProfile = UserProfile()
     @State private var isLocked = true
-    @State private var selectionTab = 0
+    @State private var selectionTab = UserDefaults.standard.integer(forKey: "DefaultView")
     var body: some View {
         withAnimation(.spring) {
             NavigationStack {

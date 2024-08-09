@@ -87,7 +87,6 @@
 				ModifyRecordView.swift,
 				MultiSelectSlider.swift,
 				RecordListView.swift,
-				SettingBar.swift,
 				SettingsView.swift,
 			);
 			target = B2B9CFB72C0B565600EC4F84 /* AccountBook */;
