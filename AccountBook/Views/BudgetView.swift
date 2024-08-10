@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 import CoreData
+import SwiftUICharts
 
 struct BudgetTotal: Identifiable {
     var id = UUID()
@@ -32,7 +33,6 @@ struct BudgetView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
-    @Binding var showAlert: Bool
     
     var description: String {
         if month {
@@ -58,7 +58,32 @@ struct BudgetView: View {
         }
     }
     
+    var budgetData: [Double] {
+        return [total[0].amount, total[1].amount]
+    }
+    
     var body: some View {
+        if month {
+            PieChartView(data: budgetData, title: description, legend: "预算: " + String(format: "%.0f", UserDefaults.standard.double(forKey: "MonthBudget")) + "\n" +
+                         "支出: " + String(format: "%.2f", total[0].origin_amount), style: ChartStyle(
+                backgroundColor: Color(hexString: "#36534D"), //3B5147, 313D34
+                accentColor: Color(hexString: "#FFD683"),
+                secondGradientColor: Color(hexString: "#FFCA04"),
+                textColor: Color.white,
+                legendTextColor: Color(hexString: "#D2E5E1"),
+                dropShadowColor: Color.gray.opacity(0.4)))
+        } else {
+            PieChartView(data: budgetData, title: description, legend: "预算: " + String(format: "%.0f", UserDefaults.standard.double(forKey: "YearBudget")) + "\n" +
+                         "支出: " + String(format: "%.2f", total[0].origin_amount), style: ChartStyle(
+                backgroundColor: Color(hexString: "#39334D"),
+                accentColor: Color(hexString: "#FF8A21"),
+                secondGradientColor: Colors.GradientPurple,
+                textColor: Color.white,
+                legendTextColor: Color(hexString: "#D2E5E1"),
+                dropShadowColor: Color.gray.opacity(0.3))
+            )
+        }
+        /*
         RoundedRectangle(cornerRadius: 30)
             .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
             .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
@@ -90,6 +115,7 @@ struct BudgetView: View {
                         .foregroundColor(Color.red.opacity(0.9))
                     }
                     Divider()
+                    PieChartView(data: [8,23,54,32], title: "Title", legend: "Legendary")
                     ZStack {
                         Chart(total) { expense in
                             SectorMark(
@@ -134,43 +160,8 @@ struct BudgetView: View {
                     .padding(.horizontal, width * 0.05)
                     .padding(.vertical, height * 0.016)
             )
-            .onTapGesture {
-                withAnimation {
-                    budget_text = ""
-                    showAlert.toggle()
-                }
-            }
-            .alert(description, isPresented: $showAlert) {
-                TextField("输入您的预算(如3000)", text: $budget_text)
-                Button(role: .cancel) {
-                    showAlert.toggle()
-                } label: {
-                    Text("取消")
-                }
-                Button() {
-                    withAnimation {
-                        if let new_budget = Double(budget_text) {
-                            if month {
-                                UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
-                            }
-                            else {
-                                UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
-                            }
-                        }
-                        else {
-                            if month {
-                                UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
-                            }
-                            else {
-                                UserDefaults.standard.setValue(100000, forKey: "YearBudget")
-                            }
-                        }
-                        showAlert.toggle()
-                    }
-                } label: {
-                    Text("确认")
-                }
-            }
+
+         */
     }
     
     func fetchRecords(context: NSManagedObjectContext) -> Double {
@@ -203,12 +194,11 @@ struct BudgetView: View {
 }
 
 #Preview {
-    @Previewable @State var showAlert = false
     GeometryReader { geometry in
-        HStack(spacing: geometry.size.width * 0.015) {
-            BudgetView(width: geometry.size.width, height: geometry.size.height, month: false, showAlert: $showAlert)
-            BudgetView(width: geometry.size.width, height: geometry.size.height, showAlert: $showAlert)
+        HStack(spacing: geometry.size.width * 0.03) {
+            BudgetView(width: geometry.size.width, height: geometry.size.height, month: false)
+            BudgetView(width: geometry.size.width, height: geometry.size.height)
         }
-        .padding(.horizontal, geometry.size.width * 0.0125)
+        .padding(.horizontal, geometry.size.width * 0.024)
     }
 }

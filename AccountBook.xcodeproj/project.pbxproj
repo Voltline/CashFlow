@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = B28D36E82C6742DA00C16CE5 /* SwiftUICharts */; };
 		B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */; };
 		B2B9CFBC2C0B565600EC4F84 /* AccountBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */; };
 		B2B9CFBE2C0B565600EC4F84 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFBD2C0B565600EC4F84 /* ContentView.swift */; };
@@ -114,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +297,9 @@
 				Base,
 			);
 			mainGroup = B2B9CFAF2C0B565600EC4F84;
+			packageReferences = (
+				B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */,
+			);
 			productRefGroup = B2B9CFB92C0B565600EC4F84 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -519,7 +524,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -554,7 +559,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -680,6 +685,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppPear/ChartView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B28D36E82C6742DA00C16CE5 /* SwiftUICharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */;
+			productName = SwiftUICharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */ = {

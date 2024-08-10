@@ -17,7 +17,7 @@ struct HomeView: View {
                 Color(UIColor.secondarySystemBackground)
                                     .edgesIgnoringSafeArea(.all)
                 GeometryReader { geometry in
-                    VStack(spacing: 10) {
+                    VStack(spacing: 20) {
                         ScrollView {
                             HStack {
                                 Text("")
@@ -28,19 +28,19 @@ struct HomeView: View {
                             .padding(.horizontal, geometry.size.width * 0.032)
                             HStack(spacing: geometry.size.width * 0.015) {
                                 if refreshTrigger {
-                                    BudgetView(width: geometry.size.width, height: geometry.size.height, month: false, showAlert: $showAlert)
-                                    BudgetView(width: geometry.size.width, height: geometry.size.height, showAlert: $showAlert)
+                                    BudgetView(width: geometry.size.width, height: geometry.size.height, month: false)
+                                    BudgetView(width: geometry.size.width, height: geometry.size.height)
                                 }
                                 else {
-                                    BudgetView(width: geometry.size.width, height: geometry.size.height, month: false, showAlert: $showAlert)
-                                    BudgetView(width: geometry.size.width, height: geometry.size.height, showAlert: $showAlert)
+                                    BudgetView(width: geometry.size.width, height: geometry.size.height, month: false)
+                                    BudgetView(width: geometry.size.width, height: geometry.size.height)
                                 }
                             }
                             if UIDevice.current.userInterfaceIdiom == .phone && showAlert {
                             }
                             else {
                                 CategoryProportionView(width: geometry.size.width, height: geometry.size.height)
-
+                                    .padding(.top, geometry.size.height * 0.01)
                             }
                         }
                     }

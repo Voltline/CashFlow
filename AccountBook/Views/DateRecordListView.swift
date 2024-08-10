@@ -121,8 +121,8 @@ struct DateRecordListView: View {
                     }
                 }
             }
-            .onChange(of: choice) {
-                if choice != 1 {
+            .onChange(of: choice) { newChoice in
+                if newChoice != 1 {
                     sectionHeaders = Set(mergedRecords.keys)
                     rotationAngles = sectionHeaders.reduce(into: [:]) { $0[$1] = 0 }
                 }
@@ -193,8 +193,8 @@ struct DateRecordListView: View {
                     }
                 }
             }
-            .onChange(of: choice) {
-                if choice != 1 {
+            .onChange(of: choice) { newChoice in
+                if newChoice != 1 {
                     sectionHeaders = Set(mergedRecords.keys)
                     rotationAngles = sectionHeaders.reduce(into: [:]) { $0[$1] = 0 }
                 }

@@ -15,150 +15,210 @@ struct SettingsView: View {
     @State private var notificationTime = Date()
     @State private var showLicense = false
     @Binding var refreshTrigger: Bool
+    @State var showMonthAlert: Bool = false
+    @State var showYearAlert: Bool = false
     @State private var ui = UserDefaults.standard.integer(forKey: "DefaultView") == 1 ? "记录" : "主页"
     private let license = ""
+    @State private var budget_text = ""
     var body: some View {
         NavigationStack {
+            HStack {
+                Text("设置")
+            }
             withAnimation(.spring) {
-                NavigationView {
-                    List {
-                        Section {
-                            HStack {
-                                Text("定时通知")
-                                Spacer()
-                                Toggle("", isOn: $useNotification)
-                                    .onChange(of: useNotification) { newValue in
-                                        ToggleUseNotification(to: newValue)
-                                    }
-                            }
-                            DatePicker(
-                                "选择推送时间",
-                                selection: $notificationTime,
-                                displayedComponents: [.hourAndMinute]
-                            )
-                            .onChange(of: notificationTime) { new in
-                                let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
-                                let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
-                                if useNotification && hasNotification {
-                                    setNotificationTime()
-                                }
-                            }
-                            .onAppear() {
-                                notificationTime = createDateFromString(dateString: "\(notifyHour):\(notifyMins)")
-                            }
-                            Button(action: RemoveAllNotifications) {
-                                Text("移除所有提醒")
-                                    .bold()
-                                    .foregroundColor(Color.red)
-                            }
-                        } header: {
-                        } footer: {
-                            Text("设置向您发送记账提醒的时间")
-                        }
-                        
-                        Section {
-                            HStack {
-                                Text("启用生物识别")
-                                Spacer()
-                                Toggle("", isOn: $useFaceID)
-                                    .onChange(of: useFaceID) { newValue in
-                                        useFaceID = newValue
-                                        UserDefaults.standard.setValue(newValue, forKey: "UseFaceID")
-                                    }
-                            }
-                        } header: {
-                        } footer: {
-                            Text("设置是否启用生物识别解锁")
-                        }
-                        
-                        Section {
-                            HStack {
-                                Text("启动时默认转到")
-                                Spacer()
-                                Menu(ui) {
-                                    Button("主页", action: {
-                                        UserDefaults.standard.set(0, forKey: "DefaultView")
-                                        ui = "主页"
-                                    })
-                                    Button("记录", action: {
-                                        UserDefaults.standard.set(1, forKey: "DefaultView")
-                                        ui = "记录"
-                                    })
-
-                                }
-                            }
-                        } header: {
-                        } footer: {
-                            Text("设置您启动时的默认界面")
-                        }
-                        
-                        Section {
-                            HStack {
-                                Text("月度预算")
-                                Spacer()
-                                HStack(spacing: 2) {
-                                    Image(systemName: "yensign")
-                                        .font(.caption)
-                                    Text(String(UserDefaults.standard.integer(forKey: "MonthBudget")))
-                                }
-                            }
-                            HStack {
-                                Text("年度预算")
-                                Spacer()
-                                HStack(spacing: 2) {
-                                    Image(systemName: "yensign")
-                                        .font(.caption)
-                                    Text(String(UserDefaults.standard.integer(forKey: "YearBudget")))
-                                }
-                            }
-                        } header: {
-                        } footer: {
-                            Text("查看您当前的预算设置")
-                        }
-                        
-                        Section {
-                            Button(action: {
-                                showLicense.toggle()
-                            }) {
-                                Text("开源许可证")
-                                    .foregroundColor(Color.blue)
-                            }
-                            Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
-                                    Text("GitHub页面")
-                            }
-                        } header: {
-                        } footer: {
-                            Text("CashFlow基于MIT协议开源")
-                        }
-                        
-                        Section {
-                            Text("CashFlow版本: " + version)
-                                .font(.footnote)
-                                .foregroundStyle(Color.secondary)
-                        }
-                    }
-                    .listStyle(InsetGroupedListStyle())
-                    .navigationTitle("设置")
-                    .sheet(isPresented: $showLicense) {
+                List {
+                    Section {
                         HStack {
-                            Button(action: {
-                                showLicense = false
-                            }) {
-                                Image(systemName: "chevron.left")
-                                Text("返回")
-                            }
-                            .foregroundStyle(Color.blue)
+                            Text("定时通知")
                             Spacer()
+                            Toggle("", isOn: $useNotification)
+                                .onChange(of: useNotification) { newValue in
+                                    ToggleUseNotification(to: newValue)
+                                }
                         }
-                        .padding(.top, 20)
-                        .padding(.leading, 20)
-                        AsyncTermsAndConditionsView()
-                        .padding(.top, 15)
-                        .padding(.bottom, 30)
-                        .padding(.horizontal, 30)
+                        DatePicker(
+                            "选择推送时间",
+                            selection: $notificationTime,
+                            displayedComponents: [.hourAndMinute]
+                        )
+                        .onChange(of: notificationTime) { new in
+                            let useNotification = UserDefaults.standard.bool(forKey: "UseNotification")
+                            let hasNotification = UserDefaults.standard.bool(forKey: "HasNotification")
+                            if useNotification && hasNotification {
+                                setNotificationTime()
+                            }
+                        }
+                        .onAppear() {
+                            notificationTime = createDateFromString(dateString: "\(notifyHour):\(notifyMins)")
+                        }
+                        Button(action: RemoveAllNotifications) {
+                            Text("移除所有提醒")
+                                .bold()
+                                .foregroundColor(Color.red)
+                        }
+                    } header: {
+                    } footer: {
+                        Text("设置向您发送记账提醒的时间")
+                    }
+                    
+                    Section {
+                        HStack {
+                            Text("启用生物识别")
+                            Spacer()
+                            Toggle("", isOn: $useFaceID)
+                                .onChange(of: useFaceID) { newValue in
+                                    useFaceID = newValue
+                                    UserDefaults.standard.setValue(newValue, forKey: "UseFaceID")
+                                }
+                        }
+                    } header: {
+                    } footer: {
+                        Text("设置是否启用生物识别解锁")
+                    }
+                    
+                    Section {
+                        HStack {
+                            Text("启动时默认转到")
+                            Spacer()
+                            Menu(ui) {
+                                Button("主页", action: {
+                                    UserDefaults.standard.set(0, forKey: "DefaultView")
+                                    ui = "主页"
+                                })
+                                Button("记录", action: {
+                                    UserDefaults.standard.set(1, forKey: "DefaultView")
+                                    ui = "记录"
+                                })
+
+                            }
+                        }
+                    } header: {
+                    } footer: {
+                        Text("设置您启动时的默认界面")
+                    }
+                    
+                    Section {
+                        HStack {
+                            Text("月度预算")
+                            Spacer()
+                            HStack(spacing: 2) {
+                                Image(systemName: "yensign")
+                                    .font(.caption)
+                                Text(String(UserDefaults.standard.integer(forKey: "MonthBudget")))
+                            }
+                        }
+                        .onTapGesture {
+                            withAnimation {
+                                budget_text = ""
+                                showMonthAlert.toggle()
+                            }
+                        }
+                        
+                        HStack {
+                            Text("年度预算")
+                            Spacer()
+                            HStack(spacing: 2) {
+                                Image(systemName: "yensign")
+                                    .font(.caption)
+                                Text(String(UserDefaults.standard.integer(forKey: "YearBudget")))
+                            }
+                        }
+                        .onTapGesture {
+                            withAnimation {
+                                budget_text = ""
+                                showYearAlert.toggle()
+                            }
+                        }
+                        .alert("月度预算", isPresented: $showMonthAlert) {
+                            TextField("输入您的预算", text: $budget_text)
+                            Button(role: .cancel) {
+                                showMonthAlert.toggle()
+                            } label: {
+                                Text("取消")
+                            }
+                            Button() {
+                                withAnimation {
+                                    if let new_budget = Double(budget_text) {
+                                        UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
+                                    }
+                                    else {
+                                        UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
+                                    }
+                                    showMonthAlert.toggle()
+                                }
+                            } label: {
+                                Text("确认")
+                            }
+                        }
+                        .alert("年度预算", isPresented: $showYearAlert) {
+                            TextField("输入您的预算", text: $budget_text)
+                            Button(role: .cancel) {
+                                showYearAlert.toggle()
+                            } label: {
+                                Text("取消")
+                            }
+                            Button() {
+                                withAnimation {
+                                    if let new_budget = Double(budget_text) {
+                                        UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
+                                    }
+                                    else {
+                                        UserDefaults.standard.setValue(100000, forKey: "YearBudget")
+                                    }
+                                    showYearAlert.toggle()
+                                }
+                            } label: {
+                                Text("确认")
+                            }
+                        }
+                        
+                    } header: {
+                    } footer: {
+                        Text("查看您当前的预算设置，点击预算数字可以设定预算额度")
+                    }
+                    
+                    Section {
+                        Button(action: {
+                            showLicense.toggle()
+                        }) {
+                            Text("开源许可证")
+                                .foregroundColor(Color.blue)
+                        }
+                        Link(destination: URL(string: "https://github.com/Voltline/CashFlow")!) {
+                                Text("GitHub页面")
+                        }
+                    } header: {
+                    } footer: {
+                        Text("CashFlow基于MIT协议开源")
+                    }
+                    
+                    Section {
+                        Text("CashFlow版本: " + version)
+                            .font(.footnote)
+                            .foregroundStyle(Color.secondary)
                     }
                 }
+                .listStyle(InsetGroupedListStyle())
+                .sheet(isPresented: $showLicense) {
+                    HStack {
+                        Button(action: {
+                            showLicense = false
+                        }) {
+                            Image(systemName: "chevron.left")
+                            Text("返回")
+                        }
+                        .foregroundStyle(Color.blue)
+                        Spacer()
+                    }
+                    .padding(.top, 20)
+                    .padding(.leading, 20)
+                    AsyncTermsAndConditionsView()
+                    .padding(.top, 15)
+                    .padding(.bottom, 30)
+                    .padding(.horizontal, 30)
+                }
             }
+            //.navigationTitle("设置")
         }
     }
     
