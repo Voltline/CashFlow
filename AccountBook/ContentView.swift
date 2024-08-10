@@ -11,7 +11,7 @@ import AudioToolbox
 import LocalAuthentication
 import UserNotifications
 
-let version = "1.2.39.0809"
+let version = "1.2.40.0810"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -63,12 +63,39 @@ struct ContentView: View {
                             HStack {
                                 Spacer()
                                 VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
-                                    CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.28)
+                                    CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38)
                                     Text(userProfile.username)
                                         .font(.title)
+                                        .bold()
+                                        .foregroundStyle(Color.white)
                                 }
                                 Spacer()
                             }
+                            
+                            switch (getBiometryType()) {
+                            case .faceID:
+                                PrimaryButton(image: "faceid", text: "使用Face ID验证")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            case .touchID:
+                                PrimaryButton(image: "touchid", text: "使用Touch ID验证")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            case .opticID:
+                                PrimaryButton(image: "opticid", text: "使用Optic ID验证")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            default:
+                                PrimaryButton(image: "faceid", text: "使用FaceID登录")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            }
+
+                            
                             VStack(alignment: .center, spacing: geometry.size.height * 0.02) {
                                 Image(systemName: "faceid")
                                     .resizable()
@@ -83,6 +110,8 @@ struct ContentView: View {
                             authenticate()
                         }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(LinearGradient(colors: [.blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
                 }
             }
             .onAppear {
@@ -91,6 +120,12 @@ struct ContentView: View {
                 }
             }
         }
+    }
+    
+    private func getBiometryType() -> LABiometryType {
+         let context = LAContext()
+         let canEvaluatePolicy = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+         return context.biometryType
     }
     
     private func authenticate() {
@@ -119,6 +154,26 @@ private let itemFormatter: DateFormatter = {
     return formatter
 }()
 
+struct PrimaryButton: View {
+    var image: String?
+    var showImage = true
+    var text: String
+    
+    var body: some View {
+        HStack {
+            if showImage {
+                Image(systemName: image ?? "person.fill")
+            }
+            
+            Text(text)
+        }
+        .padding()
+        .padding(.horizontal)
+        .background(.white)
+        .cornerRadius(30)
+        .shadow(radius: 10)
+    }
+}
 
 struct CustomTabView: View {
     @Binding private var selectedTab: Int
