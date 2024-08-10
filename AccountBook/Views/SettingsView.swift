@@ -110,7 +110,7 @@ struct SettingsView: View {
                         .onTapGesture {
                             withAnimation {
                                 budget_text = ""
-                                showMonthAlert.toggle()
+                                showMonthAlert = true
                             }
                         }
                         
@@ -126,13 +126,13 @@ struct SettingsView: View {
                         .onTapGesture {
                             withAnimation {
                                 budget_text = ""
-                                showYearAlert.toggle()
+                                showYearAlert = true
                             }
                         }
                         .alert("月度预算", isPresented: $showMonthAlert) {
                             TextField("输入您的预算", text: $budget_text)
                             Button(role: .cancel) {
-                                showMonthAlert.toggle()
+                                showMonthAlert = false
                             } label: {
                                 Text("取消")
                             }
@@ -144,7 +144,7 @@ struct SettingsView: View {
                                     else {
                                         UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
                                     }
-                                    showMonthAlert.toggle()
+                                    showMonthAlert = false
                                 }
                             } label: {
                                 Text("确认")
@@ -153,7 +153,7 @@ struct SettingsView: View {
                         .alert("年度预算", isPresented: $showYearAlert) {
                             TextField("输入您的预算", text: $budget_text)
                             Button(role: .cancel) {
-                                showYearAlert.toggle()
+                                showYearAlert = false
                             } label: {
                                 Text("取消")
                             }
@@ -165,7 +165,7 @@ struct SettingsView: View {
                                     else {
                                         UserDefaults.standard.setValue(100000, forKey: "YearBudget")
                                     }
-                                    showYearAlert.toggle()
+                                    showYearAlert = false
                                 }
                             } label: {
                                 Text("确认")
@@ -179,7 +179,7 @@ struct SettingsView: View {
                     
                     Section {
                         Button(action: {
-                            showLicense.toggle()
+                            showLicense = true
                         }) {
                             Text("开源许可证")
                                 .foregroundColor(Color.blue)
