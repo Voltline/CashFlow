@@ -90,7 +90,7 @@ struct CategoryProportionView: View {
             if UserDefaults.standard.bool(forKey: "UseOldMainPage") {
                 RoundedRectangle(cornerRadius: 30)
                     .fill(Color(hexString: "002B63"))
-                    .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
+                    .stroke(Color.gray.opacity(0.5), lineWidth: 0.1) // 圆角边框
                     .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
                     .frame(width: width * 0.93, height: height * 0.6) // 设置框的大小
                     .overlay(
