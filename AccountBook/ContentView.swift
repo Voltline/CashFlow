@@ -11,7 +11,7 @@ import AudioToolbox
 import LocalAuthentication
 import UserNotifications
 
-let version = "1.2.42.0810"
+let version = "1.2.43.0810"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -201,35 +201,33 @@ struct CustomTabView: View {
     }
 
     var body: some View {
-        withAnimation(.spring) {
-            TabView(selection: $selectedTab) {
-                HomeView(refreshTrigger: $refreshTrigger)
-                    .tabItem {
-                        VStack {
-                            Image(systemName: "house")
-                            Text("主页")
-                        }
+        TabView(selection: $selectedTab) {
+            HomeView(refreshTrigger: $refreshTrigger)
+                .tabItem {
+                    VStack {
+                        Image(systemName: "house")
+                        Text("主页")
                     }
-                    .tag(0)
-                
-                RecordListView()
-                    .tabItem {
-                        VStack {
-                            Image(systemName: "book")
-                            Text("记录")
-                        }
+                }
+                .tag(0)
+            
+            RecordListView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "book")
+                        Text("记录")
                     }
-                    .tag(1)
-                
-                SettingsView(refreshTrigger: $refreshTrigger)
-                    .tabItem {
-                        VStack {
-                            Image(systemName: "gearshape")
-                            Text("设置")
-                        }
+                }
+                .tag(1)
+            
+            SettingsView(refreshTrigger: $refreshTrigger)
+                .tabItem {
+                    VStack {
+                        Image(systemName: "gearshape")
+                        Text("设置")
                     }
-                    .tag(2)
-            }
+                }
+                .tag(2)
         }
     }
 }

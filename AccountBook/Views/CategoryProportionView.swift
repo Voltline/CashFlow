@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Charts
-import SwiftUICharts
 
 struct Expense: Identifiable {
     var id = UUID()
@@ -25,8 +24,6 @@ struct CategoryProportionView: View {
     let colors = ["食物": Color.blue, "娱乐": Color.cyan, "日常": Color.orange, "学习": Color.green, "交通": Color.indigo, "购物": Color.red, "话费": Color.brown, "医药": Color.pink, "服装": Color.mint, "商务": Color.yellow, "其他": Color.purple]
     var width: Double
     var height: Double
-    @State var formSize = ChartForm.extraLarge
-    @Environment(\.colorScheme) var colorScheme
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
@@ -62,17 +59,6 @@ struct CategoryProportionView: View {
         }
         return ret
     }
-    
-    var mergedExpensesAll: [(String, Double)] {
-        if mergedExpenses[0].category == "无" {
-            return []
-        }
-        var ans: [(String, Double)] = []
-        for each in mergedExpenses {
-            ans.append((each.category, each.amount))
-        }
-        return ans
-    }
     var total: Double {
         var total: Double = 0
         for expense in records {
@@ -100,36 +86,110 @@ struct CategoryProportionView: View {
     }
     
     var body: some View {
-        if mergedExpensesAll.isEmpty {
-            ZStack {
-                BarChartView(data: ChartData(values: mergedExpensesAll), title: "支出统计", style: ChartStyle(
-                    backgroundColor: Color.white,
-                    accentColor: Color(hexString: "#84A094"), //84A094 , 698378
-                    secondGradientColor: Color(hexString: "#50675D"),
-                    textColor: Color.black,
-                    legendTextColor:Color.gray,
-                    dropShadowColor: Color.gray.opacity(0.4)),
-                             form: ChartForm.extraLarge
-                )
-                Text("无记录")
+        if #available(iOS 17.0, *) {
+            if UserDefaults.standard.bool(forKey: "UseOldMainPage") {
+                RoundedRectangle(cornerRadius: 30)
+                    .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
+                    .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
+                    .frame(width: width * 0.93, height: height * 0.6) // 设置框的大小
+                    .overlay(
+                    VStack {
+                        HStack {
+                            Image(systemName:"chart.pie")
+                            Text("支出统计")
+                            Spacer()
+                            Text("")
+                            HStack(spacing: 1) {
+                                Image(systemName: "yensign")
+                                    .font(.subheadline)
+                                Text(String(format:"%.2f", real_total))
+                            }
+                            .frame(width: 55 + (total == 0 ? 0 : log10(total) * 8.96), height: 6)
+                                .padding()
+                                .background(Color.secondary.opacity(0.2))
+                                .cornerRadius(18)
+                        }
+                        .foregroundColor(Color.blue)
+                        .padding(.top, 6)
+                        Divider()
+                        HStack {
+                            Chart(mergedExpenses) { expense in
+                                SectorMark(
+                                    angle: .value("Amount", expense.amount),
+                                    innerRadius: .ratio(0.78),
+                                    outerRadius: .inset(8),
+                                    angularInset: 1
+                                )
+                                .cornerRadius(3)
+                                .foregroundStyle(expense.color)
+                            }
+                            .padding()
+                            // 图例
+                            VStack {
+                                Spacer()
+                                VStack(alignment: .leading, spacing: 5) {
+                                    ForEach(mergedExpenses) { expense in
+                                        HStack {
+                                            Rectangle()
+                                                .fill(expense.color)
+                                                .frame(width: 10, height: 10)
+                                            if expense.category == "无" {
+                                                Text("无")
+                                                    .font(.caption)
+                                            }
+                                            else {
+                                                Text("\(expense.category):" +  String(format: "%.0f", expense.ratio * 100) + "%")
+                                                    .font(.caption)
+                                            }
+                                        }
+                                    }
+                                }
+                                .padding()
+                                .background(Color.secondary.opacity(0.2))
+                                .cornerRadius(15)
+                            }
+                        }
+                        Divider()
+                        VStack {
+                            HStack {
+                                Image(systemName: "chart.line.uptrend.xyaxis")
+                                Text("消费最多类别")
+                                Spacer()
+                            }
+                            .foregroundColor(Color.green)
+                            .padding(.vertical, height * 0.009)
+                            
+                            VStack {
+                                if mergedExpenses[0].category == "无" {
+                                    Text("无记录")
+                                        .font(.title2)
+                                }
+                                else {
+                                    Text(mergedExpenses[0].category)
+                                        .font(.title2)
+                                }
+                            }
+                                .frame(width: 63, height: 10)
+                                .padding()
+                                .background(mergedExpenses[0].color.opacity(0.2))
+                                .cornerRadius(15)
+                        }
+
+                    }
+                        .padding(.horizontal, width * 0.06)
+                        .padding(.vertical, height * 0.01)
+                    )
+            }
+            else {
+                NewCategoryProportionView(width: width, height: height)
             }
         }
         else {
-            BarChartView(data: ChartData(values: mergedExpensesAll), title: "支出统计",
-                         legend: "合计: " + String(format:"%.2f", real_total),
-                         style: ChartStyle(
-                            backgroundColor: Color.white,
-                            accentColor: Color(hexString: "#84A094"), //84A094 , 698378
-                            secondGradientColor: Color(hexString: "#50675D"),
-                            textColor: Color.black,
-                            legendTextColor:Color.gray,
-                            dropShadowColor: Color.gray.opacity(0.4)),
-                         form: ChartForm.extraLarge,
-                         valueSpecifier: "%.2f")
+            NewCategoryProportionView(width: width, height: height)
         }
     }
 }
 
 #Preview {
-    CategoryProportionView(width: 380, height: 200)
+    CategoryProportionView(width: 400, height: 600)
 }

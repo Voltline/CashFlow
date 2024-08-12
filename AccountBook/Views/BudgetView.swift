@@ -28,6 +28,7 @@ struct BudgetView: View {
     var height: Double
     var month: Bool = true
     @State private var budget_text: String = ""
+    @State private var showAlert = false
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
@@ -63,105 +64,128 @@ struct BudgetView: View {
     }
     
     var body: some View {
-        if month {
-            PieChartView(data: budgetData, title: description, legend: "预算: " + String(format: "%.0f", UserDefaults.standard.double(forKey: "MonthBudget")) + "\n" +
-                         "支出: " + String(format: "%.2f", total[0].origin_amount), style: ChartStyle(
-                backgroundColor: Color(hexString: "#36534D"), //3B5147, 313D34
-                accentColor: Color(hexString: "#FFD683"),
-                secondGradientColor: Color(hexString: "#FFCA04"),
-                textColor: Color.white,
-                legendTextColor: Color(hexString: "#D2E5E1"),
-                dropShadowColor: Color.gray.opacity(0.4)))
-        } else {
-            PieChartView(data: budgetData, title: description, legend: "预算: " + String(format: "%.0f", UserDefaults.standard.double(forKey: "YearBudget")) + "\n" +
-                         "支出: " + String(format: "%.2f", total[0].origin_amount), style: ChartStyle(
-                backgroundColor: Color(hexString: "#39334D"),
-                accentColor: Color(hexString: "#FF8A21"),
-                secondGradientColor: Colors.GradientPurple,
-                textColor: Color.white,
-                legendTextColor: Color(hexString: "#D2E5E1"),
-                dropShadowColor: Color.gray.opacity(0.3))
-            )
-        }
-        /*
-        RoundedRectangle(cornerRadius: 30)
-            .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
-            .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
-            .frame(width: width * 0.46, height: min(width, height) * 0.75) // 设置框的大小
-            .overlay(
-                VStack {
-                    HStack {
-                        Image(systemName:"chart.line.text.clipboard")
-                        Text(month ? "月度预算" : "年度预算")
-                        Spacer()
-                    }
-                    .foregroundColor(Color.blue)
-                    .padding(.top, 6)
-                    
-                    if total[1].origin_amount >= 0 {
-                        HStack {
-                            Text("剩余: " + String(format: "%.2f", total[1].origin_amount))
-                            Spacer()
-                        }
-                        .font(.subheadline)
-                        .foregroundColor(Color.green.opacity(0.9))
-                    }
-                    else {
-                        HStack {
-                            Text("超支: " + String(format: "%.2f", -total[1].origin_amount))
-                            Spacer()
-                        }
-                        .font(.subheadline)
-                        .foregroundColor(Color.red.opacity(0.9))
-                    }
-                    Divider()
-                    PieChartView(data: [8,23,54,32], title: "Title", legend: "Legendary")
-                    ZStack {
-                        Chart(total) { expense in
-                            SectorMark(
-                                angle: .value("Amount", expense.amount),
-                                innerRadius: .ratio(0.78),
-                                outerRadius: .inset(8),
-                                angularInset: 1
-                            )
-                            .foregroundStyle(expense.color)
-                            .cornerRadius(3)
-                        }
-                        if total[1].over {
-                            Text("已超支")
-                                .font(.subheadline)
-                                .foregroundStyle(Color.red.opacity(0.8))
-                        }
-                        else {
-                            Text(String(format: "%.0f", total[1].origin_amount * 100 / (month ? UserDefaults.standard.double(forKey: "MonthBudget") : UserDefaults.standard.double(forKey: "YearBudget"))) + "%")
-                                .font(.subheadline)
-                        }
-                        
-                    }
-                    Divider()
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text("支出: " + String(format: "%.2f", total[0].origin_amount))
-                                .foregroundStyle(Color.red)
-                            Spacer()
-                        }
-                        HStack {
-                            if month {
-                                Text("预算: " + String(format: "%.2f", UserDefaults.standard.double(forKey: "MonthBudget")))
-                            } else {
-                                Text("预算: " + String(format: "%.2f", UserDefaults.standard.double(forKey: "YearBudget")))
+        if #available(iOS 17.0, *) {
+            if UserDefaults.standard.bool(forKey: "UseOldMainPage") {
+                RoundedRectangle(cornerRadius: 30)
+                    .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
+                    .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
+                    .frame(width: width * 0.46, height: min(width, height) * 0.75) // 设置框的大小
+                    .overlay(
+                        VStack {
+                            HStack {
+                                Image(systemName:"chart.line.text.clipboard")
+                                Text(month ? "月度预算" : "年度预算")
+                                Spacer()
                             }
-                            Spacer()
+                            .foregroundColor(Color.blue)
+                            .padding(.top, 6)
+                            
+                            if total[1].origin_amount >= 0 {
+                                HStack {
+                                    Text("剩余: " + String(format: "%.2f", total[1].origin_amount))
+                                    Spacer()
+                                }
+                                .font(.subheadline)
+                                .foregroundColor(Color.green.opacity(0.9))
+                            }
+                            else {
+                                HStack {
+                                    Text("超支: " + String(format: "%.2f", -total[1].origin_amount))
+                                    Spacer()
+                                }
+                                .font(.subheadline)
+                                .foregroundColor(Color.red.opacity(0.9))
+                            }
+                            Divider()
+                            ZStack {
+                                Chart(total) { expense in
+                                    SectorMark(
+                                        angle: .value("Amount", expense.amount),
+                                        innerRadius: .ratio(0.78),
+                                        outerRadius: .inset(8),
+                                        angularInset: 1
+                                    )
+                                    .foregroundStyle(expense.color)
+                                    .cornerRadius(3)
+                                }
+                                if total[1].over {
+                                    Text("已超支")
+                                        .font(.subheadline)
+                                        .foregroundStyle(Color.red.opacity(0.8))
+                                }
+                                else {
+                                    Text(String(format: "%.0f", total[1].origin_amount * 100 / (month ? UserDefaults.standard.double(forKey: "MonthBudget") : UserDefaults.standard.double(forKey: "YearBudget"))) + "%")
+                                        .font(.subheadline)
+                                }
+                                
+                            }
+                            Divider()
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("支出: " + String(format: "%.2f", total[0].origin_amount))
+                                        .foregroundStyle(Color.red)
+                                    Spacer()
+                                }
+                                HStack {
+                                    if month {
+                                        Text("预算: " + String(format: "%.2f", UserDefaults.standard.double(forKey: "MonthBudget")))
+                                    } else {
+                                        Text("预算: " + String(format: "%.2f", UserDefaults.standard.double(forKey: "YearBudget")))
+                                    }
+                                    Spacer()
+                                }
+                                .foregroundStyle(Color.blue.opacity(0.8))
+                            }
+                            .font(.subheadline)
                         }
-                        .foregroundStyle(Color.blue.opacity(0.8))
+                            .padding(.horizontal, width * 0.05)
+                            .padding(.vertical, height * 0.016)
+                    )
+                    .onTapGesture {
+                        withAnimation {
+                            budget_text = ""
+                            showAlert.toggle()
+                        }
                     }
-                    .font(.subheadline)
-                }
-                    .padding(.horizontal, width * 0.05)
-                    .padding(.vertical, height * 0.016)
-            )
-
-         */
+                    .alert(description, isPresented: $showAlert) {
+                        TextField("输入您的预算(如3000)", text: $budget_text)
+                        Button(role: .cancel) {
+                            showAlert.toggle()
+                        } label: {
+                            Text("取消")
+                        }
+                        Button() {
+                            withAnimation {
+                                if let new_budget = Double(budget_text) {
+                                    if month {
+                                        UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
+                                    }
+                                    else {
+                                        UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
+                                    }
+                                }
+                                else {
+                                    if month {
+                                        UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
+                                    }
+                                    else {
+                                        UserDefaults.standard.setValue(100000, forKey: "YearBudget")
+                                    }
+                                }
+                                showAlert.toggle()
+                            }
+                        } label: {
+                            Text("确认")
+                        }
+                    }
+            }
+            else {
+                NewBudgetView(width: width, height: height, month: month)
+            }
+        }
+        else {
+            NewBudgetView(width: width, height: height, month: month)
+        }
     }
     
     func fetchRecords(context: NSManagedObjectContext) -> Double {

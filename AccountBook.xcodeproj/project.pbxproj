@@ -19,6 +19,7 @@
 		B2B9CFDE2C0B565700EC4F84 /* AccountBookUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFDD2C0B565700EC4F84 /* AccountBookUITestsLaunchTests.swift */; };
 		B2E3CADE2C10590E00188642 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2E3CADD2C10590E00188642 /* Launch Screen.storyboard */; };
 		B2E663C02C0CB13500D26099 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E663BF2C0CB13500D26099 /* UserView.swift */; };
+		B2EC7F3C2C69C4DB009AADA3 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = B2EC7F3B2C69C4DB009AADA3 /* DGCharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +88,8 @@
 				ItemView.swift,
 				ModifyRecordView.swift,
 				MultiSelectSlider.swift,
+				NewBudgetView.swift,
+				NewCategoryProportionView.swift,
 				RecordListView.swift,
 				SettingsView.swift,
 			);
@@ -115,6 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2EC7F3C2C69C4DB009AADA3 /* DGCharts in Frameworks */,
 				B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,6 +303,7 @@
 			mainGroup = B2B9CFAF2C0B565600EC4F84;
 			packageReferences = (
 				B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */,
+				B2EC7F3A2C69C4DB009AADA3 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = B2B9CFB92C0B565600EC4F84 /* Products */;
 			projectDirPath = "";
@@ -695,6 +700,14 @@
 				minimumVersion = 1.5.5;
 			};
 		};
+		B2EC7F3A2C69C4DB009AADA3 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChartsOrg/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -702,6 +715,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */;
 			productName = SwiftUICharts;
+		};
+		B2EC7F3B2C69C4DB009AADA3 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B2EC7F3A2C69C4DB009AADA3 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 
