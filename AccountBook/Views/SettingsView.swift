@@ -25,7 +25,7 @@ struct SettingsView: View {
         NavigationStack {
             HStack {
                 Text("设置")
-                    .font(.title2)
+                    .font(.title3)
                     .bold()
             }
             .padding(.top, 8)

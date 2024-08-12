@@ -89,6 +89,7 @@ struct CategoryProportionView: View {
         if #available(iOS 17.0, *) {
             if UserDefaults.standard.bool(forKey: "UseOldMainPage") {
                 RoundedRectangle(cornerRadius: 30)
+                    .fill(Color(hexString: "002B63"))
                     .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
                     .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
                     .frame(width: width * 0.93, height: height * 0.6) // 设置框的大小
@@ -106,10 +107,11 @@ struct CategoryProportionView: View {
                             }
                             .frame(width: 55 + (total == 0 ? 0 : log10(total) * 8.96), height: 6)
                                 .padding()
-                                .background(Color.secondary.opacity(0.2))
+                                .background(Color.white.opacity(0.3))
                                 .cornerRadius(18)
                         }
-                        .foregroundColor(Color.blue)
+                        .bold()
+                        .foregroundColor(Color.white)
                         .padding(.top, 6)
                         Divider()
                         HStack {
@@ -142,10 +144,12 @@ struct CategoryProportionView: View {
                                                     .font(.caption)
                                             }
                                         }
+                                        .bold()
+                                        .foregroundStyle(Color.white)
                                     }
                                 }
                                 .padding()
-                                .background(Color.secondary.opacity(0.2))
+                                .background(Color.white.opacity(0.3))
                                 .cornerRadius(15)
                             }
                         }
@@ -156,22 +160,26 @@ struct CategoryProportionView: View {
                                 Text("消费最多类别")
                                 Spacer()
                             }
-                            .foregroundColor(Color.green)
+                            .foregroundColor(Color.white)
+                            .bold()
                             .padding(.vertical, height * 0.009)
                             
                             VStack {
                                 if mergedExpenses[0].category == "无" {
                                     Text("无记录")
                                         .font(.title2)
+                                        .foregroundStyle(Color.white)
                                 }
                                 else {
                                     Text(mergedExpenses[0].category)
                                         .font(.title2)
+                                        .foregroundStyle(Color.white)
                                 }
                             }
+                                .bold()
                                 .frame(width: 63, height: 10)
                                 .padding()
-                                .background(mergedExpenses[0].color.opacity(0.2))
+                                .background(Color.white.opacity(0.3))
                                 .cornerRadius(15)
                         }
 

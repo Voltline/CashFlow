@@ -49,13 +49,13 @@ struct BudgetView: View {
         if month {
             total = fetchRecords(context: viewContext)
             let rest = Double(UserDefaults.standard.integer(forKey: "MonthBudget")) - total
-            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)),
-                    BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "MonthBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
+            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color(hexString: "#FFD683").opacity(0.3)),
+                    BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "MonthBudget")), origin_amount: rest, color: rest > 0 ? Color(hexString: "#FFD683").opacity(0.9) : Color.red.opacity(0.9), over: rest < 0)]
         } else {
             total = fetchRecords(context: viewContext)
             let rest = Double(UserDefaults.standard.integer(forKey: "YearBudget")) - total
-            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color.green.opacity(0.3)),
-                    BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "YearBudget")), origin_amount: rest, color: rest > 0 ? Color.green.opacity(0.75) : Color.red.opacity(0.75), over: rest < 0)]
+            return [BudgetTotal(amount: rest > 0 ? total : 0, origin_amount: total, color: Color(hexString: "#FF8A21").opacity(0.3)),
+                    BudgetTotal(amount: rest > 0 ? rest : Double(UserDefaults.standard.integer(forKey: "YearBudget")), origin_amount: rest, color: rest > 0 ? Color(hexString: "#FF8A21").opacity(0.9) : Color.red.opacity(0.9), over: rest < 0)]
         }
     }
     
@@ -67,6 +67,7 @@ struct BudgetView: View {
         if #available(iOS 17.0, *) {
             if UserDefaults.standard.bool(forKey: "UseOldMainPage") {
                 RoundedRectangle(cornerRadius: 30)
+                    .fill(Color(hexString: month ? "#36534D" : "#39334D"))
                     .stroke(Color.gray, lineWidth: 0.4) // 圆角边框
                     .background(RoundedRectangle(cornerRadius: 30).fill(Color(UIColor.systemBackground)))
                     .frame(width: width * 0.46, height: min(width, height) * 0.75) // 设置框的大小
@@ -77,7 +78,8 @@ struct BudgetView: View {
                                 Text(month ? "月度预算" : "年度预算")
                                 Spacer()
                             }
-                            .foregroundColor(Color.blue)
+                            .bold()
+                            .foregroundColor(Color.white)
                             .padding(.top, 6)
                             
                             if total[1].origin_amount >= 0 {
@@ -85,6 +87,7 @@ struct BudgetView: View {
                                     Text("剩余: " + String(format: "%.2f", total[1].origin_amount))
                                     Spacer()
                                 }
+                                .bold()
                                 .font(.subheadline)
                                 .foregroundColor(Color.green.opacity(0.9))
                             }
@@ -94,7 +97,7 @@ struct BudgetView: View {
                                     Spacer()
                                 }
                                 .font(.subheadline)
-                                .foregroundColor(Color.red.opacity(0.9))
+                                .foregroundColor(Color.red)
                             }
                             Divider()
                             ZStack {
@@ -110,12 +113,14 @@ struct BudgetView: View {
                                 }
                                 if total[1].over {
                                     Text("已超支")
-                                        .font(.subheadline)
-                                        .foregroundStyle(Color.red.opacity(0.8))
+                                        .font(.headline)
+                                        .foregroundStyle(Color.red)
                                 }
                                 else {
                                     Text(String(format: "%.0f", total[1].origin_amount * 100 / (month ? UserDefaults.standard.double(forKey: "MonthBudget") : UserDefaults.standard.double(forKey: "YearBudget"))) + "%")
-                                        .font(.subheadline)
+                                        .font(.headline)
+                                        .bold()
+                                        .foregroundStyle(Color.white)
                                 }
                                 
                             }
@@ -123,7 +128,7 @@ struct BudgetView: View {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text("支出: " + String(format: "%.2f", total[0].origin_amount))
-                                        .foregroundStyle(Color.red)
+                                        .foregroundStyle(month ? Color(hexString: "#FFD683") : Color(hexString: "#FF8A21"))
                                     Spacer()
                                 }
                                 HStack {
@@ -134,50 +139,14 @@ struct BudgetView: View {
                                     }
                                     Spacer()
                                 }
-                                .foregroundStyle(Color.blue.opacity(0.8))
+                                .foregroundStyle(Color.cyan)
                             }
                             .font(.subheadline)
                         }
+                            .bold()
                             .padding(.horizontal, width * 0.05)
                             .padding(.vertical, height * 0.016)
                     )
-                    .onTapGesture {
-                        withAnimation {
-                            budget_text = ""
-                            showAlert.toggle()
-                        }
-                    }
-                    .alert(description, isPresented: $showAlert) {
-                        TextField("输入您的预算(如3000)", text: $budget_text)
-                        Button(role: .cancel) {
-                            showAlert.toggle()
-                        } label: {
-                            Text("取消")
-                        }
-                        Button() {
-                            withAnimation {
-                                if let new_budget = Double(budget_text) {
-                                    if month {
-                                        UserDefaults.standard.setValue(new_budget, forKey: "MonthBudget")
-                                    }
-                                    else {
-                                        UserDefaults.standard.setValue(new_budget, forKey: "YearBudget")
-                                    }
-                                }
-                                else {
-                                    if month {
-                                        UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
-                                    }
-                                    else {
-                                        UserDefaults.standard.setValue(100000, forKey: "YearBudget")
-                                    }
-                                }
-                                showAlert.toggle()
-                            }
-                        } label: {
-                            Text("确认")
-                        }
-                    }
             }
             else {
                 NewBudgetView(width: width, height: height, month: month)
