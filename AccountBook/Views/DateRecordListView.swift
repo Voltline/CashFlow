@@ -58,9 +58,13 @@ struct DateRecordListView: View {
     
     @State private var sectionHeadersWeek: Set<weekYear> = []
     @State private var rotationAnglesWeek: [weekYear: Double] = [:]
+    
+    @Binding var selectedRecords: Set<Record>  // 用于存储选中的项
+    @Binding var editMode: EditMode  // 用于控制编辑模式
+    
     var body: some View {
         if choice != 1 {
-            List {
+            List(selection: $selectedRecords) {
                 ForEach(mergedRecords.keys.sorted(by: { $0 > $1 }), id: \.self) { key in
                     Section(header:
                     VStack {
@@ -121,6 +125,7 @@ struct DateRecordListView: View {
                     }
                 }
             }
+            .environment(\.editMode, $editMode)
             .onChange(of: choice) { newChoice in
                 if newChoice != 1 {
                     sectionHeaders = Set(mergedRecords.keys)
@@ -139,7 +144,7 @@ struct DateRecordListView: View {
             }
         }
         else {
-            List {
+            List(selection: $selectedRecords) {
                 ForEach(mergedRecordsWeek.keys.sorted(by: { $0 > $1 }), id: \.self) { key in
                     Section(header:
                     VStack {
@@ -193,6 +198,7 @@ struct DateRecordListView: View {
                     }
                 }
             }
+            .environment(\.editMode, $editMode)
             .onChange(of: choice) { newChoice in
                 if newChoice != 1 {
                     sectionHeaders = Set(mergedRecords.keys)
@@ -291,6 +297,8 @@ struct DateRecordListView: View {
 }
 
 #Preview {
+    @State var editMode: EditMode = .inactive
     @State var choice = 1
-    DateRecordListView(choice: $choice)
+    @State var selectedRecords: Set<Record> = []
+    DateRecordListView(choice: $choice, selectedRecords: $selectedRecords, editMode: $editMode)
 }

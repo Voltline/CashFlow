@@ -26,6 +26,8 @@ struct ContentView: View {
     @StateObject private var userProfile = UserProfile()
     @State private var isLocked = true
     @State private var selectionTab = UserDefaults.standard.integer(forKey: "DefaultView")
+    @State var editMode: EditMode = .inactive
+    @State var selectedRecords: Set<Record> = []
     var body: some View {
         withAnimation(.spring) {
             NavigationStack {
@@ -33,10 +35,10 @@ struct ContentView: View {
                     if selectionTab != 2 {
                         VStack {
                             if refreshTrigger {
-                                CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                                CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger, recordViewSp: $selectionTab, editMode: $editMode, selectedRecords: $selectedRecords)
                             }
                             else {
-                                CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger)
+                                CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger, recordViewSp: $selectionTab, editMode: $editMode, selectedRecords: $selectedRecords)
                             }
                             Divider()
                             NavigationLink(destination: AddRecordView()
@@ -51,10 +53,10 @@ struct ContentView: View {
                                 isLocked = true
                             }
                         }
-                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger)
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords)
                     }
                     else {
-                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger)
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords)
                     }
                 }
                 else {
@@ -177,16 +179,19 @@ struct PrimaryButton: View {
 
 struct CustomTabView: View {
     @Binding private var selectedTab: Int
-    @Binding private var refreshTrigger: Bool
-    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>) {
+    @Binding private var refreshTrigger: Bool 
+    @Binding var editMode: EditMode
+    @Binding var selectedRecords: Set<Record>
+    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>, editMode: Binding<EditMode>, selectedRecords: Binding<Set<Record>>) {
         self._selectedTab = selectedTab
         self._refreshTrigger = refreshTrigger
+        self._editMode = editMode
+        self._selectedRecords = selectedRecords
         
         // Customize the TabBar appearance
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithOpaqueBackground()
         tabBarAppearance.backgroundColor = UIColor.secondarySystemBackground
-        
         UITabBar.appearance().standardAppearance = tabBarAppearance
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         
@@ -194,7 +199,7 @@ struct CustomTabView: View {
         let itemAppearance = UITabBarItemAppearance()
         itemAppearance.normal.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 3)
         itemAppearance.selected.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 3)
-
+        
         tabBarAppearance.stackedLayoutAppearance = itemAppearance
         tabBarAppearance.inlineLayoutAppearance = itemAppearance
         tabBarAppearance.compactInlineLayoutAppearance = itemAppearance
@@ -211,7 +216,7 @@ struct CustomTabView: View {
                 }
                 .tag(0)
             
-            RecordListView()
+            RecordListView(editMode: $editMode, selectedRecords: $selectedRecords)
                 .tabItem {
                     VStack {
                         Image(systemName: "book")

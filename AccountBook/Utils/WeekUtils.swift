@@ -81,15 +81,6 @@ func dayOfWeek(from date: String) -> String {
     dateFormatter.dateFormat = "EEEE" // EEEE stands for the full name of the day
 
     let dayInWeek = dateFormatter.string(from: fdate!)
-    switch dayInWeek {
-    case "Monday": return "星期一"
-    case "Tuesday": return "星期二"
-    case "Wednesday": return "星期三"
-    case "Thursday": return "星期四"
-    case "Friday": return "星期五"
-    case "Saturday": return "星期六"
-    case "Sunday": return "星期日"
-    default: return "错误"
-    }
+    return dayInWeek
 }
 
