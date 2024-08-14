@@ -11,7 +11,7 @@ import AudioToolbox
 import LocalAuthentication
 import UserNotifications
 
-let version = "1.2.48.0814"
+let version = "1.2.49.0814"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -40,6 +40,7 @@ struct ContentView: View {
         .green, .green, .green
     ]
     @State private var angle: Double = 0.0
+    @State private var firstIntoTimer = true
     
     var body: some View {
         withAnimation(.spring) {
@@ -121,7 +122,10 @@ struct ContentView: View {
                             .edgesIgnoringSafeArea(.all))
                         .onAppear {
                             if UserDefaults.standard.bool(forKey: "UseDynamicLockScreen") {
-                                startCircularMotionAnimation()
+                                if firstIntoTimer {
+                                    startCircularMotionAnimation()
+                                    firstIntoTimer = false
+                                }
                             }
                         }
                     }
