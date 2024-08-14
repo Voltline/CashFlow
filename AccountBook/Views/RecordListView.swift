@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 
 struct RecordListView: View {
     @Environment(\.colorScheme) var colorScheme
@@ -22,6 +23,9 @@ struct RecordListView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
+            .onChange(of: choice) { newChoice in
+                AudioServicesPlaySystemSound(1520)
+            }
             DateRecordListView(choice: $choice, selectedRecords: $selectedRecords, editMode: $editMode)
         }
         .background(colorScheme == .dark ? Color(UIColor.systemBackground) : Color(UIColor.secondarySystemBackground))

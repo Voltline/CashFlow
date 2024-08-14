@@ -36,6 +36,10 @@ struct CustomNavigationBar: View {
                 if recordViewSp == 1 {
                     if $editMode.wrappedValue.isEditing {
                         Button(role: .destructive) {
+                            withAnimation {
+                                editMode = .inactive
+                            }
+                            AudioServicesPlaySystemSound(1520)
                             deleteItems()
                         } label: {
                             Text("删除")
@@ -43,12 +47,16 @@ struct CustomNavigationBar: View {
                         .disabled(selectedRecords.isEmpty)
                     }
                     EditButton()
+                        .onTapGesture {
+                            AudioServicesPlaySystemSound(1520)
+                        }
                         .environment(\.editMode, $editMode)
                 }
                 
                 Button(action: {
                     withAnimation {
                         showAddRecordView = true
+                        editMode = .inactive
                     }
                     AudioServicesPlaySystemSound(1519)
                 }) {
