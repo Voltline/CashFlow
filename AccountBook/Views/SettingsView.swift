@@ -21,6 +21,7 @@ struct SettingsView: View {
     private let license = ""
     @State private var budget_text = ""
     @State private var old_mainPage = UserDefaults.standard.bool(forKey: "UseOldMainPage")
+    @State private var dynamic_lockScreen = UserDefaults.standard.bool(forKey: "UseDynamicLockScreen")
     var body: some View {
         NavigationStack {
             HStack {
@@ -193,6 +194,22 @@ struct SettingsView: View {
                     } header: {
                     } footer: {
                         Text("当您使用iOS 17时，可以使用旧版本中的主页外观")
+                    }
+                }
+                
+                if #available(iOS 18.0, *) {
+                    Section {
+                        HStack {
+                            Text("启用动态锁定界面")
+                            Spacer()
+                            Toggle("", isOn: $dynamic_lockScreen)
+                                .onChange(of: dynamic_lockScreen) { newValue in
+                                    UserDefaults.standard.setValue(newValue, forKey: "UseDynamicLockScreen")
+                                }
+                        }
+                    } header: {
+                    } footer: {
+                        Text("当您使用iOS 18时，启用动态锁定界面可以让背景随时间变化")
                     }
                 }
                 

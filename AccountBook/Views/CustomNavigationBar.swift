@@ -36,21 +36,43 @@ struct CustomNavigationBar: View {
                 if recordViewSp == 1 {
                     if $editMode.wrappedValue.isEditing {
                         Button(role: .destructive) {
-                            withAnimation {
+                            withAnimation(.spring) {
                                 editMode = .inactive
                             }
                             AudioServicesPlaySystemSound(1520)
                             deleteItems()
                         } label: {
-                            Text("删除")
+                            Image(systemName: "trash")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 25, height: 25)
                         }
                         .disabled(selectedRecords.isEmpty)
                     }
-                    EditButton()
-                        .onTapGesture {
-                            AudioServicesPlaySystemSound(1520)
+                    Button(action: {
+                        withAnimation {
+                            if editMode == .inactive {
+                                editMode = .active
+                            }
+                            else {
+                                editMode = .inactive
+                            }
                         }
-                        .environment(\.editMode, $editMode)
+                        AudioServicesPlaySystemSound(1520)
+                    }) {
+                        if editMode == .inactive {
+                            Image(systemName: "rectangle.stack")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 25, height: 25)
+                        }
+                        else {
+                            Image(systemName: "checkmark.rectangle.stack")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 25, height: 25)
+                        }
+                    }
                 }
                 
                 Button(action: {
