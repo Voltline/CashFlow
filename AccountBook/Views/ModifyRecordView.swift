@@ -7,6 +7,8 @@
 
 import SwiftUI
 import AudioToolbox
+import AlertToast
+import AlertKit
 
 struct ModifyRecordView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -134,6 +136,12 @@ struct ModifyRecordView: View {
                             else {
                                 //print(Double(accountBalance)!)
                                 confirmButton()
+                                AlertKitAPI.present(
+                                    title: "修改成功",
+                                    icon: .done,
+                                    style: .iOS17AppleMusic,
+                                    haptic: .success
+                                )
                                 presentationMode.wrappedValue.dismiss()
                             }
                         } label: {
@@ -143,15 +151,20 @@ struct ModifyRecordView: View {
                                 .frame(width: geometry.size.width * 0.03, height: geometry.size.width * 0.015)
                                 .padding()
                         }
+                        /*
                         .alert("提示", isPresented: $isShowingNoZeroDialog) {
                             Button("好", role: .cancel) {}
                         } message: {
                             Text("金额不能为0")
                         }
+                         */
                         .background(colorScheme != .dark ? Color(hex: "#B0B0B0", opacity: 0.2) : Color(hex: "#505050", opacity: 0.5))
                         .foregroundColor(.green)
                         .controlSize(.large)
                         .cornerRadius(30)
+                    }
+                    .toast(isPresenting: $isShowingNoZeroDialog, duration: 1.6) {
+                        AlertToast(displayMode: .hud, type: .error(Color.red), title: "错误", subTitle: "金额不能为0")
                     }
                     .padding(.horizontal, geometry.size.width * 0.03)
                     Spacer()

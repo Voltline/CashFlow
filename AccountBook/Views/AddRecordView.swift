@@ -3,6 +3,8 @@
 
 import SwiftUI
 import AudioToolbox
+import AlertToast
+import AlertKit
 
 struct AddRecordView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -63,10 +65,8 @@ struct AddRecordView: View {
                     .padding(.horizontal, geometry.size.width * 0.05)
                     .background(colorScheme != .dark ? Color(hex: "#E0E0E0", opacity: 1) : Color(hex: "#505050", opacity: 1))
                     HStack(alignment: .center) {
-                        //Spacer(minLength: geometry.size.width * 0.05)
                         Text("类别")
                             .font(.title)
-                        //Spacer(minLength: geometry.size.width * 0.8)
                     }
                     .padding(.leading, -geometry.size.width * 0.46)
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -81,13 +81,10 @@ struct AddRecordView: View {
                                             selectedCategory = cate.name
                                             highlightCategory = cate.name
                                             positive = cate.positive
-                                            // print("Selected category: \(selectedCategory)")
                                         }
                                     }
-                                //.hoverEffect(.automatic)
                             }
                             Spacer(minLength: 10)
-                            //CustomNumberPad(value: $accountBalance)
                         }
                     }
                     .onAppear {
@@ -114,6 +111,12 @@ struct AddRecordView: View {
                             else {
                                 //print(Double(accountBalance)!)
                                 confirmButton()
+                                AlertKitAPI.present(
+                                    title: "添加成功",
+                                    icon: .done,
+                                    style: .iOS17AppleMusic,
+                                    haptic: .success
+                                )
                                 presentationMode.wrappedValue.dismiss()
                             }
                         } label: {
@@ -123,15 +126,18 @@ struct AddRecordView: View {
                                 .frame(width: geometry.size.width * 0.03, height: geometry.size.width * 0.015)
                                 .padding()
                         }
-                        .alert("提示", isPresented: $isShowingNoZeroDialog) {
+                        /*.alert("提示", isPresented: $isShowingNoZeroDialog) {
                             Button("好", role: .cancel) {}
                         } message: {
                             Text("金额不能为0")
-                        }
+                        }*/
                         .background(colorScheme != .dark ? Color(hex: "#B0B0B0", opacity: 0.2) : Color(hex: "#505050", opacity: 0.5))
                         .foregroundColor(.green)
                         .controlSize(.large)
                         .cornerRadius(30)
+                    }
+                    .toast(isPresenting: $isShowingNoZeroDialog, duration: 1.6) {
+                        AlertToast(displayMode: .hud, type: .error(Color.red), title: "错误", subTitle: "金额不能为0")
                     }
                     .padding(.horizontal, geometry.size.width * 0.03)
                     Spacer()

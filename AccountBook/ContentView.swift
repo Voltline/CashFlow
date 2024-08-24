@@ -10,8 +10,10 @@ import CoreData
 import AudioToolbox
 import LocalAuthentication
 import UserNotifications
+import MetalKit
+import ColorfulX
 
-let version = "1.2.49.0814"
+let version = "1.2.50.0824"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -28,19 +30,8 @@ struct ContentView: View {
     @State private var selectionTab = UserDefaults.standard.integer(forKey: "DefaultView")
     @State var editMode: EditMode = .inactive
     @State var selectedRecords: Set<Record> = []
-    
-    @State private var points: [SIMD2<Float>] = [
-        [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
-        [0.0, 0.5], [0.9, 0.3], [1.0, 0.5],
-        [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
-    ]
-    @State private var colors: [Color] = [
-        .black, .black.opacity(0.92), .black.opacity(0.9),
-        .blue, .blue, .blue,
-        .green, .green, .green
-    ]
-    @State private var angle: Double = 0.0
-    @State private var firstIntoTimer = true
+    @State private var lockScreenTheme = UserDefaults.standard.integer(forKey: "LockScreenTheme")
+    @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors]
     
     var body: some View {
         withAnimation(.spring) {
@@ -74,107 +65,52 @@ struct ContentView: View {
                     }
                 }
                 else {
-                    if #available(iOS 18.0, *) {
-                        GeometryReader { geometry in
-                            VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
-                                HStack {
-                                    Spacer()
-                                    VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
-                                        CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38)
-                                        Text(userProfile.username)
-                                            .font(.title)
-                                            .bold()
-                                            .foregroundStyle(Color.white)
-                                    }
-                                    Spacer()
+                    GeometryReader { geometry in
+                        VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
+                            HStack {
+                                Spacer()
+                                VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
+                                    CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38)
+                                    Text(userProfile.username)
+                                        .font(.title)
+                                        .bold()
+                                        .foregroundStyle(Color.white)
+                                    
                                 }
-                                
-                                switch (getBiometryType()) {
-                                case .faceID:
-                                    PrimaryButton(image: "faceid", text: "使用Face ID验证")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                case .touchID:
-                                    PrimaryButton(image: "touchid", text: "使用Touch ID验证")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                case .opticID:
-                                    PrimaryButton(image: "opticid", text: "使用Optic ID验证")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                default:
-                                    PrimaryButton(image: "faceid", text: "使用FaceID登录")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                }
+                                Spacer()
                             }
-                            .padding(.vertical, geometry.size.height * 0.15)
-                            .onTapGesture {
-                                authenticate()
+                            
+                            switch (getBiometryType()) {
+                            case .faceID:
+                                PrimaryButton(image: "faceid", text: "使用Face ID验证")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            case .touchID:
+                                PrimaryButton(image: "touchid", text: "使用Touch ID验证")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            case .opticID:
+                                PrimaryButton(image: "opticid", text: "使用Optic ID验证")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
+                            default:
+                                PrimaryButton(image: "faceid", text: "使用FaceID登录")
+                                    .onTapGesture {
+                                        authenticate()
+                                    }
                             }
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(MeshGradient(width: 3, height: 3, points: points, colors: colors)
-                            .edgesIgnoringSafeArea(.all))
-                        .onAppear {
-                            if UserDefaults.standard.bool(forKey: "UseDynamicLockScreen") {
-                                if firstIntoTimer {
-                                    startCircularMotionAnimation()
-                                    firstIntoTimer = false
-                                }
-                            }
+                        .padding(.vertical, geometry.size.height * 0.15)
+                        .onTapGesture {
+                            authenticate()
                         }
                     }
-                    else {
-                        GeometryReader { geometry in
-                            VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
-                                HStack {
-                                    Spacer()
-                                    VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
-                                        CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38)
-                                        Text(userProfile.username)
-                                            .font(.title)
-                                            .bold()
-                                            .foregroundStyle(Color.white)
-                                    }
-                                    Spacer()
-                                }
-                                
-                                switch (getBiometryType()) {
-                                case .faceID:
-                                    PrimaryButton(image: "faceid", text: "使用Face ID验证")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                case .touchID:
-                                    PrimaryButton(image: "touchid", text: "使用Touch ID验证")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                case .opticID:
-                                    PrimaryButton(image: "opticid", text: "使用Optic ID验证")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                default:
-                                    PrimaryButton(image: "faceid", text: "使用FaceID登录")
-                                        .onTapGesture {
-                                            authenticate()
-                                        }
-                                }
-                            }
-                            .padding(.vertical, geometry.size.height * 0.15)
-                            .onTapGesture {
-                                authenticate()
-                            }
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(LinearGradient(colors: [.blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
-                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(ColorfulView(color: $themes[lockScreenTheme])
+                        .edgesIgnoringSafeArea(.all))
                 }
             }
             .onAppear {
@@ -189,22 +125,6 @@ struct ContentView: View {
          let context = LAContext()
          let canEvaluatePolicy = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
          return context.biometryType
-    }
-    
-    private func startCircularMotionAnimation() {
-        Timer.scheduledTimer(withTimeInterval: 0.023, repeats: true) { _ in
-            angle += 0.03
-            withAnimation(.easeInOut(duration: 0.0)) {
-                let radius: Double = 0.2 // 半径
-                let centerX: Double = 0.5
-                let centerY: Double = 0.4
-                
-                let newX = centerX + radius * 1.6 * cos(angle)
-                let newY = centerY + radius * sin(angle)
-                
-                points[4] = [Float(newX), Float(newY)]
-            }
-        }
     }
     
     private func authenticate() {

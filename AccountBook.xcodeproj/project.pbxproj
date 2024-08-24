@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B256DFC62C79BDDC00A3DD00 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = B256DFC52C79BDDC00A3DD00 /* AlertKit */; };
+		B256DFCC2C79C40B00A3DD00 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = B256DFCB2C79C40B00A3DD00 /* ColorfulX */; };
+		B27657522C79BA9800371233 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B27657512C79BA9800371233 /* AlertToast */; };
 		B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = B28D36E82C6742DA00C16CE5 /* SwiftUICharts */; };
 		B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */; };
 		B2B9CFBC2C0B565600EC4F84 /* AccountBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */; };
@@ -117,7 +120,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B256DFCC2C79C40B00A3DD00 /* ColorfulX in Frameworks */,
 				B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */,
+				B27657522C79BA9800371233 /* AlertToast in Frameworks */,
+				B256DFC62C79BDDC00A3DD00 /* AlertKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +308,9 @@
 			mainGroup = B2B9CFAF2C0B565600EC4F84;
 			packageReferences = (
 				B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */,
+				B27657502C79BA0400371233 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */,
+				B256DFCA2C79C40B00A3DD00 /* XCRemoteSwiftPackageReference "ColorfulX" */,
 			);
 			productRefGroup = B2B9CFB92C0B565600EC4F84 /* Products */;
 			projectDirPath = "";
@@ -690,6 +699,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparrowcode/AlertKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.9;
+			};
+		};
+		B256DFCA2C79C40B00A3DD00 /* XCRemoteSwiftPackageReference "ColorfulX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/ColorfulX";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.1;
+			};
+		};
+		B27657502C79BA0400371233 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.9;
+			};
+		};
 		B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppPear/ChartView";
@@ -701,6 +734,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B256DFC52C79BDDC00A3DD00 /* AlertKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */;
+			productName = AlertKit;
+		};
+		B256DFCB2C79C40B00A3DD00 /* ColorfulX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B256DFCA2C79C40B00A3DD00 /* XCRemoteSwiftPackageReference "ColorfulX" */;
+			productName = ColorfulX;
+		};
+		B27657512C79BA9800371233 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B27657502C79BA0400371233 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
 		B28D36E82C6742DA00C16CE5 /* SwiftUICharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B28D36E72C6742DA00C16CE5 /* XCRemoteSwiftPackageReference "ChartView" */;
