@@ -23,7 +23,7 @@ struct SettingsView: View {
     private let license = ""
     @State private var budget_text = ""
     @State private var old_mainPage = UserDefaults.standard.bool(forKey: "UseOldMainPage")
-    @State private var lockscreenTheme = UserDefaults.standard.integer(forKey: "LockScreenTheme")
+    @Binding var lockScreenTheme: Int
     @State private var themeDict = ["极光", "Apple Intelligence", "霓虹", "海洋"]
     @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors]
     var body: some View {
@@ -206,28 +206,28 @@ struct SettingsView: View {
                         Text("动态锁定界面主题")
                         Spacer()
                         //lockscreenTheme
-                        Menu(themeDict[lockscreenTheme]) {
+                        Menu(themeDict[lockScreenTheme]) {
                             Button("极光", action: {
                                 UserDefaults.standard.set(0, forKey: "LockScreenTheme")
-                                lockscreenTheme = 0
+                                lockScreenTheme = 0
                             })
                             Button("Apple Intelligence", action: {
                                 UserDefaults.standard.set(1, forKey: "LockScreenTheme")
-                                lockscreenTheme = 1
+                                lockScreenTheme = 1
                             })
                             Button("霓虹", action: {
                                 UserDefaults.standard.set(2, forKey: "LockScreenTheme")
-                                lockscreenTheme = 2
+                                lockScreenTheme = 2
                             })
                             Button("海洋", action: {
                                 UserDefaults.standard.set(3, forKey: "LockScreenTheme")
-                                lockscreenTheme = 3
+                                lockScreenTheme = 3
                             })
                         }
                     }
                     HStack {
                         Spacer()
-                        ColorfulView(color: $themes[lockscreenTheme])
+                        ColorfulView(color: $themes[lockScreenTheme])
                             .frame(width: 300, height: 160)
                             .scaledToFit()
                         Spacer()
@@ -552,5 +552,6 @@ struct AsyncTermsAndConditionsView: View {
 
 #Preview {
     @State var refreshTrigger = false
-    SettingsView(refreshTrigger: $refreshTrigger)
+    @State var lockScreenTheme = 0
+    SettingsView(refreshTrigger: $refreshTrigger, lockScreenTheme: $lockScreenTheme)
 }

@@ -13,7 +13,7 @@ import UserNotifications
 import MetalKit
 import ColorfulX
 
-let version = "1.2.50.0824"
+let version = "1.2.51.0824"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -58,10 +58,10 @@ struct ContentView: View {
                                 isLocked = true
                             }
                         }
-                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords)
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme)
                     }
                     else {
-                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords)
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme)
                     }
                 }
                 else {
@@ -179,11 +179,13 @@ struct CustomTabView: View {
     @Binding private var refreshTrigger: Bool 
     @Binding var editMode: EditMode
     @Binding var selectedRecords: Set<Record>
-    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>, editMode: Binding<EditMode>, selectedRecords: Binding<Set<Record>>) {
+    @Binding var lockScreenTheme: Int
+    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>, editMode: Binding<EditMode>, selectedRecords: Binding<Set<Record>>, lockScreenTheme: Binding<Int>) {
         self._selectedTab = selectedTab
         self._refreshTrigger = refreshTrigger
         self._editMode = editMode
         self._selectedRecords = selectedRecords
+        self._lockScreenTheme = lockScreenTheme
         
         // Customize the TabBar appearance
         let tabBarAppearance = UITabBarAppearance()
@@ -222,7 +224,7 @@ struct CustomTabView: View {
                 }
                 .tag(1)
             
-            SettingsView(refreshTrigger: $refreshTrigger)
+            SettingsView(refreshTrigger: $refreshTrigger, lockScreenTheme: $lockScreenTheme)
                 .tabItem {
                     VStack {
                         Image(systemName: "gearshape")
