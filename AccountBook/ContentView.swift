@@ -13,7 +13,7 @@ import UserNotifications
 import MetalKit
 import ColorfulX
 
-let version = "1.2.51.0824"
+let version = "1.2.52.0825"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -65,81 +65,7 @@ struct ContentView: View {
                     }
                 }
                 else {
-                    GeometryReader { geometry in
-                        VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
-                            HStack {
-                                Spacer()
-                                VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
-                                    CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38)
-                                    Text(userProfile.username)
-                                        .font(.title)
-                                        .bold()
-                                        .foregroundStyle(Color.white)
-                                    
-                                }
-                                Spacer()
-                            }
-                            
-                            switch (getBiometryType()) {
-                            case .faceID:
-                                PrimaryButton(image: "faceid", text: "使用Face ID验证")
-                                    .onTapGesture {
-                                        authenticate()
-                                    }
-                            case .touchID:
-                                PrimaryButton(image: "touchid", text: "使用Touch ID验证")
-                                    .onTapGesture {
-                                        authenticate()
-                                    }
-                            case .opticID:
-                                PrimaryButton(image: "opticid", text: "使用Optic ID验证")
-                                    .onTapGesture {
-                                        authenticate()
-                                    }
-                            default:
-                                PrimaryButton(image: "faceid", text: "使用FaceID登录")
-                                    .onTapGesture {
-                                        authenticate()
-                                    }
-                            }
-                        }
-                        .padding(.vertical, geometry.size.height * 0.15)
-                        .onTapGesture {
-                            authenticate()
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(ColorfulView(color: $themes[lockScreenTheme])
-                        .edgesIgnoringSafeArea(.all))
-                }
-            }
-            .onAppear {
-                if UserDefaults.standard.bool(forKey: "UseFaceID") {
-                    authenticate()
-                }
-            }
-        }
-    }
-    
-    private func getBiometryType() -> LABiometryType {
-         let context = LAContext()
-         let canEvaluatePolicy = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-         return context.biometryType
-    }
-    
-    private func authenticate() {
-        let context = LAContext()
-        var error: NSError?
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "CashFlow需要解锁才能使用"
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
-                DispatchQueue.main.async {
-                    if success {
-                        self.isLocked = false
-                    }
-                    else {
-                        self.isLocked = true
-                    }
+                    LockScreenView(isLocked: $isLocked)
                 }
             }
         }

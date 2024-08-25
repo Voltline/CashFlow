@@ -88,6 +88,7 @@
 				HomeView.swift,
 				ImagePicker.swift,
 				ItemView.swift,
+				LockScreenView.swift,
 				ModifyRecordView.swift,
 				MultiSelectSlider.swift,
 				NewBudgetView.swift,
