@@ -23,9 +23,10 @@ struct SettingsView: View {
     private let license = ""
     @State private var budget_text = ""
     @State private var old_mainPage = UserDefaults.standard.bool(forKey: "UseOldMainPage")
+    @State private var useBlurEffect = UserDefaults.standard.bool(forKey: "LockScreenUseBlurEffect")
     @Binding var lockScreenTheme: Int
-    @State private var themeDict = ["极光", "Apple Intelligence", "霓虹", "海洋"]
-    @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors]
+    @State private var themeDict = ["极光", "Apple Intelligence", "霓虹", "海洋", "冬日", "日出"]
+    @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors, ColorfulPreset.winter.colors, ColorfulPreset.sunrise.colors]
     var body: some View {
         NavigationStack {
             HStack {
@@ -203,38 +204,36 @@ struct SettingsView: View {
                 
                 Section {
                     HStack {
+                        Text("验证按钮毛玻璃效果")
+                        Spacer()
+                        Toggle("", isOn: $useBlurEffect)
+                            .onChange(of: useBlurEffect) { newValue in
+                                UserDefaults.standard.setValue(newValue, forKey: "LockScreenUseBlurEffect")
+                            }
+                    }
+                    HStack {
                         Text("动态锁定界面主题")
                         Spacer()
                         //lockscreenTheme
                         Menu(themeDict[lockScreenTheme]) {
-                            Button("极光", action: {
-                                UserDefaults.standard.set(0, forKey: "LockScreenTheme")
-                                lockScreenTheme = 0
-                            })
-                            Button("Apple Intelligence", action: {
-                                UserDefaults.standard.set(1, forKey: "LockScreenTheme")
-                                lockScreenTheme = 1
-                            })
-                            Button("霓虹", action: {
-                                UserDefaults.standard.set(2, forKey: "LockScreenTheme")
-                                lockScreenTheme = 2
-                            })
-                            Button("海洋", action: {
-                                UserDefaults.standard.set(3, forKey: "LockScreenTheme")
-                                lockScreenTheme = 3
-                            })
+                            ForEach(themeDict.indices, id: \.self) { index in
+                                Button(themeDict[index], action: {
+                                    UserDefaults.standard.set(index, forKey: "LockScreenTheme")
+                                    lockScreenTheme = index
+                                })
+                            }
                         }
                     }
                     HStack {
                         Spacer()
                         ColorfulView(color: $themes[lockScreenTheme])
-                            .frame(width: 300, height: 160)
+                            .frame(width: 320, height: 160)
                             .scaledToFit()
                         Spacer()
                     }
                 } header: {
                 } footer: {
-                    Text("锁定界面的动态效果有多种配色，可自行选择")
+                    Text("设置锁定界面的视觉效果")
                 }
                 
                 Section {

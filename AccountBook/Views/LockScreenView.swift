@@ -9,7 +9,6 @@ import SwiftUI
 import LocalAuthentication
 import MetalKit
 import ColorfulX
-import AlertToast
 
 struct LockScreenView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -18,8 +17,8 @@ struct LockScreenView: View {
     @Binding var isLocked: Bool
     @State var selectedRecords: Set<Record> = []
     @State private var lockScreenTheme = UserDefaults.standard.integer(forKey: "LockScreenTheme")
-    @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors]
-    @State private var isShowingNoZeroDialog = false
+    @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors, ColorfulPreset.winter.colors, ColorfulPreset.sunrise.colors]
+    @State private var hasFaceIDRecognition = false
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
@@ -42,6 +41,7 @@ struct LockScreenView: View {
                         .onTapGesture {
                             authenticate()
                         }
+
                 case .touchID:
                     PrimaryButton(image: "touchid", text: "使用Touch ID验证")
                         .onTapGesture {
@@ -59,13 +59,22 @@ struct LockScreenView: View {
                         }
                 }
             }
-            .padding(.vertical, geometry.size.height * 0.15)
+            .padding(.vertical, geometry.size.height * 0.165)
             .onTapGesture {
                 authenticate()
             }
         }
+        .onAppear() {
+            hasFaceIDRecognition = true
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            authenticate()
+            hasFaceIDRecognition = true
+        }
+        .onChange(of: hasFaceIDRecognition) { _ in
+            if hasFaceIDRecognition {
+                authenticate()
+                hasFaceIDRecognition = false
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(ColorfulView(color: $themes[lockScreenTheme])

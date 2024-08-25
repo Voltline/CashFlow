@@ -12,8 +12,9 @@ import LocalAuthentication
 import UserNotifications
 import MetalKit
 import ColorfulX
+import SwiftUIVisualEffects
 
-let version = "1.2.52.0825"
+let version = "1.2.53.0825"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -83,20 +84,45 @@ struct PrimaryButton: View {
     var image: String?
     var showImage = true
     var text: String
+    @State private var backgroundState: ColorScheme = .dark
+    @State var useBlurEffect = UserDefaults.standard.bool(forKey: "LockScreenUseBlurEffect")
     
     var body: some View {
-        HStack {
-            if showImage {
-                Image(systemName: image ?? "person.fill")
+        if useBlurEffect {
+            ZStack {
+                // HStack内容
+                HStack {
+                    if showImage {
+                        Image(systemName: image ?? "person.fill")
+                    }
+                    Text(text)
+                }
+                .padding()
+                .padding(.horizontal)
+                
+                // 胶囊形状背景
+                RoundedRectangle(cornerRadius: 30)
+                    .frame(width: 200)
+                    .vibrancyEffect()
+                    .vibrancyEffectStyle(.fill)
             }
-            
-            Text(text)
+            .environment(\.colorScheme, backgroundState)
+            .foregroundStyle(Color.primary)
+            .padding(.horizontal) // 可选的整体布局调整
         }
-        .padding()
-        .padding(.horizontal)
-        .background(.white)
-        .cornerRadius(30)
-        .shadow(radius: 10)
+        else {
+            HStack {
+                if showImage {
+                    Image(systemName: image ?? "person.fill")
+                }
+                Text(text)
+            }
+            .padding()
+            .padding(.horizontal)
+            .background(.white)
+            .cornerRadius(30)
+            .shadow(radius: 10)
+        }
     }
 }
 
