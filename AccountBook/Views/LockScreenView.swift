@@ -19,13 +19,14 @@ struct LockScreenView: View {
     @State private var lockScreenTheme = UserDefaults.standard.integer(forKey: "LockScreenTheme")
     @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors, ColorfulPreset.winter.colors, ColorfulPreset.sunrise.colors]
     @State private var hasFaceIDRecognition = false
+    @StateObject private var screenMonitor = ScreenLockMonitor()
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
                 HStack {
                     Spacer()
                     VStack(alignment: .center, spacing: geometry.size.height * 0.03) {
-                        CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38)
+                        CircularImageView(imageName: userProfile.icon, size: min(geometry.size.width, geometry.size.height) * 0.38, hasShadow: false)
                         Text(userProfile.username)
                             .font(.title)
                             .bold()
@@ -65,7 +66,12 @@ struct LockScreenView: View {
             }
         }
         .onAppear() {
-            hasFaceIDRecognition = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                // 确保屏幕未锁定才进行生物识别
+                if !screenMonitor.isScreenLocked {
+                    hasFaceIDRecognition = true
+                }
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             hasFaceIDRecognition = true

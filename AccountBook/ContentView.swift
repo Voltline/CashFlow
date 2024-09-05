@@ -12,9 +12,8 @@ import LocalAuthentication
 import UserNotifications
 import MetalKit
 import ColorfulX
-import SwiftUIVisualEffects
 
-let version = "1.2.53.0825"
+let version = "1.2.54.0905"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -54,11 +53,6 @@ struct ContentView: View {
                                 EmptyView()
                             }.hidden()
                         }
-                        .onChange(of: scenePhase) { newPhase in
-                            if newPhase == .background {
-                                isLocked = true
-                            }
-                        }
                         CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme)
                     }
                     else {
@@ -68,6 +62,11 @@ struct ContentView: View {
                 else {
                     LockScreenView(isLocked: $isLocked)
                 }
+            }
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .background {
+                isLocked = true
             }
         }
     }
@@ -90,6 +89,11 @@ struct PrimaryButton: View {
     var body: some View {
         if useBlurEffect {
             ZStack {
+                // 胶囊形状背景
+                RoundedRectangle(cornerRadius: 30)
+                    .frame(width: 200, height: 50)
+                    .background(.thinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
                 // HStack内容
                 HStack {
                     if showImage {
@@ -97,17 +101,12 @@ struct PrimaryButton: View {
                     }
                     Text(text)
                 }
+                .foregroundStyle(Color.white)
                 .padding()
                 .padding(.horizontal)
-                
-                // 胶囊形状背景
-                RoundedRectangle(cornerRadius: 30)
-                    .frame(width: 200)
-                    .vibrancyEffect()
-                    .vibrancyEffectStyle(.fill)
             }
             .environment(\.colorScheme, backgroundState)
-            .foregroundStyle(Color.primary)
+            .background(Color.clear)
             .padding(.horizontal) // 可选的整体布局调整
         }
         else {

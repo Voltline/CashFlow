@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B256DFC62C79BDDC00A3DD00 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = B256DFC52C79BDDC00A3DD00 /* AlertKit */; };
 		B256DFCC2C79C40B00A3DD00 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = B256DFCB2C79C40B00A3DD00 /* ColorfulX */; };
-		B273A1AE2C7AF3590040961D /* SwiftUIVisualEffects in Frameworks */ = {isa = PBXBuildFile; productRef = B273A1AD2C7AF3590040961D /* SwiftUIVisualEffects */; };
 		B27657522C79BA9800371233 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B27657512C79BA9800371233 /* AlertToast */; };
 		B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */ = {isa = PBXBuildFile; productRef = B28D36E82C6742DA00C16CE5 /* SwiftUICharts */; };
 		B2AC52132C0F1FDD00D7B746 /* accounts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2AC52112C0F1FDD00D7B746 /* accounts.xcdatamodeld */; };
@@ -105,6 +104,7 @@
 				Category.swift,
 				NotificationHandler.swift,
 				Persistence.swift,
+				ScreenMonitor.swift,
 				UserProfile.swift,
 				WeekUtils.swift,
 			);
@@ -126,7 +126,6 @@
 				B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */,
 				B27657522C79BA9800371233 /* AlertToast in Frameworks */,
 				B256DFC62C79BDDC00A3DD00 /* AlertKit in Frameworks */,
-				B273A1AE2C7AF3590040961D /* SwiftUIVisualEffects in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,7 +313,6 @@
 				B27657502C79BA0400371233 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */,
 				B256DFCA2C79C40B00A3DD00 /* XCRemoteSwiftPackageReference "ColorfulX" */,
-				B273A1AC2C7AF3590040961D /* XCRemoteSwiftPackageReference "swiftui-visual-effects" */,
 			);
 			productRefGroup = B2B9CFB92C0B565600EC4F84 /* Products */;
 			projectDirPath = "";
@@ -719,14 +717,6 @@
 				minimumVersion = 5.3.1;
 			};
 		};
-		B273A1AC2C7AF3590040961D /* XCRemoteSwiftPackageReference "swiftui-visual-effects" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lucasbrown/swiftui-visual-effects";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		B27657502C79BA0400371233 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/elai950/AlertToast";
@@ -755,11 +745,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B256DFCA2C79C40B00A3DD00 /* XCRemoteSwiftPackageReference "ColorfulX" */;
 			productName = ColorfulX;
-		};
-		B273A1AD2C7AF3590040961D /* SwiftUIVisualEffects */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B273A1AC2C7AF3590040961D /* XCRemoteSwiftPackageReference "swiftui-visual-effects" */;
-			productName = SwiftUIVisualEffects;
 		};
 		B27657512C79BA9800371233 /* AlertToast */ = {
 			isa = XCSwiftPackageProductDependency;
