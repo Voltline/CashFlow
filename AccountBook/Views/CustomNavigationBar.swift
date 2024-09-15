@@ -7,12 +7,14 @@
 
 import SwiftUI
 import AudioToolbox
+import ActivityKit
+import CoreData
 
 struct CustomNavigationBar: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: false)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
     var size: Double

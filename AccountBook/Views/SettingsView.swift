@@ -153,6 +153,7 @@ struct SettingsView: View {
                                 else {
                                     UserDefaults.standard.setValue(3000, forKey: "MonthBudget")
                                 }
+                                refreshTrigger.toggle()
                                 showMonthAlert = false
                             }
                         } label: {
@@ -174,6 +175,7 @@ struct SettingsView: View {
                                 else {
                                     UserDefaults.standard.setValue(100000, forKey: "YearBudget")
                                 }
+                                refreshTrigger.toggle()
                                 showYearAlert = false
                             }
                         } label: {

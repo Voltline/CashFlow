@@ -13,6 +13,7 @@ struct RecordListView: View {
     @State private var choice: Int = UserDefaults.standard.integer(forKey: "RecordListViewMode")
     @Binding var editMode: EditMode
     @Binding var selectedRecords: Set<Record>
+    @Binding var refreshTrigger: Bool
     var body: some View {
         VStack(spacing: 0) {
             Picker("", selection: $choice) {
@@ -26,7 +27,7 @@ struct RecordListView: View {
             .onChange(of: choice) { newChoice in
                 AudioServicesPlaySystemSound(1520)
             }
-            DateRecordListView(choice: $choice, selectedRecords: $selectedRecords, editMode: $editMode)
+            DateRecordListView(choice: $choice, refreshTrigger: $refreshTrigger, selectedRecords: $selectedRecords, editMode: $editMode)
         }
         .background(colorScheme == .dark ? Color(UIColor.systemBackground) : Color(UIColor.secondarySystemBackground))
     }
@@ -35,5 +36,6 @@ struct RecordListView: View {
 #Preview {
     @State var editMode: EditMode = .inactive // 用于控制编辑模式
     @State var selectedRecords: Set<Record> = []
-    RecordListView(editMode: $editMode, selectedRecords: $selectedRecords)
+    @State var refreshTrigger = false
+    RecordListView(editMode: $editMode, selectedRecords: $selectedRecords, refreshTrigger: $refreshTrigger)
 }

@@ -17,6 +17,7 @@ struct DateRecordListView: View {
     private var records: FetchedResults<Record>
     @StateObject private var categories = Categories()
     @Binding var choice: Int// 0 for day, 1 for week, 2 for month, 3 for year
+    @Binding var refreshTrigger: Bool
     var mergedRecords: [String: [Record]] {
         var result = [String: [Record]]()
         for record in records {
@@ -106,7 +107,7 @@ struct DateRecordListView: View {
                         if sectionHeaders.contains(key) {
                             ForEach(mergedRecords[key]!, id: \.self) { record in
                                 NavigationLink {
-                                    ModifyRecordView(record: record)
+                                    ModifyRecordView(record: record, refreshTrigger: $refreshTrigger)
                                         .environment(\.managedObjectContext, viewContext)
                                         .environmentObject(categories);
                                 } label: {
@@ -179,7 +180,7 @@ struct DateRecordListView: View {
                         if sectionHeadersWeek.contains(key) {
                             ForEach(mergedRecordsWeek[key]!, id: \.self) { record in
                                 NavigationLink {
-                                    ModifyRecordView(record: record)
+                                    ModifyRecordView(record: record, refreshTrigger: $refreshTrigger)
                                         .environment(\.managedObjectContext, viewContext)
                                         .environmentObject(categories);
                                 } label: {
@@ -271,6 +272,7 @@ struct DateRecordListView: View {
             offsets.map { records[$0] }.forEach(viewContext.delete)
             do {
                 try viewContext.save()
+                refreshTrigger.toggle()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -300,5 +302,6 @@ struct DateRecordListView: View {
     @State var editMode: EditMode = .inactive
     @State var choice = 1
     @State var selectedRecords: Set<Record> = []
-    DateRecordListView(choice: $choice, selectedRecords: $selectedRecords, editMode: $editMode)
+    @State var refreshTrigger = false
+    DateRecordListView(choice: $choice, refreshTrigger: $refreshTrigger, selectedRecords: $selectedRecords, editMode: $editMode)
 }

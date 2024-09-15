@@ -1,6 +1,7 @@
 //  AddRecordView.swift
 //  AccountBook
 
+import ActivityKit
 import SwiftUI
 import AudioToolbox
 import AlertToast
@@ -24,6 +25,7 @@ struct AddRecordView: View {
     }
     @State private var positive: Bool = false
     @State private var isShowingNoZeroDialog = false;
+    @Binding var refreshTrigger: Bool
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -176,6 +178,7 @@ struct AddRecordView: View {
             
             do {
                 try viewContext.save()
+                refreshTrigger.toggle()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -187,5 +190,6 @@ struct AddRecordView: View {
 }
 
 #Preview {
-    AddRecordView().environmentObject(Categories())
+    @State var refreshTrigger: Bool = false
+    AddRecordView(refreshTrigger: $refreshTrigger).environmentObject(Categories())
 }

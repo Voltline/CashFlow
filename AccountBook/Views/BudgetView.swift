@@ -9,6 +9,7 @@ import SwiftUI
 import Charts
 import CoreData
 import SwiftUICharts
+import ActivityKit
 
 struct BudgetTotal: Identifiable {
     var id = UUID()

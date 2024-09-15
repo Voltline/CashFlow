@@ -12,14 +12,15 @@ import LocalAuthentication
 import UserNotifications
 import MetalKit
 import ColorfulX
+import ActivityKit
 
-let version = "1.2.54.0905"
+let version = "1.2.55.0920"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: false)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
     @State private var showAddRecordView: Bool = false
@@ -32,6 +33,33 @@ struct ContentView: View {
     @State var selectedRecords: Set<Record> = []
     @State private var lockScreenTheme = UserDefaults.standard.integer(forKey: "LockScreenTheme")
     @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors]
+    @State var activity: Activity<AccountAttributes>? = nil
+    @State var hasActivity: Bool = false
+    var Income: Double {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        
+        var total: Double = 0
+        for record in records {
+            if let recordDate = record.record_date, calendar.isDate(recordDate, inSameDayAs: currentDate) && record.record_type == "收入" {
+                total += record.number
+            }
+        }
+        return total
+    }
+    
+    var Outcome: Double {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        
+        var total: Double = 0
+        for record in records {
+            if let recordDate = record.record_date, calendar.isDate(recordDate, inSameDayAs: currentDate) && record.record_type != "收入" {
+                total += record.number
+            }
+        }
+        return total
+    }
     
     var body: some View {
         withAnimation(.spring) {
@@ -46,22 +74,37 @@ struct ContentView: View {
                                 CustomNavigationBar(size: 65, showAddRecordView: $showAddRecordView, userProfile: userProfile, refreshTrigger: $refreshTrigger, recordViewSp: $selectionTab, editMode: $editMode, selectedRecords: $selectedRecords)
                             }
                             Divider()
-                            NavigationLink(destination: AddRecordView()
+                            NavigationLink(destination: AddRecordView(refreshTrigger: $refreshTrigger)
                                 .environment(\.managedObjectContext, viewContext)
                                 .environmentObject(categories),
                                            isActive: $showAddRecordView) {
                                 EmptyView()
                             }.hidden()
                         }
-                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme)
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme, activity: $activity, hasActivity: $hasActivity)
                     }
                     else {
-                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme)
+                        CustomTabView(selectedTab: $selectionTab, refreshTrigger: $refreshTrigger, editMode: $editMode, selectedRecords: $selectedRecords, lockScreenTheme: $lockScreenTheme, activity: $activity, hasActivity: $hasActivity)
                     }
                 }
                 else {
                     LockScreenView(isLocked: $isLocked)
                 }
+            }
+        }
+        .onAppear {
+            if !hasActivity {
+                let attributes = AccountAttributes()
+                let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"))
+                
+                activity = try? Activity<AccountAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
+                hasActivity = true
+            }
+        }
+        .onChange(of: refreshTrigger) { _ in
+            let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"))
+            Task {
+                await activity?.update(using: state)
             }
         }
         .onChange(of: scenePhase) { newPhase in
@@ -131,12 +174,16 @@ struct CustomTabView: View {
     @Binding var editMode: EditMode
     @Binding var selectedRecords: Set<Record>
     @Binding var lockScreenTheme: Int
-    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>, editMode: Binding<EditMode>, selectedRecords: Binding<Set<Record>>, lockScreenTheme: Binding<Int>) {
+    @Binding var activity: Activity<AccountAttributes>?
+    @Binding var hasActivity: Bool
+    init(selectedTab: Binding<Int>, refreshTrigger: Binding<Bool>, editMode: Binding<EditMode>, selectedRecords: Binding<Set<Record>>, lockScreenTheme: Binding<Int>, activity: Binding<Activity<AccountAttributes>?>, hasActivity: Binding<Bool>) {
         self._selectedTab = selectedTab
         self._refreshTrigger = refreshTrigger
         self._editMode = editMode
         self._selectedRecords = selectedRecords
         self._lockScreenTheme = lockScreenTheme
+        self._activity = activity
+        self._hasActivity = hasActivity
         
         // Customize the TabBar appearance
         let tabBarAppearance = UITabBarAppearance()
@@ -157,7 +204,7 @@ struct CustomTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView(refreshTrigger: $refreshTrigger)
+            HomeView(refreshTrigger: $refreshTrigger, activity: $activity, hasActivity: $hasActivity)
                 .tabItem {
                     VStack {
                         Image(systemName: "house")
@@ -166,7 +213,7 @@ struct CustomTabView: View {
                 }
                 .tag(0)
             
-            RecordListView(editMode: $editMode, selectedRecords: $selectedRecords)
+            RecordListView(editMode: $editMode, selectedRecords: $selectedRecords, refreshTrigger: $refreshTrigger)
                 .tabItem {
                     VStack {
                         Image(systemName: "book")
