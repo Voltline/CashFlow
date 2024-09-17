@@ -35,6 +35,7 @@ struct ContentView: View {
     @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors]
     @State var activity: Activity<AccountAttributes>? = nil
     @State var hasActivity: Bool = false
+    let context = LAContext()
     var Income: Double {
         let calendar = Calendar.current
         let currentDate = Date()
@@ -64,7 +65,7 @@ struct ContentView: View {
     var body: some View {
         withAnimation(.spring) {
             NavigationStack {
-                if ((UserDefaults.standard.bool(forKey: "UseFaceID") && !isLocked) || !UserDefaults.standard.bool(forKey: "UseFaceID")) {
+                if (!context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) || (UserDefaults.standard.bool(forKey: "UseFaceID") && !isLocked) || !UserDefaults.standard.bool(forKey: "UseFaceID")) {
                     if selectionTab != 2 {
                         VStack {
                             if refreshTrigger {

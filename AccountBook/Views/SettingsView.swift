@@ -25,7 +25,7 @@ struct SettingsView: View {
     @State private var old_mainPage = UserDefaults.standard.bool(forKey: "UseOldMainPage")
     @State private var useBlurEffect = UserDefaults.standard.bool(forKey: "LockScreenUseBlurEffect")
     @Binding var lockScreenTheme: Int
-    @State private var themeDict = ["极光", "Apple Intelligence", "霓虹", "海洋", "冬日", "日出"]
+    @State private var themeDict = ["极光", "AI", "霓虹", "海洋", "冬日", "日出"]
     @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors, ColorfulPreset.winter.colors, ColorfulPreset.sunrise.colors]
     var body: some View {
         NavigationStack {

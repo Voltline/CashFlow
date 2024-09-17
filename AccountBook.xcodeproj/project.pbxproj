@@ -123,6 +123,7 @@
 				NewCategoryProportionView.swift,
 				RecordListView.swift,
 				SettingsView.swift,
+				SummaryView.swift,
 			);
 			target = B2B9CFB72C0B565600EC4F84 /* AccountBook */;
 		};

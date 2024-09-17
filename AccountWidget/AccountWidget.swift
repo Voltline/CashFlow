@@ -179,14 +179,21 @@ struct AccountWidgetView: View {
                 ProgressView(value: 1 - context.state.Outcome/context.state.MonthlyBudget)
                     .progressViewStyle(.circular)
                     .tint(Color(hexString: "#39C5BB"))
-                Text("\(String(format: "%.0f", (1 - context.state.Outcome/context.state.MonthlyBudget) * 100))%")
-                    .font(.title2)
-                .bold() //#39C5BB
-                .foregroundStyle(Color(hexString: "#39C5BB"))
+                if context.state.Outcome > context.state.MonthlyBudget {
+                    Text("超支")
+                        .font(.title2)
+                    .bold()
+                    .foregroundStyle(Color.red)
+                }
+                else {
+                    Text("\(String(format: "%.0f", (1 - context.state.Outcome/context.state.MonthlyBudget) * 100))%")
+                        .font(.title2)
+                    .bold() //#39C5BB
+                    .foregroundStyle(Color(hexString: "#39C5BB"))
+                }
             }
         }
         .padding()
-        //.background(Color.black)
     }
 }
 
