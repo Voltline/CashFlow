@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B218FEDD2C9BC7E70023823F /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = B218FEDC2C9BC7E70023823F /* WhatsNewKit */; };
 		B221A32E2C96AD4900347D4C /* AccountAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B221A32D2C96AD4900347D4C /* AccountAttributes.swift */; };
 		B221A3352C96B17200347D4C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28AE76B2C33DD3A00435B69 /* WidgetKit.framework */; };
 		B221A3362C96B17200347D4C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28AE76D2C33DD3A00435B69 /* SwiftUI.framework */; };
@@ -164,6 +165,7 @@
 			files = (
 				B256DFCC2C79C40B00A3DD00 /* ColorfulX in Frameworks */,
 				B28D36E92C6742DA00C16CE5 /* SwiftUICharts in Frameworks */,
+				B218FEDD2C9BC7E70023823F /* WhatsNewKit in Frameworks */,
 				B27657522C79BA9800371233 /* AlertToast in Frameworks */,
 				B256DFC62C79BDDC00A3DD00 /* AlertKit in Frameworks */,
 			);
@@ -382,6 +384,7 @@
 				B27657502C79BA0400371233 /* XCRemoteSwiftPackageReference "AlertToast" */,
 				B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */,
 				B256DFCA2C79C40B00A3DD00 /* XCRemoteSwiftPackageReference "ColorfulX" */,
+				B218FEDB2C9BC7E70023823F /* XCRemoteSwiftPackageReference "WhatsNewKit" */,
 			);
 			productRefGroup = B2B9CFB92C0B565600EC4F84 /* Products */;
 			projectDirPath = "";
@@ -507,7 +510,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow.AccountWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow1.AccountWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -535,7 +538,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow.AccountWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow1.AccountWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -691,7 +694,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -727,7 +730,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Voltline.CashFlow1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -858,6 +861,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B218FEDB2C9BC7E70023823F /* XCRemoteSwiftPackageReference "WhatsNewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SvenTiigi/WhatsNewKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
 		B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparrowcode/AlertKit";
@@ -893,6 +904,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B218FEDC2C9BC7E70023823F /* WhatsNewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B218FEDB2C9BC7E70023823F /* XCRemoteSwiftPackageReference "WhatsNewKit" */;
+			productName = WhatsNewKit;
+		};
 		B256DFC52C79BDDC00A3DD00 /* AlertKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B256DFC42C79BDDC00A3DD00 /* XCRemoteSwiftPackageReference "AlertKit" */;

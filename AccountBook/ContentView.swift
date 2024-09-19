@@ -13,6 +13,7 @@ import UserNotifications
 import MetalKit
 import ColorfulX
 import ActivityKit
+import WhatsNewKit
 
 let version = "1.2.55.0920"
 
@@ -62,6 +63,36 @@ struct ContentView: View {
         return total
     }
     
+    @State
+    var versionWhatsNew: WhatsNew? = WhatsNew(
+        title: "CashFlow的新功能",
+        features: [
+            .init(
+                image: .init(systemName: "calendar", foregroundColor: .cyan),
+                title: "修改账目时间",
+                subtitle: "您可在增加或修改账目时快捷地修改对应的记账日期与时间。"
+            ),
+            .init(
+                image: .init(systemName: "app.badge", foregroundColor: .red.opacity(0.9)),
+                title: "全新通知形式",
+                subtitle: "全新的实时活动与灵动岛通知使得您可以便捷地查看当日开销与收入。"
+            ),
+            .init(image: .init(systemName: "chart.bar.doc.horizontal", foregroundColor: .orange),
+                  title: "每周财务报告",
+                  subtitle: "未来的几个版本中，将会上线更加关注您每周财务状况的财务报告。"
+             ),
+            .init(image: .init(systemName: "paintpalette", foregroundColor: .green.opacity(0.8)),
+                  title: "视觉元素更新",
+                  subtitle: "部分文本与视觉元素均进行了调整，以更好传达视觉效果"
+             ),
+        ],
+        primaryAction: .init(
+            title: "好的"
+        )
+    )
+    
+    @State private var whatsNew: WhatsNew?
+    
     var body: some View {
         withAnimation(.spring) {
             NavigationStack {
@@ -93,6 +124,17 @@ struct ContentView: View {
                 }
             }
         }
+        .sheet(whatsNew: self.$whatsNew,
+               layout: WhatsNew.Layout(
+                contentSpacing: 70,
+                contentPadding: .init(
+                    top: 65,
+                    leading: 10,
+                    bottom: 0,
+                    trailing: 30
+                )
+               )
+        )
         .onAppear {
             if !hasActivity {
                 let attributes = AccountAttributes()
@@ -100,6 +142,10 @@ struct ContentView: View {
                 
                 activity = try? Activity<AccountAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
                 hasActivity = true
+            }
+            if UserDefaults.standard.string(forKey: "Version") != version {
+                UserDefaults.standard.set(version, forKey: "Version")
+                whatsNew = versionWhatsNew
             }
         }
         .onChange(of: refreshTrigger) { _ in

@@ -1,5 +1,5 @@
 {
-  "originHash" : "fbda850f473102d784e226f552ce67d26677c71e469bdc951eeebc90751fbe9c",
+  "originHash" : "644f9dcbc801104d973849a52c98d60627641659e90f32b79d3ec3f91f4a492e",
   "pins" : [
     {
       "identity" : "alertkit",
@@ -62,6 +62,15 @@
       "state" : {
         "revision" : "ff526fec3ef6df62395141a0cc55a4ba2d82ee81",
         "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "whatsnewkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SvenTiigi/WhatsNewKit.git",
+      "state" : {
+        "revision" : "6157c77e8be9b3d2310bc680681b61a8d9e290ac",
+        "version" : "2.2.1"
       }
     }
   ],
