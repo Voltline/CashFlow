@@ -51,7 +51,7 @@ struct AccountWidget: Widget {
         } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("支出")
+                    Text("本月支出")
                         .bold()
                         .foregroundStyle(Color(hexString: "#7DB9DE"))
                         .padding(.horizontal, 7)
@@ -65,7 +65,7 @@ struct AccountWidget: Widget {
                         .bold()
                         .foregroundStyle(Color(hexString: "#7DB9DE"))
                     Spacer()
-                    Text("收入")
+                    Text("本月收入")
                         .bold()
                         .foregroundStyle(Color(hexString: "#24936E"))
                         .padding(.horizontal, 7)
@@ -81,10 +81,10 @@ struct AccountWidget: Widget {
                 }
                 DynamicIslandExpandedRegion(.trailing) {
                     ZStack {
-                        ProgressView(value: 1 - context.state.Outcome/context.state.MonthlyBudget)
+                        ProgressView(value: 1 - context.state.MonthlyOutcome/context.state.MonthlyBudget)
                             .progressViewStyle(.circular)
                             .tint(Color(hexString: "#39C5BB"))
-                        Text("\(String(format: "%.0f", (1 - context.state.Outcome/context.state.MonthlyBudget) * 100))%")
+                        Text("\(String(format: "%.0f", (1 - context.state.MonthlyOutcome/context.state.MonthlyBudget) * 100))%")
                             .font(.title2)
                         .bold() //#39C5BB
                         .foregroundStyle(Color(hexString: "#39C5BB"))
@@ -92,41 +92,41 @@ struct AccountWidget: Widget {
 
                 }
             } compactLeading: {
-                if context.state.Outcome > context.state.MonthlyBudget {
+                if context.state.MonthlyOutcome > context.state.MonthlyBudget {
                     ProgressView(value: 0)
                         .progressViewStyle(.circular)
                         .tint(Color.red)
                 }
                 else {
-                    ProgressView(value: 1 - context.state.Outcome/context.state.MonthlyBudget)
+                    ProgressView(value: 1 - context.state.MonthlyOutcome/context.state.MonthlyBudget)
                         .progressViewStyle(.circular)
                         .tint(Color(hexString: "#39C5BB"))
                 }
             } compactTrailing: {
-                if context.state.Outcome > context.state.MonthlyBudget {
+                if context.state.MonthlyOutcome > context.state.MonthlyBudget {
                     Text("超支")
                         .bold()
                         .foregroundStyle(Color.red)
                 }
                 else {
-                    Text("\(String(format: "%.0f", (1 - context.state.Outcome/context.state.MonthlyBudget) * 100))%")
+                    Text("\(String(format: "%.0f", (1 - context.state.MonthlyOutcome/context.state.MonthlyBudget) * 100))%")
                     .bold() //#39C5BB
                     .foregroundStyle(Color(hexString: "#39C5BB"))
                 }
             } minimal: {
-                if context.state.Outcome > context.state.MonthlyBudget {
+                if context.state.MonthlyOutcome > context.state.MonthlyBudget {
                     ProgressView(value: 0)
                         .progressViewStyle(.circular)
                         .tint(Color.red)
                 }
                 else {
-                    if context.state.Outcome > context.state.MonthlyBudget {
+                    if context.state.MonthlyOutcome > context.state.MonthlyBudget {
                         ProgressView(value: 0)
                             .progressViewStyle(.circular)
                             .tint(Color.red)
                     }
                     else {
-                        ProgressView(value: 1 - context.state.Outcome/context.state.MonthlyBudget)
+                        ProgressView(value: 1 - context.state.MonthlyOutcome/context.state.MonthlyBudget)
                             .progressViewStyle(.circular)
                             .tint(Color(hexString: "#39C5BB"))
                     }
@@ -143,7 +143,7 @@ struct AccountWidgetView: View {
         HStack {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("支出")
+                    Text("本月支出")
                         .bold()
                         .foregroundStyle(Color(hexString: "#7DB9DE"))
                         .padding(.horizontal, 7)
@@ -159,7 +159,7 @@ struct AccountWidgetView: View {
                 }
                 Spacer()
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("收入")
+                    Text("本月收入")
                         .bold()
                         .foregroundStyle(Color(hexString: "#24936E"))
                         .padding(.horizontal, 7)
@@ -176,17 +176,17 @@ struct AccountWidgetView: View {
             }
             Spacer()
             ZStack {
-                ProgressView(value: 1 - context.state.Outcome/context.state.MonthlyBudget)
+                ProgressView(value: 1 - context.state.MonthlyOutcome/context.state.MonthlyBudget)
                     .progressViewStyle(.circular)
                     .tint(Color(hexString: "#39C5BB"))
-                if context.state.Outcome > context.state.MonthlyBudget {
+                if context.state.MonthlyOutcome > context.state.MonthlyBudget {
                     Text("超支")
                         .font(.title2)
                     .bold()
                     .foregroundStyle(Color.red)
                 }
                 else {
-                    Text("\(String(format: "%.0f", (1 - context.state.Outcome/context.state.MonthlyBudget) * 100))%")
+                    Text("\(String(format: "%.0f", (1 - context.state.MonthlyOutcome/context.state.MonthlyBudget) * 100))%")
                         .font(.title2)
                     .bold() //#39C5BB
                     .foregroundStyle(Color(hexString: "#39C5BB"))

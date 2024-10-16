@@ -14,5 +14,6 @@ struct AccountAttributes: ActivityAttributes {
         var Outcome: Double
         var Income: Double
         var MonthlyBudget: Double
+        var MonthlyOutcome: Double
     }
 }

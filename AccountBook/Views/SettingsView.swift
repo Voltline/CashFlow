@@ -229,8 +229,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         ColorfulView(color: $themes[lockScreenTheme])
-                            .frame(width: 320, height: 160)
+                            .frame(width: 330, height: 130)
                             .scaledToFit()
+
                         Spacer()
                     }
                 } header: {
