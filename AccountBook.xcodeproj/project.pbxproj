@@ -10,7 +10,6 @@
 		B218FEDD2C9BC7E70023823F /* WhatsNewKit in Frameworks */ = {isa = PBXBuildFile; productRef = B218FEDC2C9BC7E70023823F /* WhatsNewKit */; };
 		B221A3352C96B17200347D4C /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28AE76B2C33DD3A00435B69 /* WidgetKit.framework */; };
 		B221A3362C96B17200347D4C /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B28AE76D2C33DD3A00435B69 /* SwiftUI.framework */; };
-		B221A3472C96B17400347D4C /* CashFlowWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B221A3342C96B17200347D4C /* CashFlowWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B256DFC62C79BDDC00A3DD00 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = B256DFC52C79BDDC00A3DD00 /* AlertKit */; };
 		B256DFCC2C79C40B00A3DD00 /* ColorfulX in Frameworks */ = {isa = PBXBuildFile; productRef = B256DFCB2C79C40B00A3DD00 /* ColorfulX */; };
 		B27657522C79BA9800371233 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = B27657512C79BA9800371233 /* AlertToast */; };
@@ -23,26 +22,27 @@
 		B2B9CFC82C0B565700EC4F84 /* AccountBook.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B2B9CFC62C0B565700EC4F84 /* AccountBook.xcdatamodeld */; };
 		B2E3CADE2C10590E00188642 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2E3CADD2C10590E00188642 /* Launch Screen.storyboard */; };
 		B2E663C02C0CB13500D26099 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E663BF2C0CB13500D26099 /* UserView.swift */; };
+		B2EFC72A2CC538F40078142D /* AccountWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B221A3342C96B17200347D4C /* AccountWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		B221A3452C96B17400347D4C /* PBXContainerItemProxy */ = {
+		B2EFC72B2CC538F40078142D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2B9CFB02C0B565600EC4F84 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B221A3332C96B17200347D4C;
-			remoteInfo = AccountWidgetExtension;
+			remoteInfo = AccountBookWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B28AE7802C33DD3B00435B69 /* Embed Foundation Extensions */ = {
+		B2EFC72D2CC538F40078142D /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				B221A3472C96B17400347D4C /* CashFlowWidgetExtension.appex in Embed Foundation Extensions */,
+				B2EFC72A2CC538F40078142D /* AccountWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,11 +50,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		B221A3342C96B17200347D4C /* CashFlowWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CashFlowWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B221A3342C96B17200347D4C /* AccountWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AccountWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		B28AE76B2C33DD3A00435B69 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B28AE76D2C33DD3A00435B69 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B2AC52122C0F1FDD00D7B746 /* accounts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = accounts.xcdatamodel; sourceTree = "<group>"; };
-		B2B9CFB82C0B565600EC4F84 /* CashFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CashFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B9CFB82C0B565600EC4F84 /* AccountBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccountBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B9CFBB2C0B565600EC4F84 /* AccountBookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountBookApp.swift; sourceTree = "<group>"; };
 		B2B9CFBD2C0B565600EC4F84 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B2B9CFBF2C0B565700EC4F84 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -70,14 +70,14 @@
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = B221A3332C96B17200347D4C /* CashFlowWidgetExtension */;
+			target = B221A3332C96B17200347D4C /* AccountWidgetExtension */;
 		};
 		B2557BF32CBFB82900102AB2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AccountAttributes.swift,
 			);
-			target = B221A3332C96B17200347D4C /* CashFlowWidgetExtension */;
+			target = B221A3332C96B17200347D4C /* AccountWidgetExtension */;
 		};
 		B2955A432C35158700D56B8C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -103,7 +103,7 @@
 				SettingsView.swift,
 				SummaryView.swift,
 			);
-			target = B2B9CFB72C0B565600EC4F84 /* CashFlow */;
+			target = B2B9CFB72C0B565600EC4F84 /* AccountBook */;
 		};
 		B2955A452C35159C00D56B8C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -116,7 +116,7 @@
 				UserProfile.swift,
 				WeekUtils.swift,
 			);
-			target = B2B9CFB72C0B565600EC4F84 /* CashFlow */;
+			target = B2B9CFB72C0B565600EC4F84 /* AccountBook */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -174,8 +174,8 @@
 		B2B9CFB92C0B565600EC4F84 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2B9CFB82C0B565600EC4F84 /* CashFlow.app */,
-				B221A3342C96B17200347D4C /* CashFlowWidgetExtension.appex */,
+				B2B9CFB82C0B565600EC4F84 /* AccountBook.app */,
+				B221A3342C96B17200347D4C /* AccountWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -207,9 +207,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B221A3332C96B17200347D4C /* CashFlowWidgetExtension */ = {
+		B221A3332C96B17200347D4C /* AccountWidgetExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B221A3482C96B17400347D4C /* Build configuration list for PBXNativeTarget "CashFlowWidgetExtension" */;
+			buildConfigurationList = B221A3482C96B17400347D4C /* Build configuration list for PBXNativeTarget "AccountWidgetExtension" */;
 			buildPhases = (
 				B221A3302C96B17200347D4C /* Sources */,
 				B221A3312C96B17200347D4C /* Frameworks */,
@@ -222,30 +222,30 @@
 			fileSystemSynchronizedGroups = (
 				B221A3372C96B17200347D4C /* AccountWidget */,
 			);
-			name = CashFlowWidgetExtension;
+			name = AccountWidgetExtension;
 			packageProductDependencies = (
 			);
 			productName = AccountWidgetExtension;
-			productReference = B221A3342C96B17200347D4C /* CashFlowWidgetExtension.appex */;
+			productReference = B221A3342C96B17200347D4C /* AccountWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		B2B9CFB72C0B565600EC4F84 /* CashFlow */ = {
+		B2B9CFB72C0B565600EC4F84 /* AccountBook */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B2B9CFE12C0B565700EC4F84 /* Build configuration list for PBXNativeTarget "CashFlow" */;
+			buildConfigurationList = B2B9CFE12C0B565700EC4F84 /* Build configuration list for PBXNativeTarget "AccountBook" */;
 			buildPhases = (
 				B2B9CFB42C0B565600EC4F84 /* Sources */,
 				B2B9CFB52C0B565600EC4F84 /* Frameworks */,
 				B2B9CFB62C0B565600EC4F84 /* Resources */,
-				B28AE7802C33DD3B00435B69 /* Embed Foundation Extensions */,
+				B2EFC72D2CC538F40078142D /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				B221A3462C96B17400347D4C /* PBXTargetDependency */,
+				B2EFC72C2CC538F40078142D /* PBXTargetDependency */,
 			);
-			name = CashFlow;
+			name = AccountBook;
 			productName = AccountBook;
-			productReference = B2B9CFB82C0B565600EC4F84 /* CashFlow.app */;
+			productReference = B2B9CFB82C0B565600EC4F84 /* AccountBook.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -287,8 +287,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B2B9CFB72C0B565600EC4F84 /* CashFlow */,
-				B221A3332C96B17200347D4C /* CashFlowWidgetExtension */,
+				B2B9CFB72C0B565600EC4F84 /* AccountBook */,
+				B221A3332C96B17200347D4C /* AccountWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -336,10 +336,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		B221A3462C96B17400347D4C /* PBXTargetDependency */ = {
+		B2EFC72C2CC538F40078142D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = B221A3332C96B17200347D4C /* CashFlowWidgetExtension */;
-			targetProxy = B221A3452C96B17400347D4C /* PBXContainerItemProxy */;
+			target = B221A3332C96B17200347D4C /* AccountWidgetExtension */;
+			targetProxy = B2EFC72B2CC538F40078142D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -354,7 +354,7 @@
 				DEVELOPMENT_TEAM = 8R5Q4A3RC7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AccountWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = CashFlowWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = AccountWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -386,7 +386,7 @@
 				DEVELOPMENT_TEAM = 8R5Q4A3RC7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AccountWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = CashFlowWidget;
+				INFOPLIST_KEY_CFBundleDisplayName = AccountWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -610,7 +610,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B221A3482C96B17400347D4C /* Build configuration list for PBXNativeTarget "CashFlowWidgetExtension" */ = {
+		B221A3482C96B17400347D4C /* Build configuration list for PBXNativeTarget "AccountWidgetExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B221A3492C96B17400347D4C /* Debug */,
@@ -628,7 +628,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B2B9CFE12C0B565700EC4F84 /* Build configuration list for PBXNativeTarget "CashFlow" */ = {
+		B2B9CFE12C0B565700EC4F84 /* Build configuration list for PBXNativeTarget "AccountBook" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B2B9CFE22C0B565700EC4F84 /* Debug */,

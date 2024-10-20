@@ -17,8 +17,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B221A3332C96B17200347D4C"
-               BuildableName = "CashFlowWidgetExtension.appex"
-               BlueprintName = "CashFlowWidgetExtension"
+               BuildableName = "AccountWidgetExtension.appex"
+               BlueprintName = "AccountWidgetExtension"
                ReferencedContainer = "container:AccountBook.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,8 +31,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B2B9CFB72C0B565600EC4F84"
-               BuildableName = "CashFlow.app"
-               BlueprintName = "CashFlow"
+               BuildableName = "AccountBook.app"
+               BlueprintName = "AccountBook"
                ReferencedContainer = "container:AccountBook.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B2B9CFB72C0B565600EC4F84"
-            BuildableName = "CashFlow.app"
-            BlueprintName = "CashFlow"
+            BuildableName = "AccountBook.app"
+            BlueprintName = "AccountBook"
             ReferencedContainer = "container:AccountBook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -98,8 +98,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B2B9CFB72C0B565600EC4F84"
-            BuildableName = "CashFlow.app"
-            BlueprintName = "CashFlow"
+            BuildableName = "AccountBook.app"
+            BlueprintName = "AccountBook"
             ReferencedContainer = "container:AccountBook.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
