@@ -84,6 +84,7 @@
 			membershipExceptions = (
 				AddRecordView.swift,
 				BudgetView.swift,
+				CalenderModifyView.swift,
 				CategoryProportionView.swift,
 				CircularImageView.swift,
 				CustomNavigationBar.swift,

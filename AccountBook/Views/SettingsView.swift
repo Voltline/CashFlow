@@ -22,7 +22,7 @@ struct SettingsView: View {
     @State private var ui = UserDefaults.standard.integer(forKey: "DefaultView") == 1 ? "记录" : "主页"
     private let license = ""
     @State private var budget_text = ""
-    @State private var old_mainPage = UserDefaults.standard.bool(forKey: "UseOldMainPage")
+    @State private var lite_mainPage = UserDefaults.standard.bool(forKey: "UseLiteMainPage")
     @State private var useBlurEffect = UserDefaults.standard.bool(forKey: "LockScreenUseBlurEffect")
     @Binding var lockScreenTheme: Int
     @State private var themeDict = ["极光", "AI", "霓虹", "海洋", "冬日", "日出"]
@@ -35,7 +35,7 @@ struct SettingsView: View {
                     .bold()
             }
             .padding(.top, 8)
-            List {
+            Form {
                 Section {
                     HStack {
                         Text("定时通知")
@@ -191,16 +191,16 @@ struct SettingsView: View {
                 if #available(iOS 17.0, *) {
                     Section {
                         HStack {
-                            Text("使用旧版主页")
+                            Text("使用简洁主页")
                             Spacer()
-                            Toggle("", isOn: $old_mainPage)
-                                .onChange(of: old_mainPage) { newValue in
-                                    UserDefaults.standard.setValue(newValue, forKey: "UseOldMainPage")
+                            Toggle("", isOn: $lite_mainPage)
+                                .onChange(of: lite_mainPage) { newValue in
+                                    UserDefaults.standard.setValue(newValue, forKey: "UseLiteMainPage")
                                 }
                         }
                     } header: {
                     } footer: {
-                        Text("当您使用iOS 17时，可以使用旧版本中的主页外观")
+                        Text("当您使用iOS 17及以上版本时，除了全功能主页外观，还可以使用简洁版外观")
                     }
                 }
                 
@@ -280,7 +280,6 @@ struct SettingsView: View {
                 .padding(.horizontal, 30)
             }
         }
-
     }
     
     private func createDateFormatter() -> DateFormatter {

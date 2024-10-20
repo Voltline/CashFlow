@@ -87,7 +87,7 @@ struct CategoryProportionView: View {
     
     var body: some View {
         if #available(iOS 17.0, *) {
-            if UserDefaults.standard.bool(forKey: "UseOldMainPage") {
+            if !UserDefaults.standard.bool(forKey: "UseLiteMainPage") {
                 RoundedRectangle(cornerRadius: 30)
                     .fill(Color(hexString: "002B63"))
                     .stroke(Color.gray.opacity(0.5), lineWidth: 0.1) // 圆角边框

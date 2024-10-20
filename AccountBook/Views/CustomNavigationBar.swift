@@ -117,6 +117,7 @@ struct CustomNavigationBar: View {
             offsets.map { records[$0] }.forEach(viewContext.delete)
             do {
                 try viewContext.save()
+                refreshTrigger.toggle()
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 let nsError = error as NSError
