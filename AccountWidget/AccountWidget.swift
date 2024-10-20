@@ -58,7 +58,7 @@ struct AccountWidget: Widget {
                     HStack(spacing: 2) {
                         Image(systemName: "yensign")
                             .font(.title3)
-                        Text("\(String(format: "%.2f", context.state.Outcome))")
+                        Text("\(String(format: "%.2f", context.state.MonthlyOutcome))")
                             .font(.title2)
                     }
                         .padding(.horizontal, 7)
@@ -72,7 +72,7 @@ struct AccountWidget: Widget {
                     HStack(spacing: 2) {
                         Image(systemName: "yensign")
                             .font(.title3)
-                        Text("\(String(format: "%.2f", context.state.Income))")
+                        Text("\(String(format: "%.2f", context.state.MonthlyIncome))")
                             .font(.title2)
                     }
                         .bold()
@@ -150,7 +150,7 @@ struct AccountWidgetView: View {
                     HStack(spacing: 2) {
                         Image(systemName: "yensign")
                             .font(.title2)
-                        Text("\(String(format: "%.2f", context.state.Outcome))")
+                        Text("\(String(format: "%.2f", context.state.MonthlyOutcome))")
                             .font(.title)
                     }
                     .padding(.horizontal, 7)
@@ -166,7 +166,7 @@ struct AccountWidgetView: View {
                     HStack(spacing: 2) {
                         Image(systemName: "yensign")
                             .font(.title2)
-                        Text("\(String(format: "%.2f", context.state.Income))")
+                        Text("\(String(format: "%.2f", context.state.MonthlyIncome))")
                             .font(.title)
                     }
                     .bold()

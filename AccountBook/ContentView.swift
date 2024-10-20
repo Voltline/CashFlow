@@ -15,7 +15,7 @@ import ColorfulX
 import ActivityKit
 import WhatsNewKit
 
-let version = "1.2.57.1020"
+let version = "1.2.58.1020"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -57,6 +57,27 @@ struct ContentView: View {
         var total: Double = 0
         for record in records {
             if let recordDate = record.record_date, calendar.isDate(recordDate, inSameDayAs: currentDate) && record.record_type != "收入" {
+                total += record.number
+            }
+        }
+        return total
+    }
+    
+    var MonthlyIncome: Double {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        
+        let startDate: Date
+        let endDate: Date
+        
+        let currentMonth = calendar.component(.month, from: currentDate)
+        let currentYear = calendar.component(.year, from: currentDate)
+        startDate = calendar.date(from: DateComponents(year: currentYear, month: currentMonth, day: 1))!
+        endDate = calendar.date(byAdding: .month, value: 1, to: startDate)!
+
+        var total: Double = 0
+        for record in records {
+            if let recordDate = record.record_date, recordDate >= startDate && recordDate < endDate, record.record_type == "收入" {
                 total += record.number
             }
         }
@@ -159,7 +180,7 @@ struct ContentView: View {
         .onAppear {
             if !hasActivity {
                 let attributes = AccountAttributes()
-                let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"), MonthlyOutcome: MonthlyOutcome)
+                let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"), MonthlyOutcome: MonthlyOutcome)
                 
                 activity = try? Activity<AccountAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
                 hasActivity = true
@@ -170,7 +191,7 @@ struct ContentView: View {
             }
         }
         .onChange(of: refreshTrigger) { _ in
-            let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"), MonthlyOutcome: MonthlyOutcome)
+            let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"), MonthlyOutcome: MonthlyOutcome)
             Task {
                 await activity?.update(using: state)
             }

@@ -13,6 +13,7 @@ struct AccountAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         var Outcome: Double
         var Income: Double
+        var MonthlyIncome: Double
         var MonthlyBudget: Double
         var MonthlyOutcome: Double
     }
