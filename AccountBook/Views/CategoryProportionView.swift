@@ -8,81 +8,21 @@
 import SwiftUI
 import Charts
 
-struct Expense: Identifiable {
-    var id = UUID()
-    var category: String
-    var amount: Double
-    var color: Color
-    var ratio: Double = 0
-    
-    var formattedAmount: String {
-        String(format: "%.2f", amount)
-    }
-}
-
 struct CategoryProportionView: View {
-    let colors = ["食物": Color.blue, "娱乐": Color.cyan, "日常": Color.orange, "学习": Color.green, "交通": Color.indigo, "购物": Color.red, "话费": Color.brown, "医药": Color.pink, "服装": Color.mint, "商务": Color.yellow, "其他": Color.purple]
-    var width: Double
-    var height: Double
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
+    var width: Double
+    var height: Double
     var mergedExpenses: [Expense] {
-        var result = [String: Expense]()
-        var total: Double = 0
-        for expense in records {
-            let category = expense.record_type ?? "其他"
-            if category == "收入" {
-                continue
-            }
-            let amount = expense.number
-            let color = colors[category]!
-            total += amount
-            if let existing = result[category] {
-                result[category] = Expense(id: existing.id, category: category, amount: existing.amount + amount, color: color)
-            }
-            else {
-                result[category] = Expense(category: category, amount: amount, color: color)
-            }
-        }
-        var ret = Array(result.values).sorted(by: {
-            $0.amount > $1.amount
-        })
-        if ret.isEmpty {
-            return [Expense(category: "无", amount: 1, color: Color.gray, ratio: 1)]
-        }
-        else {
-            for i in 0..<ret.count {
-                ret[i].ratio = ret[i].amount / total
-            }
-        }
-        return ret
+        getMergedExpenses(records: records)
     }
     var total: Double {
-        var total: Double = 0
-        for expense in records {
-            let category = expense.record_type ?? "其他"
-            if category == "收入" {
-                continue
-            }
-            let amount = expense.number
-            total += amount
-        }
-        return Double(Int(total))
+        getTotalOutcome(false, records: records)
     }
-    
     var real_total: Double {
-        var total: Double = 0
-        for expense in records {
-            let category = expense.record_type ?? "其他"
-            if category == "收入" {
-                continue
-            }
-            let amount = expense.number
-            total += amount
-        }
-        return total
+        getTotalOutcome(true, records: records)
     }
     
     var body: some View {

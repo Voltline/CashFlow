@@ -22,7 +22,7 @@ struct DateRecordListView: View {
         var result = [String: [Record]]()
         for record in records {
             let date = dateformat(record.record_date!)
-            if let existing = result[date] {
+            if result[date] != nil {
                 result[date]!.append(record)
             }
             else {
@@ -30,7 +30,7 @@ struct DateRecordListView: View {
             }
         }
         for each in result {
-            each.value.sorted(by: {
+            let _ = each.value.sorted(by: {
                 $0.record_date! > $1.record_date!
             })
         }
@@ -40,7 +40,7 @@ struct DateRecordListView: View {
         var result = [weekYear: [Record]]()
         for record in records {
             let week = weekOfYear(for: record.record_date!)
-            if let existing = result[week] {
+            if result[week] != nil {
                 result[week]!.append(record)
             }
             else {
@@ -48,7 +48,7 @@ struct DateRecordListView: View {
             }
         }
         for each in result {
-            each.value.sorted(by: {
+            let _ = each.value.sorted(by: {
                 $0.record_date! > $1.record_date!
             })
         }
@@ -274,8 +274,6 @@ struct DateRecordListView: View {
                 try viewContext.save()
                 refreshTrigger.toggle()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
@@ -299,9 +297,5 @@ struct DateRecordListView: View {
 }
 
 #Preview {
-    @State var editMode: EditMode = .inactive
-    @State var choice = 1
-    @State var selectedRecords: Set<Record> = []
-    @State var refreshTrigger = false
-    DateRecordListView(choice: $choice, refreshTrigger: $refreshTrigger, selectedRecords: $selectedRecords, editMode: $editMode)
+    DateRecordListView(choice: .constant(1), refreshTrigger: .constant(false), selectedRecords: .constant([]), editMode: .constant(.inactive))
 }

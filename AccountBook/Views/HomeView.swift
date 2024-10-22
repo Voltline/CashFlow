@@ -105,8 +105,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    @State var refreshTrigger = false
-    @State var activity: Activity<AccountAttributes>? = nil
-    @State var hasActivity: Bool = false
-    HomeView(refreshTrigger: $refreshTrigger, activity: $activity, hasActivity: $hasActivity)
+    HomeView(refreshTrigger: .constant(false), activity: .constant(nil), hasActivity: .constant(false))
 }

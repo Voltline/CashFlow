@@ -13,13 +13,13 @@ import ColorfulX
 struct LockScreenView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
-    @StateObject private var userProfile = UserProfile()
     @Binding var isLocked: Bool
-    @State var selectedRecords: Set<Record> = []
-    @State private var lockScreenTheme = UserDefaults.standard.integer(forKey: "LockScreenTheme")
-    @State private var themes = [ColorfulPreset.aurora.colors, ColorfulPreset.appleIntelligence.colors, ColorfulPreset.neon.colors, ColorfulPreset.ocean.colors, ColorfulPreset.winter.colors, ColorfulPreset.sunrise.colors]
+    @State private var themes = all_themes
     @State private var hasFaceIDRecognition = false
+    @State private var selectedRecords: Set<Record> = []
     @StateObject private var screenMonitor = ScreenLockMonitor()
+    @StateObject private var userProfile = UserProfile()
+    @AppStorage("LockScreenTheme") private var lockScreenTheme = 0
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center, spacing: geometry.size.height * 0.32) {
@@ -89,7 +89,7 @@ struct LockScreenView: View {
     
     private func getBiometryType() -> LABiometryType {
          let context = LAContext()
-         let canEvaluatePolicy = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+         let _ = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
          return context.biometryType
     }
     
@@ -113,6 +113,5 @@ struct LockScreenView: View {
 }
 
 #Preview {
-    @State var isLocked = true
-    LockScreenView(isLocked: $isLocked)
+    LockScreenView(isLocked: .constant(true))
 }

@@ -15,24 +15,24 @@ struct ModifyRecordView: View {
     @EnvironmentObject var cates: Categories
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @FocusState private var isTextFieldFocused: Bool
-    @ObservedObject var in_record: Record
-    @State private var selectedCategory: String
-    @State private var highlightCategory: String
+    @State private var newDate: Date
+    @State private var positive: Bool
+    @State private var selectedDate: Date
     @State private var accountName: String
     @State private var accountBalance: String
+    @State private var selectedCategory: String
+    @State private var highlightCategory: String
+    @State private var showCalenderSelect = false
+    @State private var isShowingNoZeroDialog = false;
+    @FocusState private var isTextFieldFocused: Bool
+    @Binding var refreshTrigger: Bool
+    @ObservedObject var in_record: Record
     private var accountBalanceCount: Int {
         return accountBalance.count
     }
     private var fontSizeScale: CGFloat {
         return CGFloat(accountBalanceCount < 7 ? 1.0 : pow(0.93, CGFloat(accountBalanceCount) - 6))
     }
-    @State private var positive: Bool
-    @State private var isShowingNoZeroDialog = false;
-    @Binding var refreshTrigger: Bool
-    @State private var selectedDate: Date
-    @State private var newDate: Date
-    @State private var showCalenderSelect = false
     init(record: Record, refreshTrigger: Binding<Bool>) {
         self._refreshTrigger = refreshTrigger
         in_record = record
@@ -216,16 +216,9 @@ struct ModifyRecordView: View {
                 try viewContext.save()
                 refreshTrigger.toggle()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }
 }
-/*
-#Preview {
-    ModifyRecordView(record: Record()).environmentObject(Categories())
-}
-*/

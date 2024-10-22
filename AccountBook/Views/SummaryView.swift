@@ -16,7 +16,7 @@ struct SummaryView: View {
         animation: .default)
     private var records: FetchedResults<Record>
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Text("Hello")
         }
     }

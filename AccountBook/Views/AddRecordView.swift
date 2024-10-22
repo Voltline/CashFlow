@@ -8,27 +8,28 @@ import AlertToast
 import AlertKit
 
 struct AddRecordView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var cates: Categories
+    @Environment(\.managedObjectContext) var viewContext
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
-    @FocusState private var isTextFieldFocused: Bool
+    @State private var newDate = Date()
+    @State private var selectedDate = Date()
+    @State private var positive: Bool = false
+    @State private var accountName: String = ""
+    @State private var showCalenderSelect = false
+    @State private var accountBalance: String = "0"
+    @State private var isShowingNoZeroDialog = false
     @State private var selectedCategory: String = ""
     @State private var highlightCategory: String = ""
-    @State private var accountName: String = ""
-    @State private var accountBalance: String = "0"
+    @Binding var refreshTrigger: Bool
+    @FocusState private var isTextFieldFocused: Bool
+    
     private var accountBalanceCount: Int {
         return accountBalance.count
     }
     private var fontSizeScale: CGFloat {
         return CGFloat(accountBalanceCount < 7 ? 1.0 : pow(0.93, CGFloat(accountBalanceCount) - 6))
     }
-    @State private var positive: Bool = false
-    @State private var isShowingNoZeroDialog = false;
-    @Binding var refreshTrigger: Bool
-    @State private var selectedDate = Date()
-    @State private var newDate = Date()
-    @State private var showCalenderSelect = false
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -202,6 +203,6 @@ struct AddRecordView: View {
 }
 
 #Preview {
-    @State var refreshTrigger: Bool = false
-    AddRecordView(refreshTrigger: $refreshTrigger).environmentObject(Categories())
+    AddRecordView(refreshTrigger: .constant(false))
+        .environmentObject(Categories())
 }

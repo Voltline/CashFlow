@@ -22,35 +22,34 @@ struct ItemView: View {
     }
     
     var body: some View {
-            HStack {
-                VStack {
-                    HStack(spacing: 2) {
-                        Text(item_name)
-                            .bold()
-                            .font(.title2)
-                        Spacer()
-                        Image(systemName: "yensign")
-                            .font(.title3)
-                        Text(String(format: "%.2f", item_num))
-                            .font(.title3)
-                    }
-                    HStack {
-                        Text(item_type)
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
-                    }
-                    HStack {
-                        Text(dateformat(date: item_date))
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
-                    }
-                    
+        HStack {
+            VStack {
+                HStack(spacing: 2) {
+                    Text(item_name)
+                        .bold()
+                        .font(.title2)
+                    Spacer()
+                    Image(systemName: "yensign")
+                        .font(.title3)
+                    Text(String(format: "%.2f", item_num))
+                        .font(.title3)
                 }
-                Spacer()
+                HStack {
+                    Text(item_type)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                HStack {
+                    Text(dateformat(date: item_date))
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                
             }
-            //.padding()
+            Spacer()
+        }
     }
                              
      private func dateformat(date: Date) -> String {
@@ -59,9 +58,3 @@ struct ItemView: View {
          return df.string(from: date)
     }
 }
-
-/*
-#Preview {
-    ItemView(item_name: "打车", item_date: Date(), item_type: "交通", item_num: 67.23)
-}
-*/

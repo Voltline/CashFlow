@@ -44,8 +44,3 @@ struct ImagePicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 }
-/*
-#Preview {
-    ImagePicker(selectedImage: <#Binding<UIImage?>#>)
-}
-*/

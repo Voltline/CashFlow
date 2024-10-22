@@ -11,22 +11,22 @@ import ActivityKit
 import CoreData
 
 struct CustomNavigationBar: View {
+    var size: Double
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) var scenePhase
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_type, ascending: true)],
         animation: .default)
     private var records: FetchedResults<Record>
-    var size: Double
-    @Binding var showAddRecordView: Bool
-    @ObservedObject var userProfile: UserProfile
-    @Binding var refreshTrigger: Bool
     @State private var profileImage: UIImage?
     @State private var showEditProfileView = false
     @State private var enterEditMode = false
     @Binding var recordViewSp: Int
-    @Binding var editMode: EditMode  // 用于控制编辑模式
+    @Binding var editMode: EditMode         // 用于控制编辑模式
+    @Binding var refreshTrigger: Bool
+    @Binding var showAddRecordView: Bool
     @Binding var selectedRecords: Set<Record>
+    @ObservedObject var userProfile: UserProfile
     var body: some View {
         HStack {
             UserView(username: userProfile.username, icon: userProfile.icon, size: size)

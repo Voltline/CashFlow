@@ -72,10 +72,8 @@ struct CalenderModifyView: View {
 }
 
 #Preview {
-    @State var selectedDate = Date()
-    @State var newDate = Date()
-    @State var showCalenderSelect: Bool = false
-    CalenderModifyView(selectedDate: $selectedDate, newDate: $newDate) {
+    var showCalenderSelect: Bool = false
+    CalenderModifyView(selectedDate: .constant(Date()), newDate: .constant(Date())) {
         showCalenderSelect = false
     }
 }

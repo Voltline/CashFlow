@@ -10,7 +10,7 @@ import AudioToolbox
 
 struct RecordListView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State private var choice: Int = UserDefaults.standard.integer(forKey: "RecordListViewMode")
+    @AppStorage("RecordListViewMode") private var choice = 1
     @Binding var editMode: EditMode
     @Binding var selectedRecords: Set<Record>
     @Binding var refreshTrigger: Bool
@@ -34,8 +34,5 @@ struct RecordListView: View {
 }
 
 #Preview {
-    @State var editMode: EditMode = .inactive // 用于控制编辑模式
-    @State var selectedRecords: Set<Record> = []
-    @State var refreshTrigger = false
-    RecordListView(editMode: $editMode, selectedRecords: $selectedRecords, refreshTrigger: $refreshTrigger)
+    RecordListView(editMode: .constant(.inactive), selectedRecords: .constant([]), refreshTrigger: .constant(false))
 }
