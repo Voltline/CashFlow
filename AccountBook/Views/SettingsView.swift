@@ -26,6 +26,12 @@ struct SettingsView: View {
     @State private var budget_text = ""
     @State private var themes = all_themes
     @State private var ui = UserDefaults.standard.integer(forKey: "DefaultView") == 1 ? "记录" : "主页"
+    @State private var csvURL: URL?
+    @State private var isShowFileImporter: Bool = false
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Record.record_date, ascending: true)],
+        animation: .default)
+    private var records: FetchedResults<Record>
     var body: some View {
         NavigationStack {
             HStack {
@@ -224,6 +230,24 @@ struct SettingsView: View {
                 }
                 
                 Section {
+                    ShareLink(item: exportCSV() ?? URL(filePath: "./")!) {
+                        Text("导出为CSV文件")
+                    }
+                    Button {
+                        isShowFileImporter.toggle()
+                    } label: {
+                        Text("导入文件")
+                    }
+                } header: {
+                } footer: {
+                    Text("导入账目的格式需要为：金额,日期,账目名称,类型，并且第一行会被忽略")
+                }
+                .fileImporter(isPresented: $isShowFileImporter, allowedContentTypes: [.data],
+                              allowsMultipleSelection: false) { result in
+                    readCSVFileToInsert(result: result, context: PersistenceController.shared.container.viewContext)
+                }
+                
+                Section {
                     Button(action: {
                         showLicense = true
                     }) {
@@ -261,7 +285,6 @@ struct SettingsView: View {
                 AsyncTermsAndConditionsView()
                 .padding(.top, 15)
                 .padding(.bottom, 30)
-                //
             }
         }
     }
@@ -323,6 +346,23 @@ struct SettingsView: View {
         if useNotification && hasNotification {
             NotificationForAllow()
             setNotificationTime()
+        }
+    }
+    
+    private func exportCSV() -> URL? {
+        let csvString = generateCSVString(records: records)
+        
+        // 定义文件路径
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileURL = tempDir.appendingPathComponent("expenses.csv")
+        
+        // 写入 CSV 文件
+        do {
+            try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
+            return fileURL
+        } catch {
+            print("写入文件失败：\(error)")
+            return nil
         }
     }
 }

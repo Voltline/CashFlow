@@ -15,7 +15,7 @@ import ColorfulX
 import ActivityKit
 import WhatsNewKit
 
-let version = "1.2.61.1022"
+let version = "1.2.62.1218"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -36,6 +36,7 @@ struct ContentView: View {
     @StateObject private var categories = Categories()
     @StateObject private var userProfile = UserProfile()
     @AppStorage("UseFaceID") private var useFaceID: Bool = false
+    @AppStorage("MonthBudget") private var MonthBudget: Double = 3000.0
     let context = LAContext()
     var Income: Double {
         getTodayIncome(records: records)
@@ -93,7 +94,7 @@ struct ContentView: View {
         .onAppear {
             if !hasActivity {
                 let attributes = AccountAttributes()
-                let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"), MonthlyOutcome: MonthlyOutcome)
+                let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: MonthBudget, MonthlyOutcome: MonthlyOutcome)
                 activity = try? Activity<AccountAttributes>.request(attributes: attributes, contentState: state, pushType: nil)
                 hasActivity = true
             }
@@ -102,11 +103,16 @@ struct ContentView: View {
                 whatsNew = versionWhatsNew
             }
         }
-        .onChange(of: refreshTrigger) { _ in
-            let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: UserDefaults.standard.double(forKey: "MonthBudget"), MonthlyOutcome: MonthlyOutcome)
+        .onChange(of: MonthBudget) { _ in
+            let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: MonthBudget, MonthlyOutcome: MonthlyOutcome)
             Task {
                 await activity?.update(using: state)
-                //activity?.upda
+            }
+        }
+        .onChange(of: refreshTrigger) { _ in
+            let state = AccountAttributes.ContentState(Outcome: Outcome, Income: Income, MonthlyIncome: MonthlyIncome, MonthlyBudget: MonthBudget, MonthlyOutcome: MonthlyOutcome)
+            Task {
+                await activity?.update(using: state)
             }
         }
         .onChange(of: scenePhase) { newPhase in
