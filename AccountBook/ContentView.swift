@@ -15,7 +15,7 @@ import ColorfulX
 import ActivityKit
 import WhatsNewKit
 
-let version = "1.2.62.1218"
+let version = "1.2.1.62.1218"
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
