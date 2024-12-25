@@ -18,7 +18,6 @@ struct AccountBookApp: App {
             ContentView()
                 .onAppear() {
                     init_has_notification()
-                    sleep(1)
                 }
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
@@ -35,6 +34,5 @@ struct AccountBookApp: App {
                 UserDefaults.standard.setValue(false, forKey: "HasNotification")
             }
         }
-        
     }
 }

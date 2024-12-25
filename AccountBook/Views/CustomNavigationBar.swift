@@ -101,6 +101,12 @@ struct CustomNavigationBar: View {
                     }
                 }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .navigateToAddRecord)) {_ in
+            withAnimation {
+                showAddRecordView = true
+                editMode = .inactive
+            }
+        }
     }
     
     private func deleteItems() {
